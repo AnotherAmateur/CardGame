@@ -11,7 +11,17 @@ config_version=4
 [application]
 
 config/name="CardGameProj"
+run/main_scene="res://CardBase.tscn"
 config/icon="res://icon.png"
+
+[debug]
+
+settings/stdout/verbose_stdout=true
+
+[display]
+
+window/size/width=1920
+window/size/height=1080
 
 [gui]
 

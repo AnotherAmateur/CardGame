@@ -1,0 +1,7 @@
+[gd_scene format=2]
+
+[node name="HomeScreen" type="Node2D"]
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 469.223, 0 )
+scale = Vector2( -468.223, 133.833 )

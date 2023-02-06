@@ -1,0 +1,12 @@
+A:\GitHubRepos\CardGame\GodotProj\.mono\temp\obj\Debug\CardGameProj.csproj.AssemblyReference.cache
+A:\GitHubRepos\CardGame\GodotProj\.mono\temp\obj\Debug\CardGameProj.GeneratedMSBuildEditorConfig.editorconfig
+A:\GitHubRepos\CardGame\GodotProj\.mono\temp\obj\Debug\CardGameProj.AssemblyInfoInputs.cache
+A:\GitHubRepos\CardGame\GodotProj\.mono\temp\obj\Debug\CardGameProj.AssemblyInfo.cs
+A:\GitHubRepos\CardGame\GodotProj\.mono\temp\obj\Debug\CardGameProj.csproj.CoreCompileInputs.cache
+A:\GitHubRepos\CardGame\GodotProj\.mono\temp\bin\Debug\CardGameProj.deps.json
+A:\GitHubRepos\CardGame\GodotProj\.mono\temp\bin\Debug\CardGameProj.dll
+A:\GitHubRepos\CardGame\GodotProj\.mono\temp\bin\Debug\CardGameProj.pdb
+A:\GitHubRepos\CardGame\GodotProj\.mono\temp\obj\Debug\CardGameProj.dll
+A:\GitHubRepos\CardGame\GodotProj\.mono\temp\obj\Debug\refint\CardGameProj.dll
+A:\GitHubRepos\CardGame\GodotProj\.mono\temp\obj\Debug\CardGameProj.pdb
+A:\GitHubRepos\CardGame\GodotProj\.mono\temp\obj\Debug\ref\CardGameProj.dll
