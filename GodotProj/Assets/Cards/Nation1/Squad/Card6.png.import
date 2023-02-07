@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/1.png-54e27abe2702a02d1dfd971578df16bc.stex"
+path="res://.import/Card6.png-ebdfbc4e3f4f41cb7f26ba480e399220.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Cards/Nation1/Squad/1.png"
-dest_files=[ "res://.import/1.png-54e27abe2702a02d1dfd971578df16bc.stex" ]
+source_file="res://Assets/Cards/Nation1/Squad/Card6.png"
+dest_files=[ "res://.import/Card6.png-ebdfbc4e3f4f41cb7f26ba480e399220.stex" ]
 
 [params]
 

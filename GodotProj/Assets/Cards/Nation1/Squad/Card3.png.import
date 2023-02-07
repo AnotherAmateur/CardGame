@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/4.png-1bad5cdbb47d90b44d9ba215303c4a23.stex"
+path="res://.import/Card3.png-dbb13354818ce402469b4ed0bf075527.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Cards/Nation1/Squad/4.png"
-dest_files=[ "res://.import/4.png-1bad5cdbb47d90b44d9ba215303c4a23.stex" ]
+source_file="res://Assets/Cards/Nation1/Squad/Card3.png"
+dest_files=[ "res://.import/Card3.png-dbb13354818ce402469b4ed0bf075527.stex" ]
 
 [params]
 

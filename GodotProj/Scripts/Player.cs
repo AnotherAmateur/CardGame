@@ -1,41 +1,34 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
 
 public class Player
 {
-	private List<string> deck;
+	public List<string> Deck { get; private set; }
 
-	public List<string> Deck
+	public List<string> Hand { get; private set; }
+
+	public List<string> DiscardPile { get; private set; }
+
+	public string Nation { get; private set; }
+
+	public List<string> OnBoard { get; private set; }
+
+
+	public Player(List<string> deck, string nation)
 	{
-		get { return deck; }
-	}
-
-	private List<string> hand;
-
-	public List<string> Hand
-	{
-		get { return hand; }
-	}
-
-	private List<string> discardPile;
-
-	public List<string> DiscardPile
-	{
-		get { return discardPile; }
-	}
-
-
-	public Player(List<string> deck)
-	{
-		this.deck = deck;
+		Deck = deck;
+		Nation = nation;
+		Hand = new();
+		DiscardPile = new();
+		OnBoard = new();
 	}
 
 
 	public List<string> GetRandomCardsFromDeck(int count)
 	{
-		if (count > deck.Count)
+		if (count > Deck.Count)
 		{
 			throw new Exception("There are not enough cards in the deck");
 		}
@@ -44,14 +37,14 @@ public class Player
 		HashSet<int> uniqueNumbers = new();
 		while (uniqueNumbers.Count < count)
 		{
-			int number = random.Next(deck.Count);
+			int number = random.Next(Deck.Count);
 			uniqueNumbers.Add(number);
 		}
 
 		List<string> result = new();
 		foreach (int index in uniqueNumbers)
 		{
-			result.Add(deck[index]);
+			result.Add(Deck[index]);
 		}
 
 		return result;
@@ -60,37 +53,50 @@ public class Player
 
 	public void TakeCardsFromDeck(List<string> cards)
 	{
-		if (cards.Count > deck.Count)
+		if (cards.Count > Deck.Count)
 		{
 			throw new Exception("There are not enough cards in the deck");
 		}
 
-		var remainingСards = deck.Except(cards).ToList();
+		var remainingСards = Deck.Except(cards).ToList();
 
-		if (deck.Count - remainingСards.Count != cards.Count)
+		if (Deck.Count - remainingСards.Count != cards.Count)
 		{
 			throw new Exception("The given cards don`t belong the deck");
 		}
 
-		deck = remainingСards;
-		hand.AddRange(cards);
+		Deck = remainingСards;
+		Hand.AddRange(cards);
 	}
 
 
 	public void TakeCardFromDiscardPile(string card)
 	{
-		if (discardPile.Contains(card) is false)
+		if (DiscardPile.Contains(card) is false)
 		{
 			throw new Exception("Discard pile doesn`t contain the given card");
 		}
 
-		discardPile.Remove(card);
-		hand.Add(card);
+		DiscardPile.Remove(card);
+		Hand.Add(card);
 	}
 
 
-	public void DiscardCards(List<string> cards)
+	public void DiscardCard(string card)
 	{
+		if (Hand.Contains(card))
+		{
+			Hand.Remove(card);
+			OnBoard.Add(card);
+		}
+		else if (OnBoard.Contains(card))
+		{
+			DiscardPile.Add(card);
+			OnBoard.Remove(card);
+		}
+		else
+		{
+			throw new Exception("There is no such a card");
+		}		
 	}
 }
-

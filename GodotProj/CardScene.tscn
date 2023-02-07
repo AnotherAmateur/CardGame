@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scripts/CardScene.cs" type="Script" id=1]
+
+[node name="CardScene" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="Card" type="TextureButton" parent="."]
+margin_right = 120.0
+margin_bottom = 200.0
+expand = true
+
+[connection signal="pressed" from="Card" to="." method="_on_Card_pressed"]

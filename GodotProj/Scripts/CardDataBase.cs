@@ -1,8 +1,8 @@
-using Godot;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
-public class CardDataBase
+public static class CardDataBase
 {
 	public struct CardData
 	{
@@ -11,13 +11,20 @@ public class CardDataBase
 		public int Damage;
 	}
 
-	Dictionary<string, CardData> cards;
-	public Dictionary<string, CardData> Cards { get { return cards; } }
+	private static Dictionary<string, CardData> cards;
+	public static Dictionary<string, CardData> Cards { get { return cards; } }
 
-	public CardDataBase()
+
+	public static void UpdateCardDataBase()
 	{
-		cards = new();
-		cards.Add("card1", new CardData { Name = "card1", Type = "leader", Damage = 30 });
-		cards.Add("card2", new CardData { Name = "card2", Type = "leader", Damage = 20 });
+		cards = new();		
+
+		cards.Add("Card1", new CardData { Name = "Card1", Type = "Squad", Damage = 30 });
+		cards.Add("Card2", new CardData { Name = "Card2", Type = "Squad", Damage = 20 });
+		cards.Add("Card3", new CardData { Name = "Card3", Type = "Squad", Damage = 30 });
+		cards.Add("Card4", new CardData { Name = "Card4", Type = "Squad", Damage = 20 });
+		cards.Add("Card5", new CardData { Name = "Card5", Type = "Squad", Damage = 20 });
+		cards.Add("Card6", new CardData { Name = "Card6", Type = "Squad", Damage = 20 });
+		cards.Add("Card0", new CardData { Name = "Card0", Type = "Leader", Damage = 20 });
 	}
 }

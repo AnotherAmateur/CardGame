@@ -1,8 +1,14 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Assets/Backgrounds/Scheme.png" type="Texture" id=1]
+[ext_resource path="res://Scripts/GameFieldController.cs" type="Script" id=2]
+[ext_resource path="res://icon.png" type="Texture" id=3]
 
 [node name="GameField" type="Node2D"]
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_vertical_guides_": [  ]
+}
 
 [node name="FieldImg" type="Sprite" parent="."]
 texture = ExtResource( 1 )
@@ -11,6 +17,103 @@ __meta__ = {
 "_edit_lock_": true
 }
 
+[node name="DeckTopImg" type="Sprite" parent="."]
+position = Vector2( 1825.5, 111 )
+scale = Vector2( 1.67188, 2.3125 )
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="DeckBottomImg" type="Sprite" parent="."]
+position = Vector2( 1774, 895 )
+scale = Vector2( 1.67188, 2.3125 )
+texture = ExtResource( 3 )
+centered = false
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="LeaderCardTopImg" type="Sprite" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="LeaderCardBottomImg" type="Sprite" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="FieldRowsContainer" type="Control" parent="."]
+margin_left = 525.0
+margin_top = 20.0
+margin_right = 1574.0
+margin_bottom = 806.0
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="CardRow3" type="Control" parent="FieldRowsContainer"]
+margin_left = -4.0
+margin_top = 482.0
+margin_right = 1045.0
+margin_bottom = 602.0
+
+[node name="CardRow2" type="Control" parent="FieldRowsContainer"]
+margin_left = 2.0
+margin_top = 401.0
+margin_right = 1047.0
+margin_bottom = 522.0
+
+[node name="CardRow1" type="Control" parent="FieldRowsContainer"]
+margin_left = 1.0
+margin_top = 661.0
+margin_right = 1048.0
+margin_bottom = 784.0
+
+[node name="CardRow4" type="Control" parent="FieldRowsContainer"]
+margin_left = 2.0
+margin_top = 263.0
+margin_right = 1047.0
+margin_bottom = 383.0
+
+[node name="CardRow5" type="Control" parent="FieldRowsContainer"]
+margin_left = 5.0
+margin_top = 133.0
+margin_right = 1047.0
+margin_bottom = 253.0
+
+[node name="CardRow6" type="Control" parent="FieldRowsContainer"]
+margin_right = 1048.0
+margin_bottom = 123.0
+
 [node name="Cards" type="Control" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
+margin_left = 527.0
+margin_top = 908.0
+margin_right = 1572.0
+margin_bottom = 1059.0
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="DeckSizeBottom" type="Label" parent="."]
+margin_left = 1803.0
+margin_top = 1013.0
+margin_right = 1861.0
+margin_bottom = 1047.0
+align = 1
+valign = 1
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="DeckSizeTop" type="Label" parent="."]
+margin_left = 1805.0
+margin_top = 157.0
+margin_right = 1845.0
+margin_bottom = 183.0
+align = 1
+valign = 1
+__meta__ = {
+"_edit_lock_": true
+}
