@@ -1,5 +1,7 @@
-using Godot;
+﻿using Godot;
+using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 public class GameFieldController : Node2D
 {
@@ -8,28 +10,22 @@ public class GameFieldController : Node2D
 	public static GameFieldController Instance { get; private set; }
 	private static Player player;
 
-	private List<string> selectedCards = new();
-	private string selectedNation = "Nation1";
-	private Control CardsControlNode;
-	private int maxHandSize = 10;
+	private Control CardsHandContainer;
+	private Control CardRowsContainer;
+	private static int maxHandSize = 10;
 
 	public override void _Ready()
 	{
 		Instance = this;
-		CardsControlNode = GetNode<Control>("Cards");
+		CardsHandContainer = GetNode<Control>("Cards");
+		CardRowsContainer = GetNode<Control>("FieldRowsContainer");		
 
-		selectedCards.Add("Card1");
-		selectedCards.Add("Card2");
-		selectedCards.Add("Card3");
-		selectedCards.Add("Card4");
-		selectedCards.Add("Card5");
-		selectedCards.Add("Card6");
-		selectedCards.Add("Card0");
-
-		player = new(selectedCards, selectedNation);
-		player.TakeCardsFromDeck(selectedCards);
+		player = new(CardSelectionMenu.SelectedCards, CardSelectionMenu.Nation, CardSelectionMenu.LeaderCard);
+		player.TakeCardsFromDeck(CardSelectionMenu.SelectedCards);
 		CardDataBase.UpdateCardDataBase();
+
 		UpdateHand();
+		SetLeaderCard(CardSelectionMenu.LeaderCard);
 
 		GetNode<Label>("DeckSizeBottom").Text = player.Deck.Count.ToString();
 	}
@@ -37,26 +33,78 @@ public class GameFieldController : Node2D
 
 	private void UpdateHand()
 	{
-		foreach (Node2D node in CardsControlNode.GetChildren())
+		foreach (Node2D node in CardsHandContainer.GetChildren())
 		{
-			CardsControlNode.RemoveChild(node);
+			CardsHandContainer.RemoveChild(node);
 		}
 
-		Vector2 cardSize = new(CardsControlNode.RectSize.x / maxHandSize, CardsControlNode.RectSize.y);
-		float nextCardPosition = (CardsControlNode.RectSize.x - cardSize.x * player.Hand.Count) / 2;
+		Vector2 cardSize = new(CardsHandContainer.RectSize.x / maxHandSize, CardsHandContainer.RectSize.y);
+		float nextCardPosition = (CardsHandContainer.RectSize.x - cardSize.x * player.Hand.Count) / 2;
 		for (int i = 0; i < player.Hand.Count; i++)
 		{
 			string cardName = player.Hand[i];
-			string texturePath = "res://Assets/Cards/" + player.Nation + "/" + CardDataBase.Cards[cardName].Type + "/" + cardName + ".png";
 
 			CardScene cardInstance = (CardScene)cardScene.Instance();
-			CardsControlNode.AddChild(cardInstance);
+			CardsHandContainer.AddChild(cardInstance);
 
-			var card = CardsControlNode.GetChild<CardScene>(i);
-			card.SetParams(cardName, cardSize, texturePath);
+			var card = CardsHandContainer.GetChild<CardScene>(i);
+			card.SetParams(cardName, cardSize, CardDataBase.GetCardTexturePath(player.Nation, cardName));
 
 			card.Position = new Vector2(nextCardPosition, 0);
 			nextCardPosition += cardSize.x;
+		}
+	}
+
+
+	private void SetLeaderCard(string cardName)
+	{
+		CardScene cardInstance = (CardScene)cardScene.Instance();
+		GetNode<Control>("LeaderCard").AddChild(cardInstance);
+		GetNode<Control>("LeaderCard").GetChild<CardScene>(0).SetParams(cardName, GetNode<Control>("LeaderCard").RectSize, CardDataBase.GetCardTexturePath(player.Nation, cardName));
+	}
+
+
+	private void UpdateBoard()
+	{
+		foreach (Node row in CardRowsContainer.GetChildren())
+		{
+			foreach (Node node in row.GetChildren())
+			{
+				if (node.Name.Contains("Antagonist") is false)
+				{
+					row.RemoveChild(node);
+				}
+			}
+		}
+
+		Vector2 rowRectSize = CardRowsContainer.GetChild<Control>(0).RectSize;
+		Vector2 cardSize = new(rowRectSize.x / maxHandSize, rowRectSize.y);
+		Dictionary<string, List<string>> rangeSortedCards = new();
+		foreach (string card in player.OnBoard)
+		{
+			if (rangeSortedCards.ContainsKey(CardDataBase.GetCardInfo(card).Range) is false)
+			{
+				rangeSortedCards.Add(CardDataBase.GetCardInfo(card).Range, new());
+			}
+
+			rangeSortedCards[CardDataBase.GetCardInfo(card).Range].Add(card);
+		}
+
+		foreach (var range in rangeSortedCards)
+		{
+			Control row = CardRowsContainer.GetNode<Control>("Row" + range.Key);
+			float nextXCardPosition = (rowRectSize.x - cardSize.x * range.Value.Count) / 2;
+			foreach (string cardName in range.Value)
+			{
+				CardScene cardInstance = (CardScene)cardScene.Instance();
+				row.AddChild(cardInstance);
+				cardInstance.Name = cardName;
+
+				var card = row.GetNode<CardScene>(cardName);
+				card.SetParams(cardName, cardSize, CardDataBase.GetCardTexturePath(player.Nation, cardName));
+				card.Position = new Vector2(nextXCardPosition, 0);
+				nextXCardPosition += cardSize.x;
+			}
 		}
 	}
 
@@ -65,11 +113,16 @@ public class GameFieldController : Node2D
 	{
 		if (eventName == "pressed")
 		{
-			player.DiscardCard(cardName);
-			UpdateHand();
+			if (CardDataBase.GetCardInfo(cardName).Type == "Leader")
+			{
+				GetNode<Control>("LeaderCard").GetChild<CardScene>(0).DisableCardButton();
+			}
+			else if (player.Hand.Contains(cardName))
+			{
+				player.DiscardCard(cardName);
+				UpdateHand();
+				UpdateBoard();
+			}
 		}
 	}
-
-
-
 }

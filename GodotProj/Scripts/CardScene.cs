@@ -22,6 +22,13 @@ public class CardScene : Node2D
 		GetChild<TextureButton>(0).RectSize = rectSize;
 		GetChild<TextureButton>(0).TextureNormal = (Texture)GD.Load(texturePath);
 	}
+
+
+	public void DisableCardButton()
+	{
+		GetChild<TextureButton>(0).Disabled = true;
+		GetChild<TextureButton>(0).SelfModulate = new Godot.Color("a7a7a7");
+	}
 }
 
 

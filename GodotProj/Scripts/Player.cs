@@ -15,14 +15,17 @@ public class Player
 
 	public List<string> OnBoard { get; private set; }
 
+	public string LiderCard { get; private set; }	
 
-	public Player(List<string> deck, string nation)
+
+	public Player(List<string> deck, string nation, string liderCard)
 	{
 		Deck = deck;
 		Nation = nation;
 		Hand = new();
 		DiscardPile = new();
 		OnBoard = new();
+		LiderCard = liderCard;
 	}
 
 
