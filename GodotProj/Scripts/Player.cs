@@ -11,21 +11,20 @@ public class Player
 
 	public List<string> DiscardPile { get; private set; }
 
-	public string Nation { get; private set; }
-
 	public List<string> OnBoard { get; private set; }
 
-	public string LiderCard { get; private set; }	
+	public string LiderCard { get; private set; }
+	public static Player Instance { get; private set; }
 
 
 	public Player(List<string> deck, string nation, string liderCard)
 	{
 		Deck = deck;
-		Nation = nation;
 		Hand = new();
 		DiscardPile = new();
 		OnBoard = new();
 		LiderCard = liderCard;
+		Instance = this;
 	}
 
 

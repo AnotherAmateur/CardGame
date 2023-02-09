@@ -3,6 +3,9 @@ using System;
 
 public class CardScene : Node2D
 {
+
+	private int offsetPx = 20;
+
 	public override void _Ready()
 	{
 
@@ -11,7 +14,14 @@ public class CardScene : Node2D
 
 	private void _on_Card_pressed()
 	{
-		GameFieldController.Instance.CardSceneEventHandler("pressed", Name);
+		if (GameFieldController.Instance is null)
+		{
+			CardSelectionMenu.Instance.CardSceneEventHandler("pressed", Name);
+		}
+		else
+		{
+			GameFieldController.Instance.CardSceneEventHandler("pressed", Name);
+		}
 	}
 
 
@@ -29,6 +39,28 @@ public class CardScene : Node2D
 		GetChild<TextureButton>(0).Disabled = true;
 		GetChild<TextureButton>(0).SelfModulate = new Godot.Color("a7a7a7");
 	}
+
+
+	private void _on_Card_mouse_entered()
+	{
+		if ((Player.Instance is null) is false && Player.Instance.Hand.Contains(Name))
+		{
+			GetChild<TextureButton>(0).RectPosition = new Vector2(GetChild<TextureButton>(0).RectPosition.x, GetChild<TextureButton>(0).RectPosition.y - offsetPx);
+		}
+	}
+
+
+	private void _on_Card_mouse_exited()
+	{
+		if ((Player.Instance is null) is false && Player.Instance.Hand.Contains(Name))
+		{
+			GetChild<TextureButton>(0).RectPosition = new Vector2(GetChild<TextureButton>(0).RectPosition.x, GetChild<TextureButton>(0).RectPosition.y + offsetPx);
+		}
+	}
 }
+
+
+
+
 
 

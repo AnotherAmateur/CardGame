@@ -1,7 +1,6 @@
-﻿using Godot;
+using Godot;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 public class GameFieldController : Node2D
 {
@@ -13,14 +12,16 @@ public class GameFieldController : Node2D
 	private Control CardsHandContainer;
 	private Control CardRowsContainer;
 	private static int maxHandSize = 10;
+	private const int verticalMargin = 20;
+
 
 	public override void _Ready()
 	{
 		Instance = this;
 		CardsHandContainer = GetNode<Control>("Cards");
-		CardRowsContainer = GetNode<Control>("FieldRowsContainer");		
+		CardRowsContainer = GetNode<Control>("FieldRowsContainer");
 
-		player = new(CardSelectionMenu.SelectedCards, CardSelectionMenu.Nation, CardSelectionMenu.LeaderCard);
+		player = new(CardSelectionMenu.SelectedCards, CardDataBase.GetCardInfo(CardSelectionMenu.LeaderCard).Nation, CardSelectionMenu.LeaderCard);
 		player.TakeCardsFromDeck(CardSelectionMenu.SelectedCards);
 		CardDataBase.UpdateCardDataBase();
 
@@ -28,6 +29,14 @@ public class GameFieldController : Node2D
 		SetLeaderCard(CardSelectionMenu.LeaderCard);
 
 		GetNode<Label>("DeckSizeBottom").Text = player.Deck.Count.ToString();
+	}
+
+
+	private void SetLeaderCard(string cardName)
+	{
+		CardScene cardInstance = (CardScene)cardScene.Instance();
+		GetNode<Control>("LeaderCard").AddChild(cardInstance);
+		GetNode<Control>("LeaderCard").GetChild<CardScene>(0).SetParams(cardName, GetNode<Control>("LeaderCard").RectSize, CardDataBase.GetCardTexturePath(cardName));
 	}
 
 
@@ -48,20 +57,13 @@ public class GameFieldController : Node2D
 			CardsHandContainer.AddChild(cardInstance);
 
 			var card = CardsHandContainer.GetChild<CardScene>(i);
-			card.SetParams(cardName, cardSize, CardDataBase.GetCardTexturePath(player.Nation, cardName));
+			card.SetParams(cardName, cardSize, CardDataBase.GetCardTexturePath(cardName));
 
-			card.Position = new Vector2(nextCardPosition, 0);
+			card.Position = new Vector2(nextCardPosition, verticalMargin);
 			nextCardPosition += cardSize.x;
 		}
 	}
 
-
-	private void SetLeaderCard(string cardName)
-	{
-		CardScene cardInstance = (CardScene)cardScene.Instance();
-		GetNode<Control>("LeaderCard").AddChild(cardInstance);
-		GetNode<Control>("LeaderCard").GetChild<CardScene>(0).SetParams(cardName, GetNode<Control>("LeaderCard").RectSize, CardDataBase.GetCardTexturePath(player.Nation, cardName));
-	}
 
 
 	private void UpdateBoard()
@@ -101,7 +103,7 @@ public class GameFieldController : Node2D
 				cardInstance.Name = cardName;
 
 				var card = row.GetNode<CardScene>(cardName);
-				card.SetParams(cardName, cardSize, CardDataBase.GetCardTexturePath(player.Nation, cardName));
+				card.SetParams(cardName, cardSize, CardDataBase.GetCardTexturePath(cardName));
 				card.Position = new Vector2(nextXCardPosition, 0);
 				nextXCardPosition += cardSize.x;
 			}
