@@ -7,23 +7,27 @@ public abstract class Player
 {
 	protected Control CardRowsContainer;
 	protected Control LeaderCardContainer;
+	protected Control DiscardPileContainer;
+	protected Label TotalCount;
 	public const int maxHandSize = 10;
-	//protected Control DiscardPileContainer;
-
+	protected string DiscardPileFlippedCardName;
+	
 
 	public List<string> DiscardPile { get; protected set; }
 	public List<string> OnBoard { get; protected set; }
 	public string LiderCard { get; protected set; }
-	public static Player Instance { get; protected set; }
 
 
-	public Player(string leaderCard, Control cardRowsContainer, Control leaderCardContainer)
+	public Player(string leaderCard, Control cardRowsContainer, Control leaderCardContainer,
+		Control discardPileContainer, Label totalCount)
 	{
 		DiscardPile = new();
 		OnBoard = new();
 		LiderCard = leaderCard;
 		CardRowsContainer = cardRowsContainer;
 		LeaderCardContainer = leaderCardContainer;
+		DiscardPileContainer = discardPileContainer;
+		TotalCount = totalCount;
 	}
 
 
@@ -50,6 +54,7 @@ public abstract class Player
 	public void UpdateBoard()
 	{
 		ClearBoard();
+		UpdateDiscardPileFlippedCard();
 
 		Vector2 rowRectSize = CardRowsContainer.GetChild<Control>(0).RectSize;
 		Vector2 cardSize = new(rowRectSize.x / maxHandSize, rowRectSize.y);
@@ -84,6 +89,9 @@ public abstract class Player
 	}
 
 
+	abstract protected void UpdateDiscardPileFlippedCard();
+	abstract protected void UpdateDeckSize();
+
 
 	//public void TakeCardFromDiscardPile(string card)
 	//{
@@ -104,10 +112,12 @@ public class Protagonist : Player
 
 	public List<string> Hand { get; private set; }
 	public List<string> Deck { get; private set; }
+	public static Protagonist Instance { get; protected set; }
 
 
 	public Protagonist(string leaderCard, List<string> deck, Control cardRowsContainer, Control cardsHandContainer,
-		Control leaderCardContainer) : base(leaderCard, cardRowsContainer, leaderCardContainer)
+		Control leaderCardContainer, Control discardPileContainer, Label totalCount) :
+		base(leaderCard, cardRowsContainer, leaderCardContainer, discardPileContainer, totalCount)
 	{
 		Deck = deck;
 		Hand = new();
@@ -145,7 +155,7 @@ public class Protagonist : Player
 		while (uniqueNumbers.Count < count)
 		{
 			random.Randomize();
-			int number = random.RandiRange(0, Deck.Count);
+			int number = random.RandiRange(0, Deck.Count - 1);
 			uniqueNumbers.Add(number);
 		}
 
@@ -205,9 +215,29 @@ public class Protagonist : Player
 	}
 
 
-	protected void BlockHand()
+	protected override void UpdateDiscardPileFlippedCard()
 	{
+		if (DiscardPile.Count == 0)
+		{
+			foreach (Node node in DiscardPileContainer.GetChildren())
+			{
+				DiscardPileContainer.RemoveChild(node);
+			}
+		}
+		else if (DiscardPile.Contains(DiscardPileFlippedCardName) is false)
+		{
+			Godot.RandomNumberGenerator random = new();
+			random.Randomize();
+			int index = random.RandiRange(0, DiscardPile.Count - 1);
+			DiscardPileFlippedCardName = DiscardPile[index];
+			CardScene cardInstance = (CardScene)GameFieldController.CardScene.Instance();
+			DiscardPileContainer.AddChild(cardInstance);
+		}
+	}
 
+	protected override void UpdateDeckSize()
+	{
+		throw new NotImplementedException();
 	}
 }
 
@@ -215,9 +245,60 @@ public class Protagonist : Player
 
 public class Antagonist : Player
 {
-	public Antagonist(string leaderCard, Control cardRowsContainer, Control leaderCardContainer) :
-		base(leaderCard, cardRowsContainer, leaderCardContainer)
+	public Antagonist(string leaderCard, Control cardRowsContainer, Control leaderCardContainer, Control discardPileContainer, 
+		Label totalCount) : base(leaderCard, cardRowsContainer, leaderCardContainer, discardPileContainer, totalCount)
 	{
-		Instance = this;
+		HTTPRequastInit();
+	}
+
+
+	private void HTTPRequastInit()
+	{
+		var t = ServerImitation.HTTPRequestInit();
+		SetLeaderCard(t["leaderCard"]);
+	}
+
+
+	public void PutCardOnBoard(string cardName)
+	{
+		ServerImitation.HTTPRequestGetMove();
+
+		OnBoard.Add(cardName);
+		UpdateBoard();
+	}
+
+	protected override void UpdateDiscardPileFlippedCard()
+	{
+		throw new NotImplementedException();
+	}
+
+	protected override void UpdateDeckSize()
+	{
+		throw new NotImplementedException();
 	}
 }
+
+
+public static class ServerImitation
+{
+	public static Dictionary<string, string> HTTPRequestInit()
+	{
+		Dictionary<string, string> response = new();
+		response.Add("leaderCard", CardSelectionMenu.LeaderCard);
+		response.Add("deckCount", CardSelectionMenu.SelectedCards.Count.ToString());
+
+		return response;
+	}
+
+
+	public static Dictionary<string, string> HTTPRequestGetMove()
+	{
+		Dictionary<string, string> response = new();
+		response.Add("cardName", CardSelectionMenu.LeaderCard);
+		response.Add("deckCount", CardSelectionMenu.SelectedCards.Count.ToString());
+
+		return response;
+	}
+
+}
+

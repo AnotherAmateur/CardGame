@@ -6,6 +6,8 @@ public class GameFieldController : Node2D
 {
 	public static PackedScene CardScene = (PackedScene)GD.Load("res://CardScene.tscn");
 	public static GameFieldController Instance { get; protected set; }
+	private Control leaderCardContainerBottom;
+	private Control leaderCardContainerTop;
 
 	private Protagonist protagonist;
 	private Antagonist antagonist;
@@ -14,18 +16,27 @@ public class GameFieldController : Node2D
 	public override void _Ready()
 	{
 		Instance = this;
+
 		Control cardsHandContainer = GetNode<Control>("Cards");
+		Control discardPileContainerTop = GetNode<Control>("DiscardPileContainerTop");
+		Control discardPileContainerBottom = GetNode<Control>("DiscardPileContainerBottom");
 		Control cardRowsContainerTop = GetNode<Control>("FieldRowsContainer").GetNode<Control>("Top");
 		Control cardRowsContainerBottom = GetNode<Control>("FieldRowsContainer").GetNode<Control>("Bottom");
-		Control leaderCardContainerBottom = GetNode<Control>("LeaderCardContainerBottom");
-		Control leaderCardContainerTop = GetNode<Control>("LeaderCardContainerTop");
+		Label totalCountTop = GetNode<Control>("TotalCount").GetNode<Label>("Top");
+		Label totalCountBottom = GetNode<Control>("TotalCount").GetNode<Label>("Bottom");
+		leaderCardContainerBottom = GetNode<Control>("LeaderCardContainerBottom");
+		leaderCardContainerTop = GetNode<Control>("LeaderCardContainerTop");
 
 		CardDataBase.UpdateCardDataBase();
 
 		protagonist = new(CardSelectionMenu.LeaderCard, CardSelectionMenu.SelectedCards,
-			cardRowsContainerBottom, cardsHandContainer, leaderCardContainerBottom);
-		protagonist.TakeCardsFromDeck(protagonist.GetRandomCardsFromDeck(2));//Player.maxHandSize));
+			cardRowsContainerBottom, cardsHandContainer, leaderCardContainerBottom,
+			discardPileContainerBottom, totalCountTop);
+		protagonist.TakeCardsFromDeck(protagonist.GetRandomCardsFromDeck(Player.maxHandSize));
 		protagonist.SetLeaderCard(CardSelectionMenu.LeaderCard);
+
+		antagonist = new(CardSelectionMenu.LeaderCard, cardRowsContainerTop, leaderCardContainerTop, 
+			discardPileContainerTop, totalCountBottom);
 
 
 		//GetNode<Label>("DeckSizeBottom").Text = player.Deck.Count.ToString();
@@ -38,13 +49,23 @@ public class GameFieldController : Node2D
 		{
 			if (CardDataBase.GetCardInfo(cardName).Type == "Leader")
 			{
-				GetNode<Control>("LeaderCardContainerBottom").GetChild<CardScene>(0).DisableCardButton();
+				leaderCardContainerBottom.GetChild<CardScene>(0).DisableCardButton();
+
+				leaderCardContainerTop.GetChild<CardScene>(0).DisableCardButton();
 			}
 			else if (protagonist.Hand.Contains(cardName))
 			{
 				protagonist.PutCardFromHandOnBoard(cardName);
+
+				antagonist.PutCardOnBoard(cardName);
 			}
 		}
+	}
+
+
+	private void _on_Pass_pressed()
+	{
+
 	}
 
 }

@@ -139,7 +139,7 @@ public class CardSelectionMenu : Control
 
 	private void _on_StartButton_pressed()
 	{
-		if (SelectedCards.Count() >= 1)
+		if (SelectedCards.Count() >= 10)
 		{
 			GetTree().ChangeSceneTo((PackedScene)GD.Load("res://GameFieldScreen.tscn"));
 		}

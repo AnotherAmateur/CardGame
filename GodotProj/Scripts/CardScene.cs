@@ -42,7 +42,8 @@ public class CardScene : Node2D
 
 	private void _on_Card_mouse_entered()
 	{
-		if ((Protagonist.Instance is null) is false && ((Protagonist)Player.Instance).Hand.Contains(Name))
+		Protagonist player = Protagonist.Instance;
+		if ((player is null) is false && player.Hand.Contains(Name))
 		{
 			GetChild<TextureButton>(0).RectPosition = new Vector2(GetChild<TextureButton>(0).RectPosition.x, GetChild<TextureButton>(0).RectPosition.y - offsetPx);
 		}
@@ -51,7 +52,8 @@ public class CardScene : Node2D
 
 	private void _on_Card_mouse_exited()
 	{
-		if ((Protagonist.Instance is null) is false && ((Protagonist)Player.Instance).Hand.Contains(Name))
+		Protagonist player = Protagonist.Instance;
+		if ((player is null) is false && player.Hand.Contains(Name))
 		{
 			GetChild<TextureButton>(0).RectPosition = new Vector2(GetChild<TextureButton>(0).RectPosition.x, GetChild<TextureButton>(0).RectPosition.y + offsetPx);
 		}
