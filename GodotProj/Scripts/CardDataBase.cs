@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using Godot;
 
 public static class CardDataBase
 {
@@ -37,16 +35,16 @@ public static class CardDataBase
 	{
 		cards = new();
 
-		cards.Add("Card1", new CardData { Name = "Card1", Type = "Squad", Damage = 30, Nation = "Nation1", Range = "Melee" });
-		cards.Add("Card2", new CardData { Name = "Card2", Type = "Squad", Damage = 20, Nation = "Nation1", Range = "Melee" });
-		cards.Add("Card3", new CardData { Name = "Card3", Type = "Squad", Damage = 30, Nation = "Nation1", Range = "Siege" });
-		cards.Add("Card4", new CardData { Name = "Card4", Type = "Squad", Damage = 20, Nation = "Nation1", Range = "Siege" });
-		cards.Add("Card5", new CardData { Name = "Card5", Type = "Squad", Damage = 20, Nation = "Nation1", Range = "Melee" });
-		cards.Add("Card6", new CardData { Name = "Card6", Type = "Squad", Damage = 20, Nation = "Nation1", Range = "LongRange" });
-		cards.Add("1", new CardData { Name = "1", Type = "Squad", Damage = 20, Nation = "Nation1", Range = "LongRange" });
-		cards.Add("2", new CardData { Name = "2", Type = "Squad", Damage = 20, Nation = "Nation1", Range = "LongRange" });
-		cards.Add("3", new CardData { Name = "3", Type = "Squad", Damage = 20, Nation = "Nation1", Range = "LongRange" });
-		cards.Add("Card0", new CardData { Name = "Card0", Type = "Leader", Nation = "Nation1", Damage = 20, Range = "" });
+		cards.Add("Card1", new CardData { Name = "Card1", Type = "Squad", Damage = 30, Nation = "Nation1", Range = "1" });
+		cards.Add("Card2", new CardData { Name = "Card2", Type = "Squad", Damage = 20, Nation = "Nation1", Range = "1" });
+		cards.Add("Card3", new CardData { Name = "Card3", Type = "Squad", Damage = 30, Nation = "Nation1", Range = "1" });
+		cards.Add("Card4", new CardData { Name = "Card4", Type = "Squad", Damage = 20, Nation = "Nation1", Range = "1" });
+		cards.Add("Card5", new CardData { Name = "Card5", Type = "Squad", Damage = 20, Nation = "Nation1", Range = "1" });
+		cards.Add("Card6", new CardData { Name = "Card6", Type = "Squad", Damage = 20, Nation = "Nation1", Range = "2" });
+		cards.Add("1", new CardData { Name = "1", Type = "Squad", Damage = 20, Nation = "Nation1", Range = "2" });
+		cards.Add("2", new CardData { Name = "2", Type = "Squad", Damage = 20, Nation = "Nation1", Range = "2" });
+		cards.Add("3", new CardData { Name = "3", Type = "Squad", Damage = 20, Nation = "Nation1", Range = "2" });
+		cards.Add("Card0", new CardData { Name = "Card0", Type = "Leader", Nation = "Nation1", Damage = 20, Range = null });
 
 		//cards.Add("Card10", new CardData { Name = "Card10", Type = "Squad", Damage = 30, Nation = "Nation2", Range = "Melee" });
 		//cards.Add("Card20", new CardData { Name = "Card20", Type = "Squad", Damage = 20, Nation = "Nation2", Range = "Melee" });
@@ -57,9 +55,9 @@ public static class CardDataBase
 		//cards.Add("1", new CardData { Name = "1", Type = "Squad", Damage = 20, Nation = "Nation2", Range = "LongRange" });
 		//cards.Add("2", new CardData { Name = "2", Type = "Squad", Damage = 20, Nation = "Nation2", Range = "LongRange" });
 		//cards.Add("3", new CardData { Name = "3", Type = "Squad", Damage = 20, Nation = "Nation2", Range = "LongRange" });
-		cards.Add("4", new CardData { Name = "4", Type = "Squad", Damage = 20, Nation = "Nation2", Range = "LongRange" });
-		cards.Add("5", new CardData { Name = "5", Type = "Squad", Damage = 20, Nation = "Nation2", Range = "LongRange" });
-		cards.Add("6", new CardData { Name = "6", Type = "Squad", Damage = 20, Nation = "Nation2", Range = "LongRange" });
-		cards.Add("Card", new CardData { Name = "Card", Type = "Leader", Nation = "Nation2", Damage = 20, Range = "" });
+		cards.Add("4", new CardData { Name = "4", Type = "Squad", Damage = 20, Nation = "Nation2", Range = "3" });
+		cards.Add("5", new CardData { Name = "5", Type = "Squad", Damage = 20, Nation = "Nation2", Range = "3" });
+		cards.Add("6", new CardData { Name = "6", Type = "Squad", Damage = 20, Nation = "Nation2", Range = "3" });
+		cards.Add("Card", new CardData { Name = "Card", Type = "Leader", Nation = "Nation2", Damage = 20, Range = null });
 	}
 }

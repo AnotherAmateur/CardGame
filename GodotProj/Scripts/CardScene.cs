@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 public class CardScene : Node2D
 {
@@ -43,7 +42,7 @@ public class CardScene : Node2D
 
 	private void _on_Card_mouse_entered()
 	{
-		if ((Player.Instance is null) is false && Player.Instance.Hand.Contains(Name))
+		if ((Protagonist.Instance is null) is false && ((Protagonist)Player.Instance).Hand.Contains(Name))
 		{
 			GetChild<TextureButton>(0).RectPosition = new Vector2(GetChild<TextureButton>(0).RectPosition.x, GetChild<TextureButton>(0).RectPosition.y - offsetPx);
 		}
@@ -52,7 +51,7 @@ public class CardScene : Node2D
 
 	private void _on_Card_mouse_exited()
 	{
-		if ((Player.Instance is null) is false && Player.Instance.Hand.Contains(Name))
+		if ((Protagonist.Instance is null) is false && ((Protagonist)Player.Instance).Hand.Contains(Name))
 		{
 			GetChild<TextureButton>(0).RectPosition = new Vector2(GetChild<TextureButton>(0).RectPosition.x, GetChild<TextureButton>(0).RectPosition.y + offsetPx);
 		}
