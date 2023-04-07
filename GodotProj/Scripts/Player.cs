@@ -8,9 +8,12 @@ public abstract class Player
 	protected Control CardRowsContainer;
 	protected Control LeaderCardContainer;
 	protected Control DiscardPileContainer;
+	protected Control RowsCountContainer;
 	protected Label TotalCount;
+	protected int totalCount;
 	public const int maxHandSize = 10;
 	protected string DiscardPileFlippedCardName;
+	protected bool isPass;
 	
 
 	public List<string> DiscardPile { get; protected set; }
@@ -19,7 +22,7 @@ public abstract class Player
 
 
 	public Player(string leaderCard, Control cardRowsContainer, Control leaderCardContainer,
-		Control discardPileContainer, Label totalCount)
+		Control discardPileContainer, Label totalCount, Control rowsCountContainer)
 	{
 		DiscardPile = new();
 		OnBoard = new();
@@ -28,6 +31,40 @@ public abstract class Player
 		LeaderCardContainer = leaderCardContainer;
 		DiscardPileContainer = discardPileContainer;
 		TotalCount = totalCount;
+
+		//UpdateTotalCount();
+		RowsCountContainer = rowsCountContainer;
+	}
+
+
+	protected void UpdateTotalCount()
+	{
+		totalCount = 0;
+		foreach (Control row in CardRowsContainer.GetChildren())
+		{
+			foreach (CardScene card in row.GetChildren())
+			{
+				totalCount += card.CardDamage;
+			}
+		}
+
+		TotalCount.Text = totalCount.ToString();
+	}
+
+
+	protected void UpdateRowsCount()
+	{		
+		int oneSideRowsNumber = 3;
+		for (int i = 1; i <= oneSideRowsNumber; i++)
+		{
+			int sum = 0;
+			foreach (CardScene card in CardRowsContainer.GetNode<Control>("Row" + i).GetChildren())
+			{
+				sum += card.CardDamage;
+			}
+
+			RowsCountContainer.GetNode<Label>("Row" + i).Text = sum.ToString();
+		}
 	}
 
 
@@ -35,7 +72,8 @@ public abstract class Player
 	{
 		CardScene cardInstance = (CardScene)GameFieldController.CardScene.Instance();
 		LeaderCardContainer.AddChild(cardInstance);
-		LeaderCardContainer.GetChild<CardScene>(0).SetParams(cardName, LeaderCardContainer.RectSize, CardDataBase.GetCardTexturePath(cardName));
+		LeaderCardContainer.GetChild<CardScene>(0).SetParams(cardName, 
+			LeaderCardContainer.RectSize, CardDataBase.GetCardTexturePath(cardName));
 	}
 
 
@@ -54,7 +92,7 @@ public abstract class Player
 	public void UpdateBoard()
 	{
 		ClearBoard();
-		UpdateDiscardPileFlippedCard();
+		//UpdateDiscardPileFlippedCard();
 
 		Vector2 rowRectSize = CardRowsContainer.GetChild<Control>(0).RectSize;
 		Vector2 cardSize = new(rowRectSize.x / maxHandSize, rowRectSize.y);
@@ -86,6 +124,23 @@ public abstract class Player
 				nextXCardPosition += cardSize.x;
 			}
 		}
+
+		UpdateTotalCount();
+		UpdateRowsCount();
+	}
+
+
+	public void DoPass()
+	{
+		isPass = true;
+
+		if (Antagonist.Instance.isPass == Protagonist.Instance.isPass)
+		{
+			Antagonist.Instance.OnBoard = new();			
+			Protagonist.Instance.OnBoard = new();
+			Protagonist.Instance.UpdateBoard();
+			Antagonist.Instance.UpdateBoard();
+		}
 	}
 
 
@@ -116,15 +171,15 @@ public class Protagonist : Player
 
 
 	public Protagonist(string leaderCard, List<string> deck, Control cardRowsContainer, Control cardsHandContainer,
-		Control leaderCardContainer, Control discardPileContainer, Label totalCount) :
-		base(leaderCard, cardRowsContainer, leaderCardContainer, discardPileContainer, totalCount)
+		Control leaderCardContainer, Control discardPileContainer, Label totalCount, Control rowsCountContainer) :
+		base(leaderCard, cardRowsContainer, leaderCardContainer, discardPileContainer, totalCount, rowsCountContainer)
 	{
 		Deck = deck;
 		Hand = new();
 		CardsHandContainer = cardsHandContainer;
 		Instance = this;
 	}
-
+	
 
 	public void PutCardFromHandOnBoard(string cardName)
 	{
@@ -237,7 +292,7 @@ public class Protagonist : Player
 
 	protected override void UpdateDeckSize()
 	{
-		throw new NotImplementedException();
+		
 	}
 }
 
@@ -245,9 +300,14 @@ public class Protagonist : Player
 
 public class Antagonist : Player
 {
+	public static Antagonist Instance { get; protected set; }
+
+
 	public Antagonist(string leaderCard, Control cardRowsContainer, Control leaderCardContainer, Control discardPileContainer, 
-		Label totalCount) : base(leaderCard, cardRowsContainer, leaderCardContainer, discardPileContainer, totalCount)
+		Label totalCount, Control rowsCountContainer) : 
+		base(leaderCard, cardRowsContainer, leaderCardContainer, discardPileContainer, totalCount, rowsCountContainer)
 	{
+		Instance = this;
 		HTTPRequastInit();
 	}
 
@@ -269,12 +329,12 @@ public class Antagonist : Player
 
 	protected override void UpdateDiscardPileFlippedCard()
 	{
-		throw new NotImplementedException();
+		
 	}
 
 	protected override void UpdateDeckSize()
 	{
-		throw new NotImplementedException();
+	
 	}
 }
 

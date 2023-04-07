@@ -4,6 +4,8 @@ public class CardScene : Node2D
 {
 
 	private int offsetPx = 20;
+	public int CardDamage{ get; private set; }
+
 
 	public override void _Ready()
 	{
@@ -30,6 +32,13 @@ public class CardScene : Node2D
 		GetChild<TextureButton>(0).HintTooltip = name;
 		GetChild<TextureButton>(0).RectSize = rectSize;
 		GetChild<TextureButton>(0).TextureNormal = (Texture)GD.Load(texturePath);
+		CardDamage = CardDataBase.GetCardInfo(name).Damage;
+	}
+
+
+	public void SetDamage(int damage) 
+	{
+		CardDamage = damage;
 	}
 
 
