@@ -1,63 +1,24 @@
-using System.Collections.Generic;
-
-public static class CardDataBase
-{
-	public struct CardData
-	{
-		public string Name;
-		public string Type;
-		public string Range;
-		public int Damage;
-		public string Nation;
-	}
-
-	private static Dictionary<string, CardData> cards;
-
-	public static Dictionary<string, CardData> GetAllCards
-	{
-		get { return cards; }
-	}
-
-
-	public static CardData GetCardInfo(string cardName)
-	{
-		return cards[cardName];
-	}
+using CardGameProj.Scripts; using System; using System.Collections.Generic; using Godot;  public static class CardDataBase { 	public struct CardData 	{ 		public int id; 		public CardTypes type; 		public int strength; 		public CardNations nation; 		public CardRanks rank; 		public string text; 		public string category;  		public CardData(int id, CardTypes type, int strength, CardNations nation, string text) 		{ 			this.id = id; 			this.type = type; 			this.strength = strength; 			this.nation = nation; 			this.text = text;  			switch (strength) 			{ 				case < 10: 					this.rank = CardRanks.Common; 					break; 				case < 20: 					this.rank = CardRanks.Rare; 					break; 				default: 					this.rank = CardRanks.Legendary; 					break; 			}  			switch (type)
+			{
+				case CardTypes.Group1:
+					category = "Мудрость и философия";
+					break;
+				case CardTypes.Group2:
+					category = "Личностное развитие и мотивация";
+					break;
+				case CardTypes.Group3:
+					category = "Социальная справедливость и этика";
+					break;
+				case CardTypes.Leader:
+					category = $"{nation}, мудрец";
+					break;
+				case CardTypes.Special:
+					category = "Специальная карта";
+					break;
+			}
+		} 	}  	private static Dictionary<int, CardData> cards;  	public static Dictionary<int, CardData> GetAllCards 	{ 		get { return new Dictionary<int, CardData>(cards); } 	}   	public static CardData GetCardInfo(int cardId) 	{ 		return cards[cardId]; 	}   	public static string GetCardTexturePath(int cardId) 	{
+		var card = cards[cardId];
+		return "res://Assets/Cards/" + card.nation + "/" + card.type + "/" + cardId + ".png"; 	}   	public static void UpdateCardDataBase() 	{ 		int id = 0; 		cards = new();  		cards.Add(id, new CardData { id = id++, type = CardTypes.Leader, nation = CardNations.AI, strength = 20, });  		cards.Add(id, new CardData { id = id++, type = CardTypes.Group1, strength = 30, nation = CardNations.AI,  			text = "Истина - это не то, что ты видишь, а то, что ты осознаешь." }); 		cards.Add(id, new CardData { id = id++, type = CardTypes.Group1, strength = 20, nation = CardNations.AI,  			text = "Мудрость - это способность видеть красоту в простых вещах." }); 		cards.Add(id, new CardData { id = id++, type = CardTypes.Group1, strength = 10, nation = CardNations.AI,  			text = "Самая глубокая мудрость приходит из простоты." }); 		cards.Add(id, new CardData { id = id++, type = CardTypes.Group1, strength = 20, nation = CardNations.AI, 			text = "Мудрый человек видит дальше других, потому что он поднимает глаза выше уровня повседневности." }); 		cards.Add(id, new CardData { id = id++, type = CardTypes.Group1, strength = 5, nation = CardNations.AI,  			text = "Мудрость - это не только знание, но и способность его применить." }); 		cards.Add(id, new CardData { id = id++, type = CardTypes.Group1, strength = 20, nation = CardNations.AI,  			text = "Мудрость - это смелость пройти сквозь туман неведения и найти истину." }); 		cards.Add(id, new CardData { id = id++, type = CardTypes.Group1, strength = 4, nation = CardNations.AI,  			text = "Самый мудрый человек - это тот, кто знает, что он ничего не знает." });  		id = 101;  		cards.Add(id, new CardData { id = id++, type = CardTypes.Group2, strength = 30, nation = CardNations.AI,  			text = "Жизнь - это не ожидание, а возможности." }); 		cards.Add(id, new CardData { id = id++, type = CardTypes.Group2, strength = 20, nation = CardNations.AI,  			text = "Секрет успеха - это постоянное стремление к самосовершенствованию." }); 		cards.Add(id, new CardData { id = id++, type = CardTypes.Group2, strength = 10, nation = CardNations.AI,  			text = "Никогда не сдавайся, даже если путь к цели кажется трудным. Возможности появляются, когда мы идем вперед." }); 		cards.Add(id, new CardData { id = id++, type = CardTypes.Group2, strength = 20, nation = CardNations.AI, 			text = "Большие мечты требуют больших усилий. Не останавливайся, пока не достигнешь своей цели." }); 		cards.Add(id, new CardData { id = id++, type = CardTypes.Group2, strength = 5, nation = CardNations.AI,  			text = "Успех - это не конечная точка, это начало новых высот." }); 		cards.Add(id, new CardData { id = id++, type = CardTypes.Group2, strength = 20, nation = CardNations.AI,  			text = "Истинная мотивация приходит изнутри. Если ты веришь в себя, никто не сможет остановить тебя." }); 		cards.Add(id, new CardData { id = id++, type = CardTypes.Group2, strength = 4, nation = CardNations.AI,  			text = "Твои мысли - это семена, которые станут твоей реальностью. Выбирай их с мудростью." });  		id = 201;  		cards.Add(id, new CardData { id = id++, type = CardTypes.Group3, strength = 30, nation = CardNations.AI,  			text = "Поступай с другими так, как ты хотел бы, чтобы они поступали с тобой." }); 		cards.Add(id, new CardData { id = id++, type = CardTypes.Group3, strength = 20, nation = CardNations.AI,  			text = "Истинное богатство не в материальных вещах, а в доброте и справедливости." }); 		cards.Add(id, new CardData { id = id++, type = CardTypes.Group3, strength = 10, nation = CardNations.AI,  			text = "Настоящий лидер - это тот, кто ставит интересы других выше своих собственных." }); 		cards.Add(id, new CardData { id = id++, type = CardTypes.Group3, strength = 20, nation = CardNations.AI, 			text = "Мир начинается с улыбки. Будь добр к каждому, кто пересекает твой путь." }); 		cards.Add(id, new CardData { id = id++, type = CardTypes.Group3, strength = 5, nation = CardNations.AI,  			text = "Будь тем изменением, которое ты хочешь видеть в мире." });
 
 
-	public static string GetCardTexturePath(string cardName)
-	{
-		return "res://Assets/Cards/" + CardDataBase.cards[cardName].Nation + "/" + CardDataBase.cards[cardName].Type + "/" + cardName + ".png";
-	}
-
-
-	public static void UpdateCardDataBase()
-	{
-		cards = new();
-
-		cards.Add("Card1", new CardData { Name = "Card1", Type = "Squad", Damage = 30, Nation = "Nation1", Range = "1" });
-		cards.Add("Card2", new CardData { Name = "Card2", Type = "Squad", Damage = 20, Nation = "Nation1", Range = "1" });
-		cards.Add("Card3", new CardData { Name = "Card3", Type = "Squad", Damage = 30, Nation = "Nation1", Range = "1" });
-		cards.Add("Card4", new CardData { Name = "Card4", Type = "Squad", Damage = 20, Nation = "Nation1", Range = "1" });
-		cards.Add("Card5", new CardData { Name = "Card5", Type = "Squad", Damage = 20, Nation = "Nation1", Range = "1" });
-		cards.Add("Card6", new CardData { Name = "Card6", Type = "Squad", Damage = 20, Nation = "Nation1", Range = "2" });
-		cards.Add("1", new CardData { Name = "1", Type = "Squad", Damage = 20, Nation = "Nation1", Range = "2" });
-		cards.Add("2", new CardData { Name = "2", Type = "Squad", Damage = 20, Nation = "Nation1", Range = "2" });
-		cards.Add("3", new CardData { Name = "3", Type = "Squad", Damage = 20, Nation = "Nation1", Range = "2" });
-		cards.Add("Card0", new CardData { Name = "Card0", Type = "Leader", Nation = "Nation1", Damage = 20, Range = null });
-
-		//cards.Add("Card10", new CardData { Name = "Card10", Type = "Squad", Damage = 30, Nation = "Nation2", Range = "Melee" });
-		//cards.Add("Card20", new CardData { Name = "Card20", Type = "Squad", Damage = 20, Nation = "Nation2", Range = "Melee" });
-		//cards.Add("Card30", new CardData { Name = "Card30", Type = "Squad", Damage = 30, Nation = "Nation2", Range = "Siege" });
-		//cards.Add("Card40", new CardData { Name = "Card40", Type = "Squad", Damage = 20, Nation = "Nation2", Range = "Siege" });
-		//cards.Add("Card50", new CardData { Name = "Card50", Type = "Squad", Damage = 20, Nation = "Nation2", Range = "Melee" });
-		//cards.Add("Card60", new CardData { Name = "Card60", Type = "Squad", Damage = 20, Nation = "Nation2", Range = "LongRange" });
-		//cards.Add("1", new CardData { Name = "1", Type = "Squad", Damage = 20, Nation = "Nation2", Range = "LongRange" });
-		//cards.Add("2", new CardData { Name = "2", Type = "Squad", Damage = 20, Nation = "Nation2", Range = "LongRange" });
-		//cards.Add("3", new CardData { Name = "3", Type = "Squad", Damage = 20, Nation = "Nation2", Range = "LongRange" });
-		cards.Add("4", new CardData { Name = "4", Type = "Squad", Damage = 20, Nation = "Nation2", Range = "3" });
-		cards.Add("5", new CardData { Name = "5", Type = "Squad", Damage = 20, Nation = "Nation2", Range = "3" });
-		cards.Add("6", new CardData { Name = "6", Type = "Squad", Damage = 20, Nation = "Nation2", Range = "3" });
-		cards.Add("Card", new CardData { Name = "Card", Type = "Leader", Nation = "Nation2", Damage = 20, Range = null });
-	}
-}
+		id = 1000; 		cards.Add(id, new CardData { id = id++, type = CardTypes.Leader, nation = CardNations.Confucius, strength = 20, }); 		cards.Add(id, new CardData { id = id++, type = CardTypes.Group1, strength = 30, nation = CardNations.Confucius,  			text = "Поступай" }); 		cards.Add(id, new CardData { id = id++, type = CardTypes.Group1, strength = 20, nation = CardNations.Confucius,  			text = "Истинное" }); 	} } 

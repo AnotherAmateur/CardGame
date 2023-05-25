@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "A:\\GitHubRepos\\CardGame\\GodotProj\\CardGameProj.csproj": {}
+    "D:\\Uni\\Курсовая 3 курс\\CardGameGitHub\\CardGame\\GodotProj\\CardGameProj.csproj": {}
   },
   "projects": {
-    "A:\\GitHubRepos\\CardGame\\GodotProj\\CardGameProj.csproj": {
+    "D:\\Uni\\Курсовая 3 курс\\CardGameGitHub\\CardGame\\GodotProj\\CardGameProj.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "A:\\GitHubRepos\\CardGame\\GodotProj\\CardGameProj.csproj",
+        "projectUniqueName": "D:\\Uni\\Курсовая 3 курс\\CardGameGitHub\\CardGame\\GodotProj\\CardGameProj.csproj",
         "projectName": "CardGameProj",
-        "projectPath": "A:\\GitHubRepos\\CardGame\\GodotProj\\CardGameProj.csproj",
+        "projectPath": "D:\\Uni\\Курсовая 3 курс\\CardGameGitHub\\CardGame\\GodotProj\\CardGameProj.csproj",
         "packagesPath": "C:\\Users\\dmitr\\.nuget\\packages\\",
-        "outputPath": "A:\\GitHubRepos\\CardGame\\GodotProj\\.mono\\temp\\obj\\",
+        "outputPath": "D:\\Uni\\Курсовая 3 курс\\CardGameGitHub\\CardGame\\GodotProj\\.mono\\temp\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Users\\dmitr\\AppData\\Roaming\\Godot\\mono\\GodotNuGetFallbackFolder"
+        ],
         "configFilePaths": [
           "C:\\Users\\dmitr\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\dmitr\\AppData\\Roaming\\NuGet\\config\\Godot.Offline.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -55,7 +59,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -1,7 +1,6 @@
+using CardGameProj.Scripts;
 using Godot;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 public abstract class Player
 {
@@ -11,22 +10,22 @@ public abstract class Player
 	protected Control RowsCountContainer;
 	protected Label TotalCount;
 	protected int totalCount;
-	public const int maxHandSize = 10;
-	protected string DiscardPileFlippedCardName;
+	public const int MaxHandSize = 10;
+	protected int DiscardPileFlippedcardId;
 	protected bool isPass;
-	
-
-	public List<string> DiscardPile { get; protected set; }
-	public List<string> OnBoard { get; protected set; }
-	public string LiderCard { get; protected set; }
 
 
-	public Player(string leaderCard, Control cardRowsContainer, Control leaderCardContainer,
+	public List<int> DiscardPile { get; protected set; }
+	public List<int> OnBoard { get; protected set; }
+	public int LeaderCard { get; protected set; }
+
+
+	public Player(int leaderCard, Control cardRowsContainer, Control leaderCardContainer,
 		Control discardPileContainer, Label totalCount, Control rowsCountContainer)
 	{
 		DiscardPile = new();
 		OnBoard = new();
-		LiderCard = leaderCard;
+		LeaderCard = leaderCard;
 		CardRowsContainer = cardRowsContainer;
 		LeaderCardContainer = leaderCardContainer;
 		DiscardPileContainer = discardPileContainer;
@@ -42,7 +41,7 @@ public abstract class Player
 		totalCount = 0;
 		foreach (Control row in CardRowsContainer.GetChildren())
 		{
-			foreach (CardScene card in row.GetChildren())
+			foreach (SlaveCardScene card in row.GetChildren())
 			{
 				totalCount += card.CardDamage;
 			}
@@ -53,12 +52,12 @@ public abstract class Player
 
 
 	protected void UpdateRowsCount()
-	{		
+	{
 		int oneSideRowsNumber = 3;
 		for (int i = 1; i <= oneSideRowsNumber; i++)
 		{
 			int sum = 0;
-			foreach (CardScene card in CardRowsContainer.GetNode<Control>("Row" + i).GetChildren())
+			foreach (SlaveCardScene card in CardRowsContainer.GetNode<Control>("Row" + i).GetChildren())
 			{
 				sum += card.CardDamage;
 			}
@@ -68,12 +67,13 @@ public abstract class Player
 	}
 
 
-	public void SetLeaderCard(string cardName)
+	public void SetLeaderCard(int cardId)
 	{
-		CardScene cardInstance = (CardScene)GameFieldController.CardScene.Instance();
+		SlaveCardScene cardInstance = (SlaveCardScene)GameFieldController.SlaveCardScene.Instance();
 		LeaderCardContainer.AddChild(cardInstance);
-		LeaderCardContainer.GetChild<CardScene>(0).SetParams(cardName, 
-			LeaderCardContainer.RectSize, CardDataBase.GetCardTexturePath(cardName));
+		LeaderCardContainer.GetChild<SlaveCardScene>(0).SetParams(cardId.ToString(),
+			LeaderCardContainer.RectSize, CardDataBase.GetCardTexturePath(cardId),
+			CardDataBase.GetCardInfo(LeaderCard).text);
 	}
 
 
@@ -95,31 +95,34 @@ public abstract class Player
 		//UpdateDiscardPileFlippedCard();
 
 		Vector2 rowRectSize = CardRowsContainer.GetChild<Control>(0).RectSize;
-		Vector2 cardSize = new(rowRectSize.x / maxHandSize, rowRectSize.y);
-		Dictionary<string, List<string>> rangeSortedCards = new();
+		Vector2 cardSize = new(rowRectSize.x / MaxHandSize, rowRectSize.y);
+		Dictionary<CardTypes, List<int>> rangeSortedCards = new();
 
-		foreach (string card in this.OnBoard)
+		foreach (int card in this.OnBoard)
 		{
-			if (rangeSortedCards.ContainsKey(CardDataBase.GetCardInfo(card).Range) is false)
+			if (rangeSortedCards.ContainsKey(CardDataBase.GetCardInfo(card).type) is false)
 			{
-				rangeSortedCards.Add(CardDataBase.GetCardInfo(card).Range, new());
+				rangeSortedCards.Add(CardDataBase.GetCardInfo(card).type, new());
 			}
 
-			rangeSortedCards[CardDataBase.GetCardInfo(card).Range].Add(card);
+			rangeSortedCards[CardDataBase.GetCardInfo(card).type].Add(card);
 		}
 
+		int i = 1;
 		foreach (var range in rangeSortedCards)
 		{
-			Control row = CardRowsContainer.GetNode<Control>("Row" + range.Key);
+			Control row = CardRowsContainer.GetNode<Control>("Row" + i++);
 			float nextXCardPosition = (rowRectSize.x - cardSize.x * range.Value.Count) / 2;
-			foreach (string cardName in range.Value)
+			foreach (int cardId in range.Value)
 			{
-				CardScene cardInstance = (CardScene)GameFieldController.CardScene.Instance();
+				SlaveCardScene cardInstance = (SlaveCardScene)GameFieldController.SlaveCardScene.Instance();
 				row.AddChild(cardInstance);
-				cardInstance.Name = cardName;
+				cardInstance.Name = cardId.ToString();
 
-				var card = row.GetNode<CardScene>(cardName);
-				card.SetParams(cardName, cardSize, CardDataBase.GetCardTexturePath(cardName));
+				var card = row.GetNode<SlaveCardScene>(cardId.ToString());
+				card.SetParams(cardId.ToString(), cardSize,
+					CardDataBase.GetCardTexturePath(cardId),
+					CardDataBase.GetCardInfo(LeaderCard).text);
 				card.Position = new Vector2(nextXCardPosition, 0);
 				nextXCardPosition += cardSize.x;
 			}
@@ -136,7 +139,7 @@ public abstract class Player
 
 		if (Antagonist.Instance.isPass == Protagonist.Instance.isPass)
 		{
-			Antagonist.Instance.OnBoard = new();			
+			Antagonist.Instance.OnBoard = new();
 			Protagonist.Instance.OnBoard = new();
 			Protagonist.Instance.UpdateBoard();
 			Antagonist.Instance.UpdateBoard();
@@ -158,207 +161,5 @@ public abstract class Player
 	//	DiscardPile.Remove(card);
 	//	Hand.Add(card);
 	//}
-}
-
-
-public class Protagonist : Player
-{
-	protected Control CardsHandContainer;
-
-	public List<string> Hand { get; private set; }
-	public List<string> Deck { get; private set; }
-	public static Protagonist Instance { get; protected set; }
-
-
-	public Protagonist(string leaderCard, List<string> deck, Control cardRowsContainer, Control cardsHandContainer,
-		Control leaderCardContainer, Control discardPileContainer, Label totalCount, Control rowsCountContainer) :
-		base(leaderCard, cardRowsContainer, leaderCardContainer, discardPileContainer, totalCount, rowsCountContainer)
-	{
-		Deck = deck;
-		Hand = new();
-		CardsHandContainer = cardsHandContainer;
-		Instance = this;
-	}
-	
-
-	public void PutCardFromHandOnBoard(string cardName)
-	{
-		if (Hand.Contains(cardName))
-		{
-			Hand.Remove(cardName);
-			OnBoard.Add(cardName);
-		}
-		else
-		{
-			throw new Exception("There is no such a card");
-		}
-
-		UpdateHand();
-		UpdateBoard();
-	}
-
-
-	public List<string> GetRandomCardsFromDeck(int count)
-	{
-		if (count > Deck.Count)
-		{
-			throw new Exception("There are not enough cards in the deck");
-		}
-
-		Godot.RandomNumberGenerator random = new();
-		HashSet<int> uniqueNumbers = new();
-		while (uniqueNumbers.Count < count)
-		{
-			random.Randomize();
-			int number = random.RandiRange(0, Deck.Count - 1);
-			uniqueNumbers.Add(number);
-		}
-
-		List<string> result = new();
-		foreach (int index in uniqueNumbers)
-		{
-			result.Add(Deck[index]);
-		}
-
-		return result;
-	}
-
-
-	public void TakeCardsFromDeck(List<string> cards)
-	{
-		if (cards.Count > Deck.Count)
-		{
-			throw new Exception("There are not enough cards in the deck");
-		}
-
-		var remainingСards = Deck.Except(cards).ToList();
-
-		if (Deck.Count - remainingСards.Count != cards.Count)
-		{
-			throw new Exception("The given cards don`t belong the deck");
-		}
-
-		Deck = remainingСards;
-		Hand.AddRange(cards);
-
-		UpdateHand();
-	}
-
-
-	public void UpdateHand()
-	{
-		foreach (Node node in CardsHandContainer.GetChildren())
-		{
-			CardsHandContainer.RemoveChild(node);
-		}
-
-		Vector2 cardSize = new(CardsHandContainer.RectSize.x / maxHandSize, CardsHandContainer.RectSize.y);
-		float nextCardPosition = (CardsHandContainer.RectSize.x - cardSize.x * this.Hand.Count) / 2;
-		for (int i = 0; i < this.Hand.Count; i++)
-		{
-			string cardName = this.Hand[i];
-
-			CardScene cardInstance = (CardScene)GameFieldController.CardScene.Instance();
-			CardsHandContainer.AddChild(cardInstance);
-
-			var card = CardsHandContainer.GetChild<CardScene>(i);
-			card.SetParams(cardName, cardSize, CardDataBase.GetCardTexturePath(cardName));
-
-			card.Position = new Vector2(nextCardPosition, 0);
-			nextCardPosition += cardSize.x;
-		}
-	}
-
-
-	protected override void UpdateDiscardPileFlippedCard()
-	{
-		if (DiscardPile.Count == 0)
-		{
-			foreach (Node node in DiscardPileContainer.GetChildren())
-			{
-				DiscardPileContainer.RemoveChild(node);
-			}
-		}
-		else if (DiscardPile.Contains(DiscardPileFlippedCardName) is false)
-		{
-			Godot.RandomNumberGenerator random = new();
-			random.Randomize();
-			int index = random.RandiRange(0, DiscardPile.Count - 1);
-			DiscardPileFlippedCardName = DiscardPile[index];
-			CardScene cardInstance = (CardScene)GameFieldController.CardScene.Instance();
-			DiscardPileContainer.AddChild(cardInstance);
-		}
-	}
-
-	protected override void UpdateDeckSize()
-	{
-		
-	}
-}
-
-
-
-public class Antagonist : Player
-{
-	public static Antagonist Instance { get; protected set; }
-
-
-	public Antagonist(string leaderCard, Control cardRowsContainer, Control leaderCardContainer, Control discardPileContainer, 
-		Label totalCount, Control rowsCountContainer) : 
-		base(leaderCard, cardRowsContainer, leaderCardContainer, discardPileContainer, totalCount, rowsCountContainer)
-	{
-		Instance = this;
-		HTTPRequastInit();
-	}
-
-
-	private void HTTPRequastInit()
-	{
-		var t = ServerImitation.HTTPRequestInit();
-		SetLeaderCard(t["leaderCard"]);
-	}
-
-
-	public void PutCardOnBoard(string cardName)
-	{
-		ServerImitation.HTTPRequestGetMove();
-
-		OnBoard.Add(cardName);
-		UpdateBoard();
-	}
-
-	protected override void UpdateDiscardPileFlippedCard()
-	{
-		
-	}
-
-	protected override void UpdateDeckSize()
-	{
-	
-	}
-}
-
-
-public static class ServerImitation
-{
-	public static Dictionary<string, string> HTTPRequestInit()
-	{
-		Dictionary<string, string> response = new();
-		response.Add("leaderCard", CardSelectionMenu.LeaderCard);
-		response.Add("deckCount", CardSelectionMenu.SelectedCards.Count.ToString());
-
-		return response;
-	}
-
-
-	public static Dictionary<string, string> HTTPRequestGetMove()
-	{
-		Dictionary<string, string> response = new();
-		response.Add("cardName", CardSelectionMenu.LeaderCard);
-		response.Add("deckCount", CardSelectionMenu.SelectedCards.Count.ToString());
-
-		return response;
-	}
-
 }
 

@@ -14,10 +14,6 @@ config/name="CardGameProj"
 run/main_scene="res://CardSelectionMenu.tscn"
 config/icon="res://icon.png"
 
-[debug]
-
-settings/stdout/verbose_stdout=true
-
 [display]
 
 window/stretch/mode="2d"
@@ -35,3 +31,10 @@ project/assembly_name="CardGameProj"
 [physics]
 
 common/enable_pause_aware_picking=true
+
+[rendering]
+
+quality/filters/sharpen_intensity=1.0
+threads/thread_model=2
+misc/lossless_compression/webp_compression_level=0
+quality/filters/anisotropic_filter_level=1

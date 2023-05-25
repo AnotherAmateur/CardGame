@@ -1,17 +1,17 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using CardGameProj.Scripts;
 
 public class GameFieldController : Node2D
 {
-	public static PackedScene CardScene = (PackedScene)GD.Load("res://CardScene.tscn");
-	public static GameFieldController Instance { get; protected set; }
-	private Control leaderCardContainerBottom;
-	private Control leaderCardContainerTop;
+	public static PackedScene SlaveCardScene = (PackedScene)GD.Load("res://SlaveCardScene.tscn");
+	public static GameFieldController Instance { get; private set; }
+	protected Control leaderCardContainerBottom;
+	protected Control leaderCardContainerTop;
 
 	private Protagonist protagonist;
 	private Antagonist antagonist;
-
 
 	public override void _Ready()
 	{
@@ -34,13 +34,15 @@ public class GameFieldController : Node2D
 		leaderCardContainerBottom = GetNode<Control>("LeaderCardContainerBottom");
 		leaderCardContainerTop = GetNode<Control>("LeaderCardContainerTop");
 
-
 		CardDataBase.UpdateCardDataBase();
 
 		protagonist = new(CardSelectionMenu.LeaderCard, CardSelectionMenu.SelectedCards,
 			cardRowsContainerBottom, cardsHandContainer, leaderCardContainerBottom,
 			discardPileContainerBottom, totalCountTop, RowsCountBottomContainer);
-		protagonist.TakeCardsFromDeck(protagonist.GetRandomCardsFromDeck(Player.maxHandSize));
+
+		protagonist.TakeCardsFromDeck(protagonist.GetRandomCardsFromDeck(CardSelectionMenu.SelectedCards.Count));		
+		//protagonist.TakeCardsFromDeck(protagonist.GetRandomCardsFromDeck(Player.MaxHandSize));
+
 		protagonist.SetLeaderCard(CardSelectionMenu.LeaderCard);
 
 		antagonist = new(CardSelectionMenu.LeaderCard, cardRowsContainerTop, leaderCardContainerTop, 
@@ -51,21 +53,39 @@ public class GameFieldController : Node2D
 	}
 
 
-	public void CardSceneEventHandler(string eventName, string cardName)
+	public void CardSceneEventHandler(string eventName, int cardId)
 	{
 		if (eventName == "pressed")
 		{
-			if (CardDataBase.GetCardInfo(cardName).Type == "Leader")
+			if (CardDataBase.GetCardInfo(cardId).type == CardTypes.Leader)
 			{
-				leaderCardContainerBottom.GetChild<CardScene>(0).DisableCardButton();
+				foreach (var item in leaderCardContainerBottom.GetChildren())
+				{
+					GD.Print("Xui" + item.ToString());
+				}
+				
 
-				leaderCardContainerTop.GetChild<CardScene>(0).DisableCardButton();
+				leaderCardContainerBottom.GetChild<SlaveCardScene>(0).DisableCardButton();
+
+				//leaderCardContainerTop.GetChild<SlaveCardScene>(0).DisableCardButton();
 			}
-			else if (protagonist.Hand.Contains(cardName))
+			else if (protagonist.Hand.Contains(cardId))
 			{
-				protagonist.PutCardFromHandOnBoard(cardName);
+				protagonist.PutCardFromHandOnBoard(cardId);
 
-				antagonist.PutCardOnBoard(cardName);
+
+				string query = JSON.Print(cardId);
+
+				HTTPRequest httpRequest = GetNode<HTTPRequest>("HTTPRequest");
+
+				string[] headers = new string[] { "Content-Type: application/json" };
+
+				string url = "http://localhost:80";
+				httpRequest.Request(url, headers, true, HTTPClient.Method.Post, query);
+
+				httpRequest.Request("http://www.mocky.io/v2/5185415ba171ea3a00704eed");
+
+				antagonist.PutCardOnBoard(cardId);
 			}
 		}
 	}
@@ -77,4 +97,13 @@ public class GameFieldController : Node2D
 		protagonist.DoPass();
 	}
 
+
+	private void _on_HTTPRequest_request_completed(int result, int response_code, string[] headers, byte[] body, String extra_arg_0)
+	{
+		JSONParseResult json = JSON.Parse(System.Text.Encoding.UTF8.GetString(body));
+		GD.Print(json.Result);
+	}
+
 }
+
+

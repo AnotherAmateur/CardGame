@@ -10,3 +10,15 @@ A:\GitHubRepos\CardGame\GodotProj\.mono\temp\obj\Debug\CardGameProj.dll
 A:\GitHubRepos\CardGame\GodotProj\.mono\temp\obj\Debug\refint\CardGameProj.dll
 A:\GitHubRepos\CardGame\GodotProj\.mono\temp\obj\Debug\CardGameProj.pdb
 A:\GitHubRepos\CardGame\GodotProj\.mono\temp\obj\Debug\ref\CardGameProj.dll
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.mono\temp\bin\Debug\CardGameProj.deps.json
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.mono\temp\bin\Debug\CardGameProj.dll
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.mono\temp\bin\Debug\CardGameProj.pdb
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.mono\temp\obj\Debug\CardGameProj.csproj.AssemblyReference.cache
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.mono\temp\obj\Debug\CardGameProj.GeneratedMSBuildEditorConfig.editorconfig
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.mono\temp\obj\Debug\CardGameProj.AssemblyInfoInputs.cache
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.mono\temp\obj\Debug\CardGameProj.AssemblyInfo.cs
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.mono\temp\obj\Debug\CardGameProj.csproj.CoreCompileInputs.cache
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.mono\temp\obj\Debug\CardGameProj.dll
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.mono\temp\obj\Debug\refint\CardGameProj.dll
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.mono\temp\obj\Debug\CardGameProj.pdb
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.mono\temp\obj\Debug\ref\CardGameProj.dll
