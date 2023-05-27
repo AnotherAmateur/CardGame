@@ -1,0 +1,12 @@
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.mono\temp\bin\ExportRelease\CardGameProj.deps.json
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.mono\temp\bin\ExportRelease\CardGameProj.dll
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.mono\temp\bin\ExportRelease\CardGameProj.pdb
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.mono\temp\obj\ExportRelease\CardGameProj.csproj.AssemblyReference.cache
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.mono\temp\obj\ExportRelease\CardGameProj.GeneratedMSBuildEditorConfig.editorconfig
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.mono\temp\obj\ExportRelease\CardGameProj.AssemblyInfoInputs.cache
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.mono\temp\obj\ExportRelease\CardGameProj.AssemblyInfo.cs
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.mono\temp\obj\ExportRelease\CardGameProj.csproj.CoreCompileInputs.cache
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.mono\temp\obj\ExportRelease\CardGameProj.dll
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.mono\temp\obj\ExportRelease\refint\CardGameProj.dll
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.mono\temp\obj\ExportRelease\CardGameProj.pdb
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.mono\temp\obj\ExportRelease\ref\CardGameProj.dll

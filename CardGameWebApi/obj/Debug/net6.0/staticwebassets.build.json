@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "xbKUbc3eDaVL+Jw5QcKOOHgMXsNK5zmNU5qV1om81wY=",
+  "Source": "CardGameWebApi",
+  "BasePath": "_content/CardGameWebApi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

@@ -256,4 +256,4 @@ margin_bottom = 346.0
 use_threads = true
 
 [connection signal="pressed" from="ToPass" to="." method="_on_Pass_pressed"]
-[connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed" binds= [ "" ]]
+[connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]

@@ -1,7 +1,6 @@
+using CardGameProj.Scripts;
 using Godot;
 using System;
-using System.Collections.Generic;
-using CardGameProj.Scripts;
 
 public class GameFieldController : Node2D
 {
@@ -74,16 +73,24 @@ public class GameFieldController : Node2D
 				protagonist.PutCardFromHandOnBoard(cardId);
 
 
-				string query = JSON.Print(cardId);
+				var text = JSON.Print("12sd");
 
 				HTTPRequest httpRequest = GetNode<HTTPRequest>("HTTPRequest");
 
 				string[] headers = new string[] { "Content-Type: application/json" };
 
-				string url = "http://localhost:80";
-				httpRequest.Request(url, headers, true, HTTPClient.Method.Post, query);
 
-				httpRequest.Request("http://www.mocky.io/v2/5185415ba171ea3a00704eed");
+				try
+				{
+					string url = "https://localhost:7135/api/Game";
+					httpRequest.Request(url, headers, false, HTTPClient.Method.Post, text);
+					
+				}
+				catch (Exception ex)
+				{
+					GD.Print(ex.Message);
+				}
+				
 
 				antagonist.PutCardOnBoard(cardId);
 			}
@@ -97,13 +104,22 @@ public class GameFieldController : Node2D
 		protagonist.DoPass();
 	}
 
-
-	private void _on_HTTPRequest_request_completed(int result, int response_code, string[] headers, byte[] body, String extra_arg_0)
+private void _on_HTTPRequest_request_completed(int result, int response_code, string[] headers, byte[] body)
+{
+	
+	if (response_code == 200)
 	{
 		JSONParseResult json = JSON.Parse(System.Text.Encoding.UTF8.GetString(body));
-		GD.Print(json.Result);
+		GD.Print("we got it" +json.Result);
 	}
-
+	else
+	{
+	   GD.Print("No");
+	}
 }
+}
+
+
+
 
 
