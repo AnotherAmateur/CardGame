@@ -1,0 +1,45 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Syles/BigButtonsStyle.tres" type="StyleBox" id=1]
+[ext_resource path="res://Scripts/RoomMenu.cs" type="Script" id=2]
+[ext_resource path="res://Syles/BigButtonsFontStyle.tres" type="Theme" id=3]
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_pivot_offset = Vector2( 1044, 476 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_horizontal_guides_": [ 540.0 ],
+"_edit_vertical_guides_": [ 960.0, 580.0, 1338.0 ]
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 1920.0
+margin_bottom = 1080.0
+color = Color( 0.172549, 0.192157, 0.247059, 1 )
+
+[node name="JoinRoomButton" type="Button" parent="."]
+margin_left = 580.0
+margin_top = 366.0
+margin_right = 1339.0
+margin_bottom = 505.0
+theme = ExtResource( 3 )
+custom_colors/font_color_focus = Color( 0.172549, 0.192157, 0.247059, 1 )
+custom_colors/font_color = Color( 0.172549, 0.192157, 0.247059, 1 )
+custom_styles/normal = ExtResource( 1 )
+text = "Присоединиться"
+
+[node name="CreateRoomButton2" type="Button" parent="."]
+margin_left = 580.0
+margin_top = 571.0
+margin_right = 1339.0
+margin_bottom = 710.0
+theme = ExtResource( 3 )
+custom_colors/font_color_focus = Color( 0.172549, 0.192157, 0.247059, 1 )
+custom_colors/font_color = Color( 0.172549, 0.192157, 0.247059, 1 )
+custom_styles/normal = ExtResource( 1 )
+text = "Создать комнату"
+
+[connection signal="pressed" from="JoinRoomButton" to="." method="_on_JoinRoomButton_pressed"]
+[connection signal="pressed" from="CreateRoomButton2" to="." method="_on_CreateRoomButtonn_pressed"]

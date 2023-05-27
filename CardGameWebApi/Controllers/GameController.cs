@@ -42,7 +42,7 @@ namespace Controllers
 						return Unauthorized(ex.Message);
 					}
 
-					return Ok(user.Entity.PlayerId);
+					return Ok(user.Entity.PlayerId.ToString());
 				}
 			}
 
@@ -59,7 +59,7 @@ namespace Controllers
 
 				if (user != null && modelUser.Password == user.Password)
 				{
-					return Ok(user.PlayerId);
+					return Ok(user.PlayerId.ToString());
 				}
 			}
 

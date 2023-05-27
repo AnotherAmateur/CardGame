@@ -1,0 +1,66 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Scripts/RoomList.cs" type="Script" id=1]
+[ext_resource path="res://FontReg.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Syles/BigButtonsFontStyle.tres" type="Theme" id=3]
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.14902, 0.164706, 0.211765, 1 )
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.733333, 0, 0, 1 )
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_vertical_guides_": [ 960.0 ]
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 1920.0
+margin_bottom = 1080.0
+color = Color( 0.172549, 0.192157, 0.247059, 1 )
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+margin_left = 593.0
+margin_top = 114.0
+margin_right = 1328.0
+margin_bottom = 986.0
+custom_styles/bg = SubResource( 2 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+
+[node name="CloseButton" type="Button" parent="."]
+margin_left = 1409.0
+margin_top = 31.0
+margin_right = 1559.0
+margin_bottom = 103.0
+theme = ExtResource( 3 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_styles/normal = SubResource( 1 )
+text = "Закрыть"
+
+[node name="Label" type="Label" parent="."]
+margin_left = 647.0
+margin_top = 24.0
+margin_right = 1274.0
+margin_bottom = 62.0
+custom_fonts/font = ExtResource( 2 )
+text = "Кликните дважды, чтобы войти"
+align = 1
+valign = 1
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[node name="StatusLabel" type="Label" parent="."]
+margin_left = 593.0
+margin_top = 71.0
+margin_right = 1326.0
+margin_bottom = 99.0
+align = 1
+valign = 1
+
+[connection signal="pressed" from="CloseButton" to="." method="_on_CloseButton_pressed"]
+[connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]

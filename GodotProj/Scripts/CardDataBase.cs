@@ -69,14 +69,6 @@ using CardGameProj.Scripts; using System; using System.Collections.Generic;�
 				nation = CardNations.AI,
 				text = "Мудрость - это смелость пройти сквозь туман неведения и найти истину."
 			});
-			cards.Add(id, new CardData
-			{
-				id = id++,
-				type = CardTypes.Group1,
-				strength = 4,
-				nation = CardNations.AI,
-				text = "Самый мудрый человек - это тот, кто знает, что он ничего не знает."
-			});
 
 
 			id = 101;

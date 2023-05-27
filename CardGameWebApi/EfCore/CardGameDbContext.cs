@@ -10,12 +10,15 @@ namespace CardGameWebApi.EfCore
     {
         public CardGameDbContext()
         {
-        }
+		}
+
 
         public CardGameDbContext(DbContextOptions<CardGameDbContext> options)
             : base(options)
         {
-        }
+			
+		}
+
 
         public virtual DbSet<GameSession> GameSessions { get; set; } = null!;
         public virtual DbSet<Player> Players { get; set; } = null!;
@@ -28,7 +31,7 @@ namespace CardGameWebApi.EfCore
             {
                 optionsBuilder.UseSqlServer("Server=PURPLESKY;Database=CardGameDb;Trusted_Connection=True;User id=admin;Password=1234");
             }
-        }
+		}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -6,7 +6,7 @@ public class SlaveCardScene : Node2D
 
 	private int yOffsetPx = 20;
 	public int CardDamage{ get; private set; }
-	private Vector2 initRectSize = new Vector2(150, 250);
+	private Vector2 initRectSize = new Vector2(512f, 768f);
 	//private Vector2 initScale = new Vector2(1.5f, 1.5f);
 
 
@@ -38,7 +38,7 @@ public class SlaveCardScene : Node2D
 		this.Scale = new Vector2(scaleFactorX, scaleFactorY);
 
 		CardDamage = CardDataBase.GetCardInfo(int.Parse(name)).strength;
-		GetNode<Label>("Strength").Text = CardDamage.ToString();
+		GetNode<Label>("LabelsContainer/VBoxContainer/HBoxContainer/Strength").Text = CardDamage.ToString();
 	}
 
 

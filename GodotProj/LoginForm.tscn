@@ -1,29 +1,46 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://FontReg.tres" type="DynamicFont" id=1]
 [ext_resource path="res://LoginForm.cs" type="Script" id=2]
+[ext_resource path="res://Syles/BigButtonsFontStyle.tres" type="Theme" id=3]
+[ext_resource path="res://Syles/BigButtonsStyle.tres" type="StyleBox" id=4]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 1, 1, 1, 1 )
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_pivot_offset = Vector2( 1018, 604 )
 script = ExtResource( 2 )
+__meta__ = {
+"_edit_horizontal_guides_": [ 540.0 ],
+"_edit_vertical_guides_": [ 960.0, 633.0, 1287.0 ]
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 1920.0
+margin_bottom = 1080.0
+color = Color( 0.172549, 0.192157, 0.247059, 1 )
 
 [node name="Login" type="LineEdit" parent="."]
-margin_left = 612.0
-margin_top = 204.0
-margin_right = 1266.0
-margin_bottom = 259.0
+margin_left = 634.0
+margin_top = 370.0
+margin_right = 1288.0
+margin_bottom = 425.0
 custom_fonts/font = ExtResource( 1 )
 align = 1
 max_length = 64
 placeholder_text = "Логин"
 
 [node name="Password" type="LineEdit" parent="."]
-margin_left = 618.0
-margin_top = 309.0
-margin_right = 1272.0
-margin_bottom = 360.0
+margin_left = 634.0
+margin_top = 446.0
+margin_right = 1288.0
+margin_bottom = 497.0
 custom_fonts/font = ExtResource( 1 )
 align = 1
 max_length = 64
@@ -31,35 +48,50 @@ secret = true
 placeholder_text = "Пароль"
 
 [node name="Reg" type="Button" parent="."]
-margin_left = 620.0
-margin_top = 496.0
-margin_right = 1249.0
-margin_bottom = 610.0
+margin_left = 634.0
+margin_top = 630.0
+margin_right = 1287.0
+margin_bottom = 744.0
 rect_pivot_offset = Vector2( 342, 201 )
-custom_fonts/font = ExtResource( 1 )
+theme = ExtResource( 3 )
+custom_colors/font_color_focus = Color( 0.172549, 0.192157, 0.247059, 1 )
+custom_colors/font_color = Color( 0.172549, 0.192157, 0.247059, 1 )
+custom_styles/normal = SubResource( 1 )
 text = "Регистрация"
 
 [node name="Auth" type="Button" parent="."]
-margin_left = 620.0
-margin_top = 636.0
-margin_right = 1249.0
-margin_bottom = 750.0
+margin_left = 635.0
+margin_top = 772.0
+margin_right = 1288.0
+margin_bottom = 886.0
 rect_pivot_offset = Vector2( 342, 201 )
+theme = ExtResource( 3 )
+custom_colors/font_color = Color( 0.172549, 0.192157, 0.247059, 1 )
 custom_fonts/font = ExtResource( 1 )
+custom_styles/focus = ExtResource( 4 )
+custom_styles/normal = SubResource( 2 )
 text = "Вход"
 
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
 
 [node name="AuthStatus" type="Label" parent="."]
-margin_left = 516.0
-margin_top = 78.0
-margin_right = 1318.0
-margin_bottom = 175.0
+margin_left = 634.0
+margin_top = 187.0
+margin_right = 1285.0
+margin_bottom = 284.0
 custom_colors/font_color = Color( 1, 0, 0, 1 )
 custom_fonts/font = ExtResource( 1 )
 align = 1
 valign = 1
 
+[node name="Button" type="Button" parent="."]
+margin_left = 1840.0
+margin_top = 1050.0
+margin_right = 1915.0
+margin_bottom = 1070.0
+text = "Back door"
+
 [connection signal="pressed" from="Reg" to="." method="_on_Reg_pressed"]
 [connection signal="pressed" from="Auth" to="." method="_on_Auth_pressed"]
 [connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]
+[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
