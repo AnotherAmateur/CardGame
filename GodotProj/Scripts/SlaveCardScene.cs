@@ -1,13 +1,15 @@
+using CardGameProj.Scripts;
+using CardGameProj.SeparateClasses;
 using Godot;
 using System.Xml.Linq;
 
-public class SlaveCardScene : Node2D
+public partial class SlaveCardScene : Node2D
 {
 
 	private int yOffsetPx = 20;
-	public int CardDamage{ get; private set; }
-	private Vector2 initRectSize = new Vector2(512f, 768f);
-	//private Vector2 initScale = new Vector2(1.5f, 1.5f);
+	public int CardDamage { get; private set; }
+	private Vector2 initRectSize = new Vector2(States.InitCardSize.Item1, States.InitCardSize.Item2);
+	private bool disconnectSignals;
 
 
 	public override void _Ready()
@@ -15,34 +17,41 @@ public class SlaveCardScene : Node2D
 	}
 
 
-	private void _on_Card_pressed()
+	public void _on_Card_pressed()
 	{
-		if (GameFieldController.Instance is null)
+		if (disconnectSignals is false)
 		{
-			CardSelectionMenu.Instance.CardSceneEventHandler("pressed", int.Parse(Name));
-		}
-		else
-		{
-			GameFieldController.Instance.CardSceneEventHandler("pressed", int.Parse(Name));
+			if (GameFieldController.Instantiate is null)
+			{
+				CardSelectionMenu.Instantiate.CardSceneEventHandler(CardEvents.LeftCllick, int.Parse(Name));
+			}
+			else
+			{
+				GameFieldController.Instantiate.CardSceneEventHandler(CardEvents.LeftCllick, int.Parse(Name));
+			}
 		}
 	}
 
 
-	public void SetParams(string name, Vector2 rectSize, string texturePath, string text)
+	public void SetParams(Vector2 rectSize, string texturePath, CardDataBase.CardData card, bool disconnectSignals = false)
 	{
-		Name = name;
-		GetNode<TextureButton>("Card").HintTooltip = text;
-		GetNode<TextureButton>("Card").TextureNormal = (Texture)GD.Load(texturePath);
-		float scaleFactorY = rectSize.y / initRectSize.y;
-		float scaleFactorX = rectSize.x / initRectSize.x;
+		this.disconnectSignals = disconnectSignals;
+		Name = card.id.ToString();
+		GetNode<TextureButton>("Card").TooltipText = $"Вес: {card.strength}\nСпецифика: {card.type}\n{card.text}";
+		GetNode<TextureButton>("Card").TextureNormal = (Texture2D)GD.Load(texturePath);
+		float scaleFactorY = rectSize.Y / initRectSize.Y;
+		//float scaleFactorX = rectSize.X / initRectSize.X;
+		float scaleFactorX = scaleFactorY;
 		this.Scale = new Vector2(scaleFactorX, scaleFactorY);
 
-		CardDamage = CardDataBase.GetCardInfo(int.Parse(name)).strength;
+		CardDamage = CardDataBase.GetCardInfo(card.id).strength;
 		GetNode<Label>("LabelsContainer/VBoxContainer/HBoxContainer/Strength").Text = CardDamage.ToString();
+		GetNode<Label>("LabelsContainer/VBoxContainer/HBoxContainer2/Paragraph").Text = card.type.ToString();
+		GetNode<Label>("LabelsContainer/MainText").Text = card.text;
 	}
 
 
-	public void SetDamage(int damage) 
+	public void SetDamage(int damage)
 	{
 		CardDamage = damage;
 	}
@@ -57,25 +66,32 @@ public class SlaveCardScene : Node2D
 
 	private void _on_Card_mouse_entered()
 	{
-		Protagonist player = Protagonist.Instance;
-		if ((player is null) is false && player.Hand.Contains(int.Parse(Name)))
+		if (disconnectSignals is false)
 		{
-			var initPosition = new Vector2(this.Position.x, this.Position.y - yOffsetPx);
-			this.Position = initPosition;
+			Protagonist player = Protagonist.Instantiate;
+			if ((player is null) is false && player.Hand.Contains(int.Parse(Name)))
+			{
+				var initPosition = new Vector2(this.Position.X, this.Position.Y - yOffsetPx);
+				this.Position = initPosition;
+			}
 		}
 	}
 
 
 	private void _on_Card_mouse_exited()
 	{
-		Protagonist player = Protagonist.Instance;
-		if ((player is null) is false && player.Hand.Contains(int.Parse(Name)))
+		if (disconnectSignals is false)
 		{
-			var initPosition = new Vector2(this.Position.x, this.Position.y + yOffsetPx);
-			this.Position = initPosition;
+			Protagonist player = Protagonist.Instantiate;
+			if ((player is null) is false && player.Hand.Contains(int.Parse(Name)))
+			{
+				var initPosition = new Vector2(this.Position.X, this.Position.Y + yOffsetPx);
+				this.Position = initPosition;
+			}
 		}
 	}
 }
+
 
 
 

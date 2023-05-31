@@ -14,11 +14,9 @@ public abstract class Player
 	protected int DiscardPileFlippedcardId;
 	protected bool isPass;
 
-
 	public List<int> DiscardPile { get; protected set; }
 	public List<int> OnBoard { get; protected set; }
 	public int LeaderCard { get; protected set; }
-
 
 	public Player(int leaderCard, Control cardRowsContainer, Control leaderCardContainer,
 		Control discardPileContainer, Label totalCount, Control rowsCountContainer)
@@ -33,15 +31,16 @@ public abstract class Player
 
 		//UpdateTotalCount();
 		RowsCountContainer = rowsCountContainer;
-	}
 
+		SetLeaderCard(leaderCard);
+	}
 
 	protected void UpdateTotalCount()
 	{
 		totalCount = 0;
 		foreach (Control row in CardRowsContainer.GetChildren())
 		{
-			foreach (SlaveCardScene card in row.GetChildren())
+			foreach (MinCardScene card in row.GetChildren())
 			{
 				totalCount += card.CardDamage;
 			}
@@ -50,14 +49,13 @@ public abstract class Player
 		TotalCount.Text = totalCount.ToString();
 	}
 
-
 	protected void UpdateRowsCount()
 	{
 		int oneSideRowsNumber = 3;
 		for (int i = 1; i <= oneSideRowsNumber; i++)
 		{
 			int sum = 0;
-			foreach (SlaveCardScene card in CardRowsContainer.GetNode<Control>("Row" + i).GetChildren())
+			foreach (MinCardScene card in CardRowsContainer.GetNode<Control>("Row" + i).GetChildren())
 			{
 				sum += card.CardDamage;
 			}
@@ -66,14 +64,12 @@ public abstract class Player
 		}
 	}
 
-
 	public void SetLeaderCard(int cardId)
 	{
-		SlaveCardScene cardInstance = (SlaveCardScene)GameFieldController.SlaveCardScene.Instance();
+		MinCardScene cardInstance = (MinCardScene)GameFieldController.MinCardScene.Instantiate();
 		LeaderCardContainer.AddChild(cardInstance);
-		LeaderCardContainer.GetChild<SlaveCardScene>(0).SetParams(cardId.ToString(),
-			LeaderCardContainer.RectSize, CardDataBase.GetCardTexturePath(cardId),
-			CardDataBase.GetCardInfo(LeaderCard).text);
+		LeaderCardContainer.GetChild<MinCardScene>(0).SetParams(LeaderCardContainer.Size,
+			CardDataBase.GetCardTexturePath(cardId), CardDataBase.GetCardInfo(LeaderCard));
 	}
 
 
@@ -88,14 +84,13 @@ public abstract class Player
 		}
 	}
 
-
 	public void UpdateBoard()
 	{
 		ClearBoard();
 		//UpdateDiscardPileFlippedCard();
 
-		Vector2 rowRectSize = CardRowsContainer.GetChild<Control>(0).RectSize;
-		Vector2 cardSize = new(rowRectSize.x / MaxHandSize, rowRectSize.y);
+		Vector2 rowRectSize = CardRowsContainer.GetChild<Control>(0).Size;
+		Vector2 cardSize = new(rowRectSize.X / MaxHandSize, rowRectSize.Y);
 		Dictionary<CardTypes, List<int>> rangeSortedCards = new();
 
 		foreach (int card in this.OnBoard)
@@ -112,19 +107,17 @@ public abstract class Player
 		foreach (var range in rangeSortedCards)
 		{
 			Control row = CardRowsContainer.GetNode<Control>("Row" + i++);
-			float nextXCardPosition = (rowRectSize.x - cardSize.x * range.Value.Count) / 2;
+			float nextXCardPosition = (rowRectSize.X - cardSize.X * range.Value.Count) / 2;
 			foreach (int cardId in range.Value)
 			{
-				SlaveCardScene cardInstance = (SlaveCardScene)GameFieldController.SlaveCardScene.Instance();
+				MinCardScene cardInstance = (MinCardScene)GameFieldController.MinCardScene.Instantiate();
 				row.AddChild(cardInstance);
 				cardInstance.Name = cardId.ToString();
 
-				var card = row.GetNode<SlaveCardScene>(cardId.ToString());
-				card.SetParams(cardId.ToString(), cardSize,
-					CardDataBase.GetCardTexturePath(cardId),
-					CardDataBase.GetCardInfo(LeaderCard).text);
+				var card = row.GetNode<MinCardScene>(cardId.ToString());
+				card.SetParams(cardSize, CardDataBase.GetCardTexturePath(cardId), CardDataBase.GetCardInfo(cardId));
 				card.Position = new Vector2(nextXCardPosition, 0);
-				nextXCardPosition += cardSize.x;
+				nextXCardPosition += cardSize.X;
 			}
 		}
 
@@ -132,20 +125,18 @@ public abstract class Player
 		UpdateRowsCount();
 	}
 
-
 	public void DoPass()
 	{
 		isPass = true;
 
-		if (Antagonist.Instance.isPass == Protagonist.Instance.isPass)
+		if (Antagonist.Instantiate.isPass == Protagonist.Instantiate.isPass)
 		{
-			Antagonist.Instance.OnBoard = new();
-			Protagonist.Instance.OnBoard = new();
-			Protagonist.Instance.UpdateBoard();
-			Antagonist.Instance.UpdateBoard();
+			Antagonist.Instantiate.OnBoard = new();
+			Protagonist.Instantiate.OnBoard = new();
+			Protagonist.Instantiate.UpdateBoard();
+			Antagonist.Instantiate.UpdateBoard();
 		}
 	}
-
 
 	abstract protected void UpdateDiscardPileFlippedCard();
 	abstract protected void UpdateDeckSize();

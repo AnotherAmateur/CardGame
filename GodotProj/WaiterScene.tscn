@@ -1,0 +1,58 @@
+[gd_scene load_steps=5 format=3 uid="uid://bmqh1m01uhppa"]
+
+[ext_resource type="Script" path="res://Scripts/WaiterScene.cs" id="1_cfetb"]
+[ext_resource type="FontFile" uid="uid://c1t3i4aqum6l3" path="res://FontReg.tres" id="1_vyb4t"]
+[ext_resource type="Theme" uid="uid://bnvjv32qn4ac0" path="res://Syles/BigButtonsFontStyle.tres" id="2_otrwf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x8id5"]
+bg_color = Color(0.733333, 0, 0, 1)
+
+[node name="WaiterScene" type="Control"]
+custom_minimum_size = Vector2(800, 400)
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_cfetb")
+metadata/_edit_vertical_guides_ = [959.0]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0901961, 0.101961, 0.137255, 1)
+
+[node name="StatusLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.246
+anchor_right = 1.0
+anchor_bottom = 0.506
+offset_top = -12.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("1_vyb4t")
+text = "Ожидание претендента"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CloseButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 324.0
+offset_top = 241.0
+offset_right = 474.0
+offset_bottom = 313.0
+theme = ExtResource("2_otrwf")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_x8id5")
+text = "Отмена"
+
+[connection signal="pressed" from="CloseButton" to="." method="_on_close_button_pressed"]

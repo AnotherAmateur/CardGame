@@ -1,108 +1,92 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://bct7mhyxmw7jx"]
 
-[ext_resource path="res://Assets/Cards/Confucius/Group1/1002.png" type="Texture" id=1]
-[ext_resource path="res://Scripts/SlaveCardScene.cs" type="Script" id=2]
-[ext_resource path="res://Assets/Fonts/CardsFontReg.tres" type="DynamicFont" id=3]
-[ext_resource path="res://Assets/CardFrames/base.png" type="Texture" id=4]
+[ext_resource type="Script" path="res://Scripts/SlaveCardScene.cs" id="2"]
+[ext_resource type="Texture2D" uid="uid://bt04tbrw2vei0" path="res://Assets/CardFrames/base.png" id="4"]
 
 [node name="SlaveCardScene" type="Node2D"]
-script = ExtResource( 2 )
-
-[node name="Sprite" type="Sprite" parent="."]
-modulate = Color( 0.47451, 0.466667, 0.466667, 1 )
-texture = ExtResource( 1 )
-centered = false
-
-[node name="Sprite2" type="Sprite" parent="."]
-texture = ExtResource( 4 )
-centered = false
+script = ExtResource("2")
 
 [node name="Card" type="TextureButton" parent="."]
-margin_right = 512.0
-margin_bottom = 768.0
-expand = true
-__meta__ = {
-"_edit_lock_": true
-}
+self_modulate = Color(0.486275, 0.486275, 0.486275, 1)
+offset_right = 512.0
+offset_bottom = 768.0
 
 [node name="LabelsContainer" type="Control" parent="."]
-margin_left = 25.0
-margin_top = 72.0
-margin_right = 487.0
-margin_bottom = 695.0
+z_index = 6
+layout_mode = 3
+anchors_preset = 0
+offset_left = 25.0
+offset_top = 72.0
+offset_right = 487.0
+offset_bottom = 695.0
 mouse_filter = 2
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="VBoxContainer" type="VBoxContainer" parent="LabelsContainer"]
-margin_left = 40.0
-margin_right = 461.0
-margin_bottom = 205.0
-grow_vertical = 2
+layout_mode = 0
+offset_left = 46.0
+offset_right = 421.0
+offset_bottom = 250.0
 mouse_filter = 2
-custom_constants/separation = 0
+theme_override_constants/separation = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="LabelsContainer/VBoxContainer"]
-margin_right = 421.0
-margin_bottom = 49.0
-custom_constants/separation = 25
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 25
 
 [node name="Label" type="Label" parent="LabelsContainer/VBoxContainer/HBoxContainer"]
-margin_right = 190.0
-margin_bottom = 49.0
-custom_fonts/font = ExtResource( 3 )
-text = "Мудрость:"
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "Вес:"
 uppercase = true
 
 [node name="Strength" type="Label" parent="LabelsContainer/VBoxContainer/HBoxContainer"]
-margin_left = 215.0
-margin_right = 253.0
-margin_bottom = 49.0
-custom_fonts/font = ExtResource( 3 )
-text = "15"
-align = 1
-valign = 1
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
 
 [node name="Label2" type="Label" parent="LabelsContainer/VBoxContainer"]
-margin_top = 49.0
-margin_right = 421.0
-margin_bottom = 98.0
-custom_fonts/font = ExtResource( 3 )
-text = "Раздел:"
-align = 3
-valign = 1
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "Специфика:"
 uppercase = true
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="LabelsContainer/VBoxContainer"]
-margin_top = 98.0
-margin_right = 421.0
-margin_bottom = 251.0
+layout_mode = 2
 mouse_filter = 2
 alignment = 1
 
 [node name="Paragraph" type="Label" parent="LabelsContainer/VBoxContainer/HBoxContainer2"]
-margin_right = 421.0
-margin_bottom = 153.0
-grow_horizontal = 2
-rect_clip_content = true
+clip_contents = true
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
-custom_fonts/font = ExtResource( 3 )
-text = "Социальная справедливость и этика"
-valign = 1
-autowrap = true
+theme_override_font_sizes/font_size = 36
+autowrap_mode = 3
 uppercase = true
 
 [node name="MainText" type="Label" parent="LabelsContainer"]
-margin_top = 211.0
-margin_right = 462.0
-margin_bottom = 622.0
-custom_fonts/font = ExtResource( 3 )
-text = "\"Никогда не сдавайся, даже если путь к цели кажется трудным. Возможности появляются, когда мы идем вперед"
-align = 1
-valign = 1
-autowrap = true
+layout_mode = 0
+offset_left = 31.0
+offset_top = 251.0
+offset_right = 436.0
+offset_bottom = 622.0
+theme_override_font_sizes/font_size = 38
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Control" type="Control" parent="LabelsContainer"]
+z_as_relative = false
+layout_mode = 3
+anchors_preset = 0
+offset_left = -25.0
+offset_top = -72.0
+offset_right = 15.0
+offset_bottom = -32.0
+
+[node name="Frame" type="Sprite2D" parent="LabelsContainer/Control"]
+texture = ExtResource("4")
+centered = false
 
 [connection signal="mouse_entered" from="Card" to="." method="_on_Card_mouse_entered"]
 [connection signal="mouse_exited" from="Card" to="." method="_on_Card_mouse_exited"]

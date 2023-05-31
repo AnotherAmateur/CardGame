@@ -1,1 +1,136 @@
-using Godot; using System; using System.Text;  public class RoomList : Control {  	public override void _Ready() 	{		 		var listContainer = GetNode<VBoxContainer>("ScrollContainer/VBoxContainer"); 		float buttonWidth = GetNode<ScrollContainer>("ScrollContainer").RectSize.x; 		float buttonHeight = 50; 			 		for (int i = 0; i < 5; i++) 		{ 			var control = new Control(); 			 			var button = new Button(); 		 			control.AddChild(button); 			control.RectMinSize = new Vector2(buttonWidth, buttonHeight); 			button.RectMinSize = new Vector2(buttonWidth, buttonHeight); 			listContainer.AddChild(control); 			button.Text = "button" + i.ToString();			 		} 		 	}   	private void _on_HTTPRequest_request_completed(int result, int response_code, string[] headers, byte[] body) 	{ 		if (response_code == 200) 		{ 			try 			{ 				JSONParseResult json = JSON.Parse(Encoding.UTF8.GetString(body)); 				if (json.Error != Error.Ok) 				{ 					throw new Exception("Unexpected server response (500)"); 				}  				GetTree().ChangeSceneTo((PackedScene)GD.Load("res://CardSelectionMenu.tscn")); 			} 			catch (Exception ex) 			{ 				GetNode<Label>("StatusLabel").Text = ex.Message; 			} 		} 		else 		{ 			GetNode<Label>("StatusLabel").Text = "Не удалось присоединиться. Код: " + response_code; 		} 	}   	private void _on_CloseButton_pressed() 	{ 		QueueFree(); 	}  }     
+using CardGameProj.Scripts;
+using CardGameProj.SeparateClasses;
+using Godot;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Text.Json;
+
+public partial class RoomList : Control, ISocketConn
+{
+	private HttpRequest httpRequest;
+	private VBoxContainer listContainer;
+	private SocketConnection socketConnection;
+	private float buttonWidth;
+	private float buttonHeight;
+
+	public override void _Ready()
+	{
+		socketConnection = SocketConnection.GetInstance(this);
+
+		listContainer = GetNode<VBoxContainer>("ScrollContainer/VBoxContainer");
+		buttonWidth = GetNode<ScrollContainer>("ScrollContainer").Size.X;
+		buttonHeight = 50;
+
+		httpRequest = GetNode<HttpRequest>("HTTPRequest");
+
+		RefreshRoomList();
+	}
+
+	private void RefreshRoomList()
+	{
+		GetNode<Button>("RefreshButton").Disabled = true;
+
+		foreach (var item in listContainer.GetChildren())
+		{
+			listContainer.RemoveChild(item);
+		}
+
+		string[] headers = new string[] { "Content-Type: application/json" };
+		string url = "http://localhost:7136/api/Game/getlobbies";
+		httpRequest.Request(url, headers, HttpClient.Method.Get);
+	}
+
+	private void _on_HTTPRequest_request_completed(int result, int response_code, string[] headers, byte[] body)
+	{
+		GetNode<Button>("RefreshButton").Disabled = false;
+
+		if (response_code == 200)
+		{
+			try
+			{
+				var json = Json.ParseString(Encoding.UTF8.GetString(body));
+
+				if (json.Obj is null)
+				{
+					throw new Exception("Unexpected server response (500)");
+				}
+
+				List<string> resultList = JsonSerializer.Deserialize<List<string>>(json.Obj.ToString());
+
+				if (resultList is null)
+				{
+					GetNode<Label>("StatusLabel").Text = "Нет свободных комнат";
+					return;
+				}
+
+				foreach (var item in resultList)
+				{
+					string[] idRatName = item.Split(";", StringSplitOptions.RemoveEmptyEntries);
+
+					var control = new Control();
+					var button = new Button();
+
+					button.CustomMinimumSize = new Vector2(buttonWidth, buttonHeight);
+					button.Text = "Имя:  " + idRatName[2] + "      Рейтинг:  " + idRatName[1];
+					button.Name = idRatName[0];
+					button.ButtonDown += () => _on_Room_click(button);
+
+					control.CustomMinimumSize = new Vector2(buttonWidth, buttonHeight);
+					control.AddChild(button);
+					listContainer.AddChild(control);
+				}
+			}
+			catch (Exception ex)
+			{
+				GetNode<Label>("StatusLabel").Text = ex.Message;
+			}
+		}
+		else
+		{
+			GetNode<Label>("StatusLabel").Text = "Список комнат недоступен. Код: " + response_code;
+		}
+	}
+
+	private void _on_Room_click(Button button)
+	{
+		States.MasterId = int.Parse(button.Name);
+
+		socketConnection.Connect();
+		socketConnection.JoinGroup();
+	}
+
+	private void _on_CloseButton_pressed()
+	{
+		QueueFree();
+	}
+
+	private void _on_RefreshButton_pressed()
+	{
+		RefreshRoomList();
+	}
+
+	public void OnHandleError(string exMessage)
+	{
+		OS.Alert(exMessage);
+	}
+
+	public void OnReceiveMessage(string action, string masterId, string message)
+	{
+		if (action == ActionTypes.Start.ToString())
+		{
+			States.MasterId = int.Parse(masterId);
+			GetTree().ChangeSceneToPacked((PackedScene)GD.Load("res://CardSelectionMenu.tscn"));
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+

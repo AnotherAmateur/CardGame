@@ -1,97 +1,115 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=3 uid="uid://cu1ub2yp5wire"]
 
-[ext_resource path="res://FontReg.tres" type="DynamicFont" id=1]
-[ext_resource path="res://LoginForm.cs" type="Script" id=2]
-[ext_resource path="res://Syles/BigButtonsFontStyle.tres" type="Theme" id=3]
-[ext_resource path="res://Syles/BigButtonsStyle.tres" type="StyleBox" id=4]
+[ext_resource type="FontFile" path="res://FontReg.tres" id="1"]
+[ext_resource type="Script" path="res://LoginForm.cs" id="2"]
+[ext_resource type="Theme" uid="uid://bnvjv32qn4ac0" path="res://Syles/BigButtonsFontStyle.tres" id="3"]
 
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 1, 1, 1, 1 )
+[sub_resource type="StyleBoxFlat" id="1"]
+bg_color = Color(1, 1, 1, 1)
 
-[sub_resource type="StyleBoxFlat" id=2]
-bg_color = Color( 1, 1, 1, 1 )
+[sub_resource type="StyleBoxFlat" id="2"]
+bg_color = Color(1, 1, 1, 1)
 
 [node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-rect_pivot_offset = Vector2( 1018, 604 )
-script = ExtResource( 2 )
-__meta__ = {
-"_edit_horizontal_guides_": [ 540.0 ],
-"_edit_vertical_guides_": [ 960.0, 633.0, 1287.0 ]
-}
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(1018, 604)
+script = ExtResource("2")
 
 [node name="ColorRect" type="ColorRect" parent="."]
-margin_right = 1920.0
-margin_bottom = 1080.0
-color = Color( 0.172549, 0.192157, 0.247059, 1 )
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0.172549, 0.192157, 0.247059, 1)
 
 [node name="Login" type="LineEdit" parent="."]
-margin_left = 634.0
-margin_top = 370.0
-margin_right = 1288.0
-margin_bottom = 425.0
-custom_fonts/font = ExtResource( 1 )
-align = 1
-max_length = 64
+layout_mode = 0
+offset_left = 634.0
+offset_top = 370.0
+offset_right = 1288.0
+offset_bottom = 425.0
+theme_override_fonts/font = ExtResource("1")
 placeholder_text = "Логин"
+alignment = 1
+max_length = 64
 
 [node name="Password" type="LineEdit" parent="."]
-margin_left = 634.0
-margin_top = 446.0
-margin_right = 1288.0
-margin_bottom = 497.0
-custom_fonts/font = ExtResource( 1 )
-align = 1
+layout_mode = 0
+offset_left = 634.0
+offset_top = 446.0
+offset_right = 1288.0
+offset_bottom = 497.0
+theme_override_fonts/font = ExtResource("1")
+placeholder_text = "Пароль"
+alignment = 1
 max_length = 64
 secret = true
-placeholder_text = "Пароль"
 
 [node name="Reg" type="Button" parent="."]
-margin_left = 634.0
-margin_top = 630.0
-margin_right = 1287.0
-margin_bottom = 744.0
-rect_pivot_offset = Vector2( 342, 201 )
-theme = ExtResource( 3 )
-custom_colors/font_color_focus = Color( 0.172549, 0.192157, 0.247059, 1 )
-custom_colors/font_color = Color( 0.172549, 0.192157, 0.247059, 1 )
-custom_styles/normal = SubResource( 1 )
+layout_mode = 0
+offset_left = 634.0
+offset_top = 630.0
+offset_right = 1287.0
+offset_bottom = 744.0
+pivot_offset = Vector2(342, 201)
+theme = ExtResource("3")
+theme_override_colors/font_color = Color(0.172549, 0.192157, 0.247059, 1)
+theme_override_colors/font_focus_color = Color(0.172549, 0.192157, 0.247059, 1)
+theme_override_styles/normal = SubResource("1")
 text = "Регистрация"
 
 [node name="Auth" type="Button" parent="."]
-margin_left = 635.0
-margin_top = 772.0
-margin_right = 1288.0
-margin_bottom = 886.0
-rect_pivot_offset = Vector2( 342, 201 )
-theme = ExtResource( 3 )
-custom_colors/font_color = Color( 0.172549, 0.192157, 0.247059, 1 )
-custom_fonts/font = ExtResource( 1 )
-custom_styles/focus = ExtResource( 4 )
-custom_styles/normal = SubResource( 2 )
+layout_mode = 0
+offset_left = 635.0
+offset_top = 772.0
+offset_right = 1288.0
+offset_bottom = 886.0
+pivot_offset = Vector2(342, 201)
+theme = ExtResource("3")
+theme_override_colors/font_color = Color(0.172549, 0.192157, 0.247059, 1)
+theme_override_colors/font_focus_color = Color(0.172549, 0.192157, 0.247059, 1)
+theme_override_styles/normal = SubResource("2")
 text = "Вход"
 
-[node name="HTTPRequest" type="HTTPRequest" parent="."]
-
 [node name="AuthStatus" type="Label" parent="."]
-margin_left = 634.0
-margin_top = 187.0
-margin_right = 1285.0
-margin_bottom = 284.0
-custom_colors/font_color = Color( 1, 0, 0, 1 )
-custom_fonts/font = ExtResource( 1 )
-align = 1
-valign = 1
+layout_mode = 0
+offset_left = 634.0
+offset_top = 187.0
+offset_right = 1285.0
+offset_bottom = 284.0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_fonts/font = ExtResource("1")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Button" type="Button" parent="."]
-margin_left = 1840.0
-margin_top = 1050.0
-margin_right = 1915.0
-margin_bottom = 1070.0
+layout_mode = 0
+offset_left = 1840.0
+offset_top = 1050.0
+offset_right = 1915.0
+offset_bottom = 1070.0
 text = "Back door"
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 329.0
+offset_bottom = 85.0
+text = "Чтобы закрыть игру, используйте сочетание клавиш Alt + F4"
+autowrap_mode = 3
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+use_threads = true
+accept_gzip = false
+max_redirects = 64
+timeout = 41.6
 
 [connection signal="pressed" from="Reg" to="." method="_on_Reg_pressed"]
 [connection signal="pressed" from="Auth" to="." method="_on_Auth_pressed"]
-[connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
+[connection signal="request_completed" from="HTTPRequest" to="." method="_on_http_request_request_completed"]

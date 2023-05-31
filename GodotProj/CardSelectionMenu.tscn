@@ -1,84 +1,248 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://c5wlqvrqkgy86"]
 
-[ext_resource path="res://Assets/Backgrounds/SelectionMenuScheme.png" type="Texture" id=1]
-[ext_resource path="res://Scripts/CardSelectionMenu.cs" type="Script" id=2]
-[ext_resource path="res://FontReg.tres" type="DynamicFont" id=3]
+[ext_resource type="Script" path="res://Scripts/CardSelectionMenu.cs" id="2"]
+[ext_resource type="FontFile" uid="uid://c1t3i4aqum6l3" path="res://FontReg.tres" id="3"]
 
 [node name="SelectionMenu" type="Control"]
+custom_minimum_size = Vector2(1920, 1080)
+layout_mode = 3
 anchor_right = 1.875
 anchor_bottom = 1.8
-margin_right = -0.00012207
-script = ExtResource( 2 )
-__meta__ = {
-"_edit_vertical_guides_": [ 961.0 ]
-}
+offset_right = -1680.0
+offset_bottom = -864.0
+script = ExtResource("2")
+metadata/_edit_vertical_guides_ = [960.0, 107.0, 742.0, 1805.0, 1194.0]
+metadata/_edit_horizontal_guides_ = [283.0, 994.0]
 
 [node name="ColorRect" type="ColorRect" parent="."]
-margin_right = 1920.0
-margin_bottom = 1080.0
-color = Color( 0.701961, 0.623529, 0.478431, 1 )
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0, 1)
 
-[node name="BackgroundImg" type="Sprite" parent="."]
-texture = ExtResource( 1 )
-centered = false
+[node name="ColorRect2" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -851.0
+offset_top = -255.0
+offset_right = -219.0
+offset_bottom = 454.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0901961, 0.101961, 0.137255, 1)
+
+[node name="ColorRect3" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 217.0
+offset_top = -255.0
+offset_right = 846.0
+offset_bottom = 452.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0901961, 0.101961, 0.137255, 1)
+
+[node name="NationInfoPanel" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 822.0
+offset_top = 241.0
+offset_right = 1098.0
+offset_bottom = 986.0
+
+[node name="ColorRect2" type="ColorRect" parent="NationInfoPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0901961, 0.101961, 0.137255, 1)
+
+[node name="LeaderContainer" type="CenterContainer" parent="NationInfoPanel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -93.0
+offset_top = 35.0
+offset_right = 86.0
+offset_bottom = 301.0
+grow_horizontal = 2
 
 [node name="StartButton" type="Button" parent="."]
-margin_left = 880.0
-margin_top = 62.0
-margin_right = 1043.0
-margin_bottom = 109.0
-custom_fonts/font = ExtResource( 3 )
+layout_mode = 0
+offset_left = 878.0
+offset_top = 63.0
+offset_right = 1041.0
+offset_bottom = 110.0
 text = "Начать"
 
 [node name="SelectionCardScrollContainer" type="ScrollContainer" parent="."]
-margin_left = 112.0
-margin_top = 322.0
-margin_right = 772.0
-margin_bottom = 974.0
-scroll_horizontal_enabled = false
+layout_mode = 0
+offset_left = 125.0
+offset_top = 300.0
+offset_right = 742.0
+offset_bottom = 977.0
 
 [node name="GridContainer" type="GridContainer" parent="SelectionCardScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 200
+theme_override_constants/v_separation = 290
 columns = 3
 
 [node name="AllCardScrollContainer" type="ScrollContainer" parent="."]
-margin_left = 1144.0
-margin_top = 322.0
-margin_right = 1804.0
-margin_bottom = 975.0
-scroll_horizontal_enabled = false
+layout_mode = 0
+offset_left = 1192.0
+offset_top = 300.0
+offset_right = 1804.0
+offset_bottom = 974.0
 
 [node name="GridContainer" type="GridContainer" parent="AllCardScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 200
+theme_override_constants/v_separation = 290
 columns = 3
 
-[node name="NationInfoPanel" type="Control" parent="."]
-margin_left = 822.0
-margin_top = 241.0
-margin_right = 1098.0
-margin_bottom = 986.0
-
-[node name="LeaderContainer" type="CenterContainer" parent="NationInfoPanel"]
-margin_left = 63.0
-margin_top = 57.0
-margin_right = 218.0
-margin_bottom = 305.0
-
 [node name="LabelInfo" type="Label" parent="."]
-margin_left = 598.0
-margin_top = 117.0
-margin_right = 1326.0
-margin_bottom = 172.0
-custom_fonts/font = ExtResource( 3 )
-text = "Выберите минимум 10 карт
+layout_mode = 0
+offset_left = 1.0
+offset_top = 125.0
+offset_right = 1919.0
+offset_bottom = 159.0
+theme_override_fonts/font = ExtResource("3")
+text = "Выберите минимум 1 карту
 "
-align = 1
-valign = 2
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="LabelCountInfo" type="Label" parent="."]
-margin_left = 597.0
-margin_top = 148.0
-margin_right = 1329.0
-margin_bottom = 201.0
-align = 1
-valign = 1
+[node name="LabelsContainer" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 1.0
+offset_top = 157.0
+offset_right = 1920.0
+offset_bottom = 202.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LabelsContainer"]
+layout_mode = 0
+offset_top = 6.0
+offset_right = 1918.0
+offset_bottom = 44.0
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="Label" type="Label" parent="LabelsContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3")
+text = "Выбрано карт:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LabelCountInfo" type="Label" parent="LabelsContainer/HBoxContainer"]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LeftBtnContainer2" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1177.0
+offset_top = 175.0
+offset_right = 1809.0
+offset_bottom = 282.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LeftBtnContainer2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -32.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="LeftBtnContainer2/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Все карты"
+
+[node name="Button2" type="Button" parent="LeftBtnContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 13
+text = "Мудрость и философия"
+text_overrun_behavior = 3
+
+[node name="Button3" type="Button" parent="LeftBtnContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 13
+text = "Личностное развитие и мотивация"
+text_overrun_behavior = 3
+
+[node name="Button4" type="Button" parent="LeftBtnContainer2/HBoxContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 13
+text = "Социальная справедливость и этика
+"
+text_overrun_behavior = 3
+
+[node name="LeftBtnContainer1" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 109.0
+offset_top = 173.0
+offset_right = 741.0
+offset_bottom = 280.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LeftBtnContainer1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -32.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="LeftBtnContainer1/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Все карты"
+
+[node name="Button2" type="Button" parent="LeftBtnContainer1/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 13
+text = "Мудрость и философия"
+text_overrun_behavior = 3
+
+[node name="Button3" type="Button" parent="LeftBtnContainer1/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 13
+text = "Личностное развитие и мотивация"
+text_overrun_behavior = 3
+
+[node name="Button4" type="Button" parent="LeftBtnContainer1/HBoxContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 13
+text = "Социальная справедливость и этика
+"
+text_overrun_behavior = 3
 
 [connection signal="pressed" from="StartButton" to="." method="_on_StartButton_pressed"]

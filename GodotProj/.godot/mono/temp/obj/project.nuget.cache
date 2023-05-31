@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "dgSpecHash": "9tOF75H2YYyEEPvMHRrj0L0Q8idnJZOifa002GETjcPGWIV3b+Iw7uTZHujGxML7ucndjdZKFpcOuV+yeQsUYQ==",
+  "success": true,
+  "projectFilePath": "D:\\Uni\\Курсовая 3 курс\\CardGameGitHub\\CardGame\\GodotProj\\CardGameProj.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\dmitr\\AppData\\Roaming\\Godot\\mono\\GodotNuGetFallbackFolder\\godot.sourcegenerators\\4.0.3\\godot.sourcegenerators.4.0.3.nupkg.sha512",
+    "C:\\Users\\dmitr\\AppData\\Roaming\\Godot\\mono\\GodotNuGetFallbackFolder\\godotsharp\\4.0.3\\godotsharp.4.0.3.nupkg.sha512",
+    "C:\\Users\\dmitr\\AppData\\Roaming\\Godot\\mono\\GodotNuGetFallbackFolder\\godotsharpeditor\\4.0.3\\godotsharpeditor.4.0.3.nupkg.sha512",
+    "C:\\Users\\dmitr\\.nuget\\packages\\microsoft.aspnetcore.connections.abstractions\\6.0.16\\microsoft.aspnetcore.connections.abstractions.6.0.16.nupkg.sha512",
+    "C:\\Users\\dmitr\\.nuget\\packages\\microsoft.aspnetcore.http.connections.client\\6.0.16\\microsoft.aspnetcore.http.connections.client.6.0.16.nupkg.sha512",
+    "C:\\Users\\dmitr\\.nuget\\packages\\microsoft.aspnetcore.http.connections.common\\6.0.16\\microsoft.aspnetcore.http.connections.common.6.0.16.nupkg.sha512",
+    "C:\\Users\\dmitr\\.nuget\\packages\\microsoft.aspnetcore.signalr.client\\6.0.16\\microsoft.aspnetcore.signalr.client.6.0.16.nupkg.sha512",
+    "C:\\Users\\dmitr\\.nuget\\packages\\microsoft.aspnetcore.signalr.client.core\\6.0.16\\microsoft.aspnetcore.signalr.client.core.6.0.16.nupkg.sha512",
+    "C:\\Users\\dmitr\\.nuget\\packages\\microsoft.aspnetcore.signalr.common\\6.0.16\\microsoft.aspnetcore.signalr.common.6.0.16.nupkg.sha512",
+    "C:\\Users\\dmitr\\.nuget\\packages\\microsoft.aspnetcore.signalr.protocols.json\\6.0.16\\microsoft.aspnetcore.signalr.protocols.json.6.0.16.nupkg.sha512",
+    "C:\\Users\\dmitr\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\6.0.1\\microsoft.extensions.dependencyinjection.6.0.1.nupkg.sha512",
+    "C:\\Users\\dmitr\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\6.0.0\\microsoft.extensions.dependencyinjection.abstractions.6.0.0.nupkg.sha512",
+    "C:\\Users\\dmitr\\.nuget\\packages\\microsoft.extensions.features\\6.0.16\\microsoft.extensions.features.6.0.16.nupkg.sha512",
+    "C:\\Users\\dmitr\\.nuget\\packages\\microsoft.extensions.logging\\6.0.0\\microsoft.extensions.logging.6.0.0.nupkg.sha512",
+    "C:\\Users\\dmitr\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\6.0.3\\microsoft.extensions.logging.abstractions.6.0.3.nupkg.sha512",
+    "C:\\Users\\dmitr\\.nuget\\packages\\microsoft.extensions.options\\6.0.0\\microsoft.extensions.options.6.0.0.nupkg.sha512",
+    "C:\\Users\\dmitr\\.nuget\\packages\\microsoft.extensions.primitives\\6.0.0\\microsoft.extensions.primitives.6.0.0.nupkg.sha512",
+    "C:\\Users\\dmitr\\.nuget\\packages\\system.diagnostics.diagnosticsource\\6.0.0\\system.diagnostics.diagnosticsource.6.0.0.nupkg.sha512",
+    "C:\\Users\\dmitr\\.nuget\\packages\\system.io.pipelines\\6.0.3\\system.io.pipelines.6.0.3.nupkg.sha512",
+    "C:\\Users\\dmitr\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
+    "C:\\Users\\dmitr\\.nuget\\packages\\system.threading.channels\\6.0.0\\system.threading.channels.6.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

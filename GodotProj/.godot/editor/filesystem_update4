@@ -1,0 +1,11 @@
+res://GameFieldScreen.tscn
+res://Assets/Shaders/GameFieldScreen.gdshader
+res://RoomList.tscn
+res://RoomMenu.tscn
+res://WaiterScene.tscn
+res://SlaveCardScene.tscn
+res://message_box.tscn
+res://CardSelectionMenu.tscn
+res://MinCardScene.tscn
+res://Syles/BigButtonsFontStyle.tres
+res://fff.gdshader

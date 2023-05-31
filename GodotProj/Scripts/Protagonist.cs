@@ -1,15 +1,15 @@
-﻿using Godot;
+using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class Protagonist : Player
+public partial class Protagonist : Player
 {
 	protected Control CardsHandContainer;
 
 	public List<int> Hand { get; private set; }
 	public List<int> Deck { get; private set; }
-	public static Protagonist Instance { get; protected set; }
+	public static Protagonist Instantiate { get; protected set; }
 
 
 	public Protagonist(int leaderCard, List<int> deck, Control cardRowsContainer, Control cardsHandContainer,
@@ -19,7 +19,7 @@ public class Protagonist : Player
 		Deck = deck;
 		Hand = new();
 		CardsHandContainer = cardsHandContainer;
-		Instance = this;
+		Instantiate = this;
 	}
 	
 
@@ -44,7 +44,8 @@ public class Protagonist : Player
 	{
 		if (count > Deck.Count)
 		{
-			throw new Exception("There are not enough cards in the deck");
+			string err = "There are not enough cards in the deck";
+			OS.Alert(String.Join("\n", "Protagonist/GetRandomCardsFromDeck: ", err));
 		}
 
 		Godot.RandomNumberGenerator random = new();
@@ -70,14 +71,16 @@ public class Protagonist : Player
 	{
 		if (cards.Count > Deck.Count)
 		{
-			throw new Exception("There are not enough cards in the deck");
+			string err = "There are not enough cards in the deck";
+			OS.Alert(String.Join("\n", "Protagonist/TakeCardsFromDeck: ", err));
 		}
 
-		var remainingСards = Deck.Except(cards).ToList();
+		var remainingСards = Deck.Except(cards).ToList<int>();
 
 		if (Deck.Count - remainingСards.Count != cards.Count)
 		{
-			throw new Exception("The given cards don`t belong the deck");
+			string err = "There are not enough cards in the deck";
+			OS.Alert(String.Join("\n", "Protagonist/TakeCardsFromDeck: ", err));
 		}
 
 		Deck = remainingСards;
@@ -94,22 +97,21 @@ public class Protagonist : Player
 			CardsHandContainer.RemoveChild(node);
 		}
 
-		Vector2 cardSize = new(CardsHandContainer.RectSize.x / MaxHandSize, CardsHandContainer.RectSize.y);
-		float nextCardPosition = (CardsHandContainer.RectSize.x - cardSize.x * this.Hand.Count) / 2;
+		Vector2 cardSize = new(CardsHandContainer.Size.X / MaxHandSize, CardsHandContainer.Size.Y);
+		float nextCardPosition = (CardsHandContainer.Size.X - cardSize.X * this.Hand.Count) / 2;
 		for (int i = 0; i < this.Hand.Count; i++)
 		{
 			int cardId = this.Hand[i];
 
-			SlaveCardScene cardInstance = (SlaveCardScene)GameFieldController.SlaveCardScene.Instance();
+			MinCardScene cardInstance = (MinCardScene)GameFieldController.MinCardScene.Instantiate();
 			CardsHandContainer.AddChild(cardInstance);
 
-			var card = CardsHandContainer.GetChild<SlaveCardScene>(i);
-			card.SetParams(cardId.ToString(), cardSize, 
-				CardDataBase.GetCardTexturePath(cardId), 
-				CardDataBase.GetCardInfo(LeaderCard).text);
+			var card = CardsHandContainer.GetChild<MinCardScene>(i);
+			card.SetParams(cardSize, CardDataBase.GetCardTexturePath(cardId), 
+				CardDataBase.GetCardInfo(cardId));
 
 			card.Position = new Vector2(nextCardPosition, 0);
-			nextCardPosition += cardSize.x;
+			nextCardPosition += cardSize.X;
 		}
 	}
 
@@ -129,7 +131,7 @@ public class Protagonist : Player
 			random.Randomize();
 			int index = random.RandiRange(0, DiscardPile.Count - 1);
 			DiscardPileFlippedcardId = DiscardPile[index];
-			SlaveCardScene cardInstance = (SlaveCardScene)GameFieldController.SlaveCardScene.Instance();
+			MinCardScene cardInstance = (MinCardScene)GameFieldController.MinCardScene.Instantiate();
 			DiscardPileContainer.AddChild(cardInstance);
 		}
 	}

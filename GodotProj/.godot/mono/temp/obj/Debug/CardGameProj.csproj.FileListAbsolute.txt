@@ -1,0 +1,60 @@
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\obj\Debug\CardGameProj.csproj.AssemblyReference.cache
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\obj\Debug\CardGameProj.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\obj\Debug\CardGameProj.AssemblyInfoInputs.cache
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\obj\Debug\CardGameProj.AssemblyInfo.cs
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\obj\Debug\CardGameProj.csproj.CoreCompileInputs.cache
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\bin\Debug\CardGameProj.deps.json
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\bin\Debug\CardGameProj.dll
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\bin\Debug\CardGameProj.pdb
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\obj\Debug\CardGameProj.dll
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\obj\Debug\refint\CardGameProj.dll
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\obj\Debug\CardGameProj.pdb
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\obj\Debug\ref\CardGameProj.dll
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\bin\Debug\GodotSharp.dll
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\bin\Debug\GodotSharpEditor.dll
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\bin\Debug\Microsoft.AspNetCore.Connections.Abstractions.dll
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\bin\Debug\Microsoft.AspNetCore.Http.Connections.Client.dll
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\bin\Debug\Microsoft.AspNetCore.Http.Connections.Common.dll
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\bin\Debug\Microsoft.AspNetCore.SignalR.Client.dll
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\bin\Debug\Microsoft.AspNetCore.SignalR.Client.Core.dll
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\bin\Debug\Microsoft.AspNetCore.SignalR.Common.dll
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\bin\Debug\Microsoft.AspNetCore.SignalR.Protocols.Json.dll
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\bin\Debug\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\bin\Debug\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\bin\Debug\Microsoft.Extensions.Features.dll
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\bin\Debug\Microsoft.Extensions.Logging.dll
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\bin\Debug\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\bin\Debug\Microsoft.Extensions.Options.dll
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\bin\Debug\Microsoft.Extensions.Primitives.dll
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\bin\Debug\System.IO.Pipelines.dll
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\obj\Debug\CardGameProj.csproj.CopyComplete
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\bin\Debug\CardGameProj.deps.json
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\bin\Debug\CardGameProj.dll
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\bin\Debug\CardGameProj.pdb
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\bin\Debug\GodotSharp.dll
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\bin\Debug\GodotSharpEditor.dll
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\bin\Debug\Microsoft.AspNetCore.Connections.Abstractions.dll
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\bin\Debug\Microsoft.AspNetCore.Http.Connections.Client.dll
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\bin\Debug\Microsoft.AspNetCore.Http.Connections.Common.dll
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\bin\Debug\Microsoft.AspNetCore.SignalR.Client.dll
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\bin\Debug\Microsoft.AspNetCore.SignalR.Client.Core.dll
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\bin\Debug\Microsoft.AspNetCore.SignalR.Common.dll
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\bin\Debug\Microsoft.AspNetCore.SignalR.Protocols.Json.dll
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\bin\Debug\Microsoft.Extensions.DependencyInjection.dll
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\bin\Debug\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\bin\Debug\Microsoft.Extensions.Features.dll
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\bin\Debug\Microsoft.Extensions.Logging.dll
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\bin\Debug\Microsoft.Extensions.Logging.Abstractions.dll
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\bin\Debug\Microsoft.Extensions.Options.dll
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\bin\Debug\Microsoft.Extensions.Primitives.dll
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\bin\Debug\System.IO.Pipelines.dll
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\obj\Debug\CardGameProj.csproj.AssemblyReference.cache
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\obj\Debug\CardGameProj.GeneratedMSBuildEditorConfig.editorconfig
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\obj\Debug\CardGameProj.AssemblyInfoInputs.cache
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\obj\Debug\CardGameProj.AssemblyInfo.cs
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\obj\Debug\CardGameProj.csproj.CoreCompileInputs.cache
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\obj\Debug\CardGameProj.csproj.CopyComplete
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\obj\Debug\CardGameProj.dll
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\obj\Debug\refint\CardGameProj.dll
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\obj\Debug\CardGameProj.pdb
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\obj\Debug\ref\CardGameProj.dll

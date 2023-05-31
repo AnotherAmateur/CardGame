@@ -1,0 +1,36 @@
+DROP DATABASE IF EXISTS [CardGameDb]
+GO
+
+CREATE DATABASE CardGameDb
+GO
+
+USE [CardGameDb]
+GO
+
+CREATE TABLE Users (
+	UserId INT IDENTITY(1, 1) NOT NULL PRIMARY KEY
+	,[Login] NVARCHAR(64) NOT NULL UNIQUE
+	,[Password] NVARCHAR(64) NOT NULL
+	,Rating INT NOT NULL
+	)
+
+CREATE TABLE GameSessions (
+	SessionId INT IDENTITY(1, 1) NOT NULL PRIMARY KEY
+	,FirstPlayerId INT NOT NULL 
+	,SecondPlayerId INT NOT NULL 
+	,WinnerId INT
+	)
+
+CREATE TABLE Lobbies (
+	Master INT NOT NULL PRIMARY KEY
+	)
+
+ALTER TABLE GameSessions ADD FOREIGN KEY (FirstPlayerId) REFERENCES Users (UserId)
+
+ALTER TABLE GameSessions ADD FOREIGN KEY (SecondPlayerId) REFERENCES Users (UserId)
+
+ALTER TABLE GameSessions ADD FOREIGN KEY (WinnerId) REFERENCES Users (UserId)
+
+ALTER TABLE Lobbies ADD FOREIGN KEY (Master) REFERENCES Users (UserId)
+
+

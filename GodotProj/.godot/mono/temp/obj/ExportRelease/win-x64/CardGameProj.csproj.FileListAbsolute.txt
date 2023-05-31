@@ -1,0 +1,12 @@
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\bin\ExportRelease\win-x64\CardGameProj.deps.json
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\bin\ExportRelease\win-x64\CardGameProj.dll
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\bin\ExportRelease\win-x64\CardGameProj.pdb
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\obj\ExportRelease\win-x64\CardGameProj.csproj.AssemblyReference.cache
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\obj\ExportRelease\win-x64\CardGameProj.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\obj\ExportRelease\win-x64\CardGameProj.AssemblyInfoInputs.cache
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\obj\ExportRelease\win-x64\CardGameProj.AssemblyInfo.cs
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\obj\ExportRelease\win-x64\CardGameProj.csproj.CoreCompileInputs.cache
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\obj\ExportRelease\win-x64\CardGameProj.dll
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\obj\ExportRelease\win-x64\refint\CardGameProj.dll
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\obj\ExportRelease\win-x64\CardGameProj.pdb
+C:\Users\dmitr\OneDrive\Desktop\Godot_v4.0.3-stable_mono_win64\GodotProj\.godot\mono\temp\obj\ExportRelease\win-x64\ref\CardGameProj.dll

@@ -11,17 +11,15 @@ namespace CardGameWebApi.PL.Controllers
 	{
 		private readonly DataManager dataManager;
 
-
 		public GameController(DataManager dataManager)
 		{
 			this.dataManager = dataManager;
 		}
 
-
 		[HttpGet("getlobbies")]
 		public IActionResult GetLobbyList()
 		{
-			List<LobbyModel> lobbies = new List<LobbyModel>();
+			List<string> lobbies = new List<string>();
 			foreach (var item in dataManager.Lobbies.GetAllLobbies())
 			{
 				var lobby = new LobbyModel();
@@ -31,21 +29,11 @@ namespace CardGameWebApi.PL.Controllers
 				lobby.MasterRating = master.Rating;
 				lobby.MasterId = master.UserId;
 
-				lobbies.Add(lobby);
+				lobbies.Add(String.Join(";", lobby.MasterId, lobby.MasterRating, lobby.MasterName));
 			}
 
 			return Ok(lobbies);
 		}
-
-
-		[HttpPost("createlobby")]
-		public IActionResult CreateLobby([FromBody] int masterId)
-		{
-			dataManager.Lobbies.AddLobby(new() { Master = masterId });
-
-			return Ok();
-		}
-
 
 		[HttpPost("registration")]
 		public IActionResult Registration([FromBody] UnAuthorizedUserModel modelUser)
@@ -63,7 +51,6 @@ namespace CardGameWebApi.PL.Controllers
 			return Unauthorized();
 		}
 
-
 		[HttpPost("login")]
 		public IActionResult Login([FromBody] UnAuthorizedUserModel modelUser)
 		{
@@ -73,7 +60,7 @@ namespace CardGameWebApi.PL.Controllers
 
 				if (user != null && user.Password == modelUser.Password)
 				{
-					return Ok(user.Password);
+					return Ok(user.UserId);
 				}
 			}
 

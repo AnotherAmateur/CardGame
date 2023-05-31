@@ -51,5 +51,17 @@ app.UseEndpoints(endpoints =>
 	endpoints.MapHub<WebSocketController>("/ws");
 });
 
+using (var scope = app.Services.CreateScope())
+{
+	var services = scope.ServiceProvider;
+	var context = services.GetRequiredService<DataManager>();
+
+	if (context.Lobbies.GetAllLobbies().FirstOrDefault() != null)
+	{
+		Console.ForegroundColor = ConsoleColor.Yellow;
+		Console.WriteLine("Lobby detected");
+		Console.ResetColor();
+	}
+}
 
 app.Run();

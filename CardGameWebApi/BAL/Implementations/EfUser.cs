@@ -15,9 +15,9 @@ namespace CardGameWebApi.BAL.Implementations
 
 		public int AddUser(User user)
 		{
-			int newUserId = context.Users.Add(user).Entity.UserId;
+			var entity = context.Users.Add(user);
 			context.SaveChanges();
-			return newUserId;
+			return entity.Entity.UserId;
 		}
 
 		public void UpdateUser(User user)
@@ -33,8 +33,8 @@ namespace CardGameWebApi.BAL.Implementations
 
 		public User GetUserById(int userId)
 		{
-			throw new NotImplementedException();
-		}
+            return context.Users.FirstOrDefault(it => it.UserId == userId);
+        }
 
 		public User? GetUserByLogin(string login)
 		{

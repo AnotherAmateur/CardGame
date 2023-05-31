@@ -3,64 +3,62 @@ using Godot.Collections;
 using System;
 using System.Reflection.Metadata;
 using System.Text;
+using System.Diagnostics;
+using CardGameProj.SeparateClasses;
+using System.Text.Json;
 
-public class LoginForm : Control
+public partial class LoginForm : Control
 {
-	private HTTPRequest httpRequest;
-	public static int PlayerId { get; private set; }
-	public static string Login { get; private set; }
-
+	private HttpRequest httpRequest;
 
 	public override void _Ready()
 	{
-		OS.SetWindowSize(new Vector2(1280, 720));
-		httpRequest = GetNode<HTTPRequest>("HTTPRequest");
+		httpRequest = GetNode<HttpRequest>("HTTPRequest");
 	}
-
 
 	private void _on_Reg_pressed()
 	{
 		GetNode<Button>("Reg").Disabled = true;
 		GetNode<Button>("Auth").Disabled = true;
 
-		Login = GetNode<LineEdit>("Login").Text;
+		States.Login = GetNode<LineEdit>("Login").Text;
 		string password = GetNode<LineEdit>("Password").Text;
 
-		Dictionary<string, object> postData = new Dictionary<string, object>()
+		Dictionary<string, string> postData = new Dictionary<string, string>()
 		{
-			{ "Login", Login },
-			{ "Password", password }
+			{ "login", States.Login },
+			{ "password", password }
 		};
 
-		var postJson = JSON.Print(postData);
-		string[] headers = new string[] { "Content-Type: application/json" };
-		string url = "https://localhost:7135/api/Game/registration";
-		httpRequest.Request(url, headers, false, HTTPClient.Method.Post, postJson);
-	}
+		string json = Json.Stringify(postData);
 
+		string[] headers = new string[] { "Content-Type: application/json" };
+		string url = "http://localhost:7136/api/Game/registration";
+		httpRequest.Request(url, headers, HttpClient.Method.Post, json);
+	}
 
 	private void _on_Auth_pressed()
 	{
 		GetNode<Button>("Reg").Disabled = true;
 		GetNode<Button>("Auth").Disabled = true;
 
-		Login = GetNode<LineEdit>("Login").Text;
+		States.Login = GetNode<LineEdit>("Login").Text;
 		string password = GetNode<LineEdit>("Password").Text;
 
-		Dictionary<string, object> postData = new Dictionary<string, object>()
+		Dictionary<string, string> postData = new Dictionary<string, string>()
 		{
-			{ "Login", Login },
-			{ "Password", password }
+			{ "login", States.Login },
+			{ "password", password }
 		};
 
-		var postJson = JSON.Print(postData);
+		string json = Json.Stringify(postData);
+
 		string[] headers = new string[] { "Content-Type: application/json" };
-		string url = "https://localhost:7135/api/Game/login";
-		httpRequest.Request(url, headers, false, HTTPClient.Method.Post, postJson);
+		string url = "http://localhost:7136/api/Game/login";
+		httpRequest.Request(url, headers, HttpClient.Method.Post, json);
 	}
 
-
-	private void _on_HTTPRequest_request_completed(int result, int response_code, string[] headers, byte[] body)
+	private void _on_http_request_request_completed(long result, long response_code, string[] headers, byte[] body)
 	{
 		GetNode<Button>("Reg").Disabled = false;
 		GetNode<Button>("Auth").Disabled = false;
@@ -69,15 +67,22 @@ public class LoginForm : Control
 		{
 			try
 			{
-				JSONParseResult json = JSON.Parse(Encoding.UTF8.GetString(body));
-				if (json.Error != Error.Ok)
+				var json = Json.ParseString(Encoding.UTF8.GetString(body));
+
+				if (json.Obj is null)
 				{
 					throw new Exception("Unexpected server response (500)");
 				}
 
-				PlayerId = int.Parse(json.Result.ToString());
+				States.PlayerId = JsonSerializer.Deserialize<int>(json.Obj.ToString());
+				GD.Print("LoginForm 78: " + States.PlayerId);
+				if (States.PlayerId < 1)
+				{
+					OS.Alert("Response parsing error");
+					return;
+				}
 
-				GetTree().ChangeSceneTo((PackedScene)GD.Load("res://CardSelectionMenu.tscn"));
+				GetTree().ChangeSceneToPacked((PackedScene)GD.Load("res://RoomMenu.tscn"));
 			}
 			catch (Exception ex)
 			{
@@ -86,15 +91,17 @@ public class LoginForm : Control
 		}
 		else
 		{
-			GetNode<Label>("AuthStatus").Text = "Ошибка входа/регистрации. Код: " + response_code;
+			GetNode<Label>("AuthStatus").Text = "Ошибка. Код: " + response_code;
 		}
 	}
 
 
 	private void _on_Button_pressed()
 	{
-		Login = "admin";
-		PlayerId = 1;
-		GetTree().ChangeSceneTo((PackedScene)GD.Load("res://RoomMenu.tscn"));
+		States.Login = "admin";
+		States.PlayerId = 1;
+		GetTree().ChangeSceneToPacked((PackedScene)GD.Load("res://RoomMenu.tscn"));
 	}
 }
+
+
