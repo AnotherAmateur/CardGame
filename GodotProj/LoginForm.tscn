@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://cu1ub2yp5wire"]
 
-[ext_resource type="FontFile" path="res://FontReg.tres" id="1"]
+[ext_resource type="FontFile" uid="uid://c1t3i4aqum6l3" path="res://FontReg.tres" id="1"]
 [ext_resource type="Script" path="res://LoginForm.cs" id="2"]
 [ext_resource type="Theme" uid="uid://bnvjv32qn4ac0" path="res://Syles/BigButtonsFontStyle.tres" id="3"]
 
@@ -86,14 +86,6 @@ theme_override_fonts/font = ExtResource("1")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Button" type="Button" parent="."]
-layout_mode = 0
-offset_left = 1840.0
-offset_top = 1050.0
-offset_right = 1915.0
-offset_bottom = 1070.0
-text = "Back door"
-
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
 offset_left = 20.0
@@ -109,7 +101,15 @@ accept_gzip = false
 max_redirects = 64
 timeout = 41.6
 
+[node name="CheckButton" type="CheckButton" parent="."]
+layout_mode = 0
+offset_left = 1581.0
+offset_top = 1004.0
+offset_right = 1900.0
+offset_bottom = 1064.0
+text = "Использовать локальный сервер"
+
 [connection signal="pressed" from="Reg" to="." method="_on_Reg_pressed"]
 [connection signal="pressed" from="Auth" to="." method="_on_Auth_pressed"]
-[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
 [connection signal="request_completed" from="HTTPRequest" to="." method="_on_http_request_request_completed"]
+[connection signal="toggled" from="CheckButton" to="." method="_on_check_button_toggled"]

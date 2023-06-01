@@ -1,7 +1,6 @@
 using CardGameProj.Scripts;
 using CardGameProj.SeparateClasses;
 using Godot;
-using System.Xml.Linq;
 
 public partial class SlaveCardScene : Node2D
 {
@@ -23,30 +22,32 @@ public partial class SlaveCardScene : Node2D
 		{
 			if (GameFieldController.Instantiate is null)
 			{
-				CardSelectionMenu.Instantiate.CardSceneEventHandler(CardEvents.LeftCllick, int.Parse(Name));
+				CardSelectionMenu.Instantiate.CardSceneEventHandler(CardEvents.LeftCllick, 
+					int.Parse(Name));
 			}
 			else
 			{
-				GameFieldController.Instantiate.CardSceneEventHandler(CardEvents.LeftCllick, int.Parse(Name));
+				GameFieldController.Instantiate.CardSceneEventHandler(CardEvents.LeftCllick, 
+					int.Parse(Name));
 			}
 		}
 	}
 
 
-	public void SetParams(Vector2 rectSize, string texturePath, CardDataBase.CardData card, bool disconnectSignals = false)
+	public void SetParams(Vector2 rectSize, string texturePath, CardDataBase.CardData card, 
+		bool disconnectSignals = false)
 	{
 		this.disconnectSignals = disconnectSignals;
 		Name = card.id.ToString();
-		GetNode<TextureButton>("Card").TooltipText = $"Вес: {card.strength}\nСпецифика: {card.type}\n{card.text}";
+		GetNode<TextureButton>("Card").TooltipText = $"Вес: {card.strength}\nСпецифика: {card.category}\n{card.text}";
 		GetNode<TextureButton>("Card").TextureNormal = (Texture2D)GD.Load(texturePath);
 		float scaleFactorY = rectSize.Y / initRectSize.Y;
-		//float scaleFactorX = rectSize.X / initRectSize.X;
-		float scaleFactorX = scaleFactorY;
+		float scaleFactorX = rectSize.X / initRectSize.X;
 		this.Scale = new Vector2(scaleFactorX, scaleFactorY);
 
 		CardDamage = CardDataBase.GetCardInfo(card.id).strength;
 		GetNode<Label>("LabelsContainer/VBoxContainer/HBoxContainer/Strength").Text = CardDamage.ToString();
-		GetNode<Label>("LabelsContainer/VBoxContainer/HBoxContainer2/Paragraph").Text = card.type.ToString();
+		GetNode<Label>("LabelsContainer/VBoxContainer/HBoxContainer2/Paragraph").Text = card.category.ToString();
 		GetNode<Label>("LabelsContainer/MainText").Text = card.text;
 	}
 

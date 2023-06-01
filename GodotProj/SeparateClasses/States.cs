@@ -9,5 +9,7 @@ namespace CardGameProj.SeparateClasses
 		public static int AntagonistLeaderCardId { get; set; }
 
 		public readonly static (float, float) InitCardSize = (512, 768);
+
+		public static string Url = "http://bloghda-001-site1.htempurl.com/";
 	}
 }

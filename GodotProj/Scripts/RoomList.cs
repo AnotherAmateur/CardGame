@@ -37,7 +37,7 @@ public partial class RoomList : Control, ISocketConn
 		}
 
 		string[] headers = new string[] { "Content-Type: application/json" };
-		string url = "http://localhost:7136/api/Game/getlobbies";
+		string url = States.Url + "api/Game/getlobbies";		
 		httpRequest.Request(url, headers, HttpClient.Method.Get);
 	}
 

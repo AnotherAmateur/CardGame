@@ -33,7 +33,7 @@ public partial class LoginForm : Control
 		string json = Json.Stringify(postData);
 
 		string[] headers = new string[] { "Content-Type: application/json" };
-		string url = "http://localhost:7136/api/Game/registration";
+		string url = States.Url + "api/Game/registration";
 		httpRequest.Request(url, headers, HttpClient.Method.Post, json);
 	}
 
@@ -54,7 +54,7 @@ public partial class LoginForm : Control
 		string json = Json.Stringify(postData);
 
 		string[] headers = new string[] { "Content-Type: application/json" };
-		string url = "http://localhost:7136/api/Game/login";
+		string url = States.Url + "api/Game/login";
 		httpRequest.Request(url, headers, HttpClient.Method.Post, json);
 	}
 
@@ -95,13 +95,19 @@ public partial class LoginForm : Control
 		}
 	}
 
-
-	private void _on_Button_pressed()
+	private void _on_check_button_toggled(bool button_pressed)
 	{
-		States.Login = "admin";
-		States.PlayerId = 1;
-		GetTree().ChangeSceneToPacked((PackedScene)GD.Load("res://RoomMenu.tscn"));
+		if (button_pressed is true)
+		{
+		  States.Url = "http://localhost:7136/";
+		}
+		else
+		{
+			States.Url = "http://bloghda-001-site1.htempurl.com/";
+		}
 	}
 }
+
+
 
 

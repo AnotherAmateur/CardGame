@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sitemanifest>
+  <IisApp path="D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\CardGameWebApi\obj\Release\net6.0\win-x86\PubTmp\Out\" />
+  <dbfullsql path="D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\CardGameWebApi\obj\Release\net6.0\win-x86\PubTmp\EFSQLScripts\CardGameWebApi.DAL.CardGameDbContext.sql" />
+</sitemanifest>

@@ -33,8 +33,8 @@ namespace CardGameWebApi.BAL.Implementations
 
 		public User GetUserById(int userId)
 		{
-            return context.Users.FirstOrDefault(it => it.UserId == userId);
-        }
+			return context.Users.FirstOrDefault(it => it.UserId == userId);
+		}
 
 		public User? GetUserByLogin(string login)
 		{

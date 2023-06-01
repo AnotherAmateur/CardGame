@@ -155,52 +155,7 @@ text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="LeftBtnContainer2" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_left = 1177.0
-offset_top = 175.0
-offset_right = 1809.0
-offset_bottom = 282.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="LeftBtnContainer2"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_bottom = -32.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Button" type="Button" parent="LeftBtnContainer2/HBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 13
-text = "Все карты"
-
-[node name="Button2" type="Button" parent="LeftBtnContainer2/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 13
-text = "Мудрость и философия"
-text_overrun_behavior = 3
-
-[node name="Button3" type="Button" parent="LeftBtnContainer2/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 13
-text = "Личностное развитие и мотивация"
-text_overrun_behavior = 3
-
-[node name="Button4" type="Button" parent="LeftBtnContainer2/HBoxContainer"]
-clip_contents = true
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 13
-text = "Социальная справедливость и этика
-"
-text_overrun_behavior = 3
-
-[node name="LeftBtnContainer1" type="Control" parent="."]
+[node name="LeftBtnContainer" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
 offset_left = 109.0
@@ -208,7 +163,7 @@ offset_top = 173.0
 offset_right = 741.0
 offset_bottom = 280.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="LeftBtnContainer1"]
+[node name="HBoxContainer" type="HBoxContainer" parent="LeftBtnContainer"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -217,26 +172,26 @@ offset_bottom = -32.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Button" type="Button" parent="LeftBtnContainer1/HBoxContainer"]
+[node name="AllCardsBtn" type="Button" parent="LeftBtnContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 13
 text = "Все карты"
 
-[node name="Button2" type="Button" parent="LeftBtnContainer1/HBoxContainer"]
+[node name="Group1Btn" type="Button" parent="LeftBtnContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 13
 text = "Мудрость и философия"
 text_overrun_behavior = 3
 
-[node name="Button3" type="Button" parent="LeftBtnContainer1/HBoxContainer"]
+[node name="Group2Btn" type="Button" parent="LeftBtnContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 13
 text = "Личностное развитие и мотивация"
 text_overrun_behavior = 3
 
-[node name="Button4" type="Button" parent="LeftBtnContainer1/HBoxContainer"]
+[node name="Group3Btn" type="Button" parent="LeftBtnContainer/HBoxContainer"]
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -245,4 +200,114 @@ text = "Социальная справедливость и этика
 "
 text_overrun_behavior = 3
 
+[node name="SpecialCardsBtn" type="Button" parent="LeftBtnContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 13
+text = "Спецаильные карты"
+alignment = 0
+text_overrun_behavior = 3
+
+[node name="RightBtnContainer" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1175.0
+offset_top = 177.0
+offset_right = 1807.0
+offset_bottom = 284.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="RightBtnContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -32.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AllCardsBtn" type="Button" parent="RightBtnContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Все карты"
+
+[node name="Group1Btn" type="Button" parent="RightBtnContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 13
+text = "Мудрость и философия"
+text_overrun_behavior = 3
+
+[node name="Group2Btn" type="Button" parent="RightBtnContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 13
+text = "Личностное развитие и мотивация"
+text_overrun_behavior = 3
+
+[node name="Group3Btn" type="Button" parent="RightBtnContainer/HBoxContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 13
+text = "Социальная справедливость и этика
+"
+text_overrun_behavior = 3
+
+[node name="SpecialCardsBtn" type="Button" parent="RightBtnContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 13
+text = "Спецаильные карты"
+alignment = 0
+text_overrun_behavior = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 844.0
+offset_top = 592.0
+offset_right = 1078.0
+offset_bottom = 901.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "Карт всего:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TotalCards" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "Карт выбранной нации:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TotalNationCards" type="Label" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [connection signal="pressed" from="StartButton" to="." method="_on_StartButton_pressed"]
+[connection signal="pressed" from="LeftBtnContainer/HBoxContainer/AllCardsBtn" to="." method="_on_all_cards_btn_pressed"]
+[connection signal="pressed" from="LeftBtnContainer/HBoxContainer/Group1Btn" to="." method="_on_group_1_btn_pressed"]
+[connection signal="pressed" from="LeftBtnContainer/HBoxContainer/Group2Btn" to="." method="_on_group_2_btn_pressed"]
+[connection signal="pressed" from="LeftBtnContainer/HBoxContainer/Group3Btn" to="." method="_on_group_3_btn_pressed"]
+[connection signal="pressed" from="LeftBtnContainer/HBoxContainer/SpecialCardsBtn" to="." method="_on_special_cards_btn_pressed"]
+[connection signal="pressed" from="RightBtnContainer/HBoxContainer/AllCardsBtn" to="." method="_on_all_cards_btn_pressed"]
+[connection signal="pressed" from="RightBtnContainer/HBoxContainer/Group1Btn" to="." method="_on_group_1_btn_pressed"]
+[connection signal="pressed" from="RightBtnContainer/HBoxContainer/Group2Btn" to="." method="_on_group_2_btn_pressed"]
+[connection signal="pressed" from="RightBtnContainer/HBoxContainer/Group3Btn" to="." method="_on_group_3_btn_pressed"]
+[connection signal="pressed" from="RightBtnContainer/HBoxContainer/SpecialCardsBtn" to="." method="_on_special_cards_btn_pressed"]

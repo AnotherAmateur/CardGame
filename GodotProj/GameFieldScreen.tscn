@@ -19,23 +19,28 @@ bg_color = Color(0.517647, 0, 0.341176, 0.686275)
 
 [node name="GameField" type="Node2D"]
 script = ExtResource("2")
-metadata/_edit_horizontal_guides_ = [541.0, 350.0]
-metadata/_edit_vertical_guides_ = [1622.0, 1879.0, 525.0, 1572.0, 1033.0]
-
-[node name="FieldImg" type="Sprite2D" parent="."]
-texture = ExtResource("1")
-centered = false
+metadata/_edit_horizontal_guides_ = [547.0, 350.0, 43.0, 200.0, 867.0, 1025.0, 679.0, 20.0, 148.0]
+metadata/_edit_vertical_guides_ = [1622.0, 1879.0, 525.0, 1572.0, 1033.0, 71.0, 190.0]
 
 [node name="BackColor" type="ColorRect" parent="."]
 offset_right = 1920.0
 offset_bottom = 1080.0
-color = Color(0.802377, 0.704171, 0.511233, 1)
+mouse_filter = 2
+color = Color(0.803922, 0.705882, 0.509804, 1)
+
+[node name="FieldImg" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("1")
+centered = false
 
 [node name="Shader" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_bimft")
-custom_minimum_size = Vector2(30, 30)
-offset_right = 1920.0
-offset_bottom = 1080.0
+custom_minimum_size = Vector2(100, 100)
+offset_left = 14.0
+offset_top = -5.0
+offset_right = 1934.0
+offset_bottom = 1075.0
+mouse_filter = 2
 
 [node name="DeckTopImg" type="Sprite2D" parent="."]
 visible = false
@@ -58,15 +63,6 @@ offset_top = 47.0
 offset_right = 186.0
 offset_bottom = 196.0
 
-[node name="ColorRect" type="ColorRect" parent="LeaderCardContainerTop"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.737705, 0.637169, 0.438324, 1)
-
 [node name="LeaderCardContainerBottom" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
@@ -75,15 +71,6 @@ offset_top = 871.0
 offset_right = 186.0
 offset_bottom = 1020.0
 
-[node name="ColorRect" type="ColorRect" parent="LeaderCardContainerBottom"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.737705, 0.637169, 0.438324, 1)
-
 [node name="Cards" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
@@ -91,15 +78,7 @@ offset_left = 527.0
 offset_top = 905.0
 offset_right = 1572.0
 offset_bottom = 1059.0
-
-[node name="ColorRect" type="ColorRect" parent="Cards"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.737705, 0.637169, 0.438324, 1)
+mouse_filter = 2
 
 [node name="DeckSizeBottom" type="Label" parent="."]
 offset_left = 1803.0
@@ -133,46 +112,19 @@ offset_top = 265.0
 offset_right = 1047.0
 offset_bottom = 385.0
 
-[node name="ColorRect" type="ColorRect" parent="FieldRowsContainer/Top/Row1"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.737705, 0.637169, 0.438324, 1)
-
 [node name="Row2" type="Control" parent="FieldRowsContainer/Top"]
 anchors_preset = 0
-offset_left = 5.0
+offset_left = 2.0
 offset_top = 135.0
 offset_right = 1047.0
 offset_bottom = 255.0
 
-[node name="ColorRect" type="ColorRect" parent="FieldRowsContainer/Top/Row2"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -3.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.737705, 0.637169, 0.438324, 1)
-
 [node name="Row3" type="Control" parent="FieldRowsContainer/Top"]
 anchors_preset = 0
+offset_left = 1.0
 offset_top = 6.0
 offset_right = 1048.0
 offset_bottom = 125.0
-
-[node name="ColorRect" type="ColorRect" parent="FieldRowsContainer/Top/Row3"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.737705, 0.637169, 0.438324, 1)
 
 [node name="Bottom" type="Control" parent="FieldRowsContainer"]
 anchors_preset = 0
@@ -187,45 +139,17 @@ offset_top = 263.0
 offset_right = 1047.0
 offset_bottom = 383.0
 
-[node name="ColorRect" type="ColorRect" parent="FieldRowsContainer/Bottom/Row3"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.737705, 0.637169, 0.438324, 1)
-
 [node name="Row2" type="Control" parent="FieldRowsContainer/Bottom"]
 anchors_preset = 0
-offset_left = 5.0
+offset_left = 2.0
 offset_top = 133.0
 offset_right = 1047.0
 offset_bottom = 253.0
-
-[node name="ColorRect" type="ColorRect" parent="FieldRowsContainer/Bottom/Row2"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -5.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.737705, 0.637169, 0.438324, 1)
 
 [node name="Row1" type="Control" parent="FieldRowsContainer/Bottom"]
 anchors_preset = 0
 offset_right = 1048.0
 offset_bottom = 123.0
-
-[node name="ColorRect" type="ColorRect" parent="FieldRowsContainer/Bottom/Row1"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.737705, 0.637169, 0.438324, 1)
 
 [node name="DiscardPileContainerTop" type="Control" parent="."]
 layout_mode = 3
@@ -354,32 +278,19 @@ offset_right = 49.0
 offset_bottom = 350.0
 theme_override_font_sizes/font_size = 32
 
-[node name="HTTPRequest" type="HTTPRequest" parent="."]
-use_threads = true
-
 [node name="LargeCardContainer" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 1622.0
+offset_left = 1638.0
 offset_top = 350.0
-offset_right = 2134.0
-offset_bottom = 1118.0
-scale = Vector2(0.5, 0.5)
-
-[node name="ColorRect" type="ColorRect" parent="LargeCardContainer"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.737705, 0.637169, 0.438324, 1)
+offset_right = 1863.0
+offset_bottom = 679.0
 
 [node name="Label" type="Label" parent="."]
-offset_left = 1621.0
-offset_top = 308.0
-offset_right = 1877.0
-offset_bottom = 350.0
+offset_left = 1623.0
+offset_top = 289.0
+offset_right = 1879.0
+offset_bottom = 331.0
 theme_override_font_sizes/font_size = 13
 theme_override_styles/normal = SubResource("StyleBoxFlat_kj2o2")
 text = "Кликните правой кнопкой мыши по любой карте, чтобы увеличить ее"
@@ -388,15 +299,13 @@ vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="ToPass" type="Button" parent="."]
-offset_left = 926.0
-offset_top = 842.0
-offset_right = 1141.0
-offset_bottom = 895.0
+offset_left = 966.0
+offset_top = 849.0
+offset_right = 1101.0
+offset_bottom = 885.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 22
 theme_override_styles/normal = SubResource("StyleBoxFlat_banbw")
 text = "Спасовать"
 
-[connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]
 [connection signal="pressed" from="ToPass" to="." method="_on_Pass_pressed"]

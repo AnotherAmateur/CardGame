@@ -1,4 +1,4 @@
-﻿using CardGameProj.Scripts;
+using CardGameProj.Scripts;
 using CardGameProj.SeparateClasses;
 using Godot;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -13,7 +13,7 @@ public class SocketConnection : ISocketConn
 
 	static SocketConnection()
 	{
-		url = "http://localhost:7136/ws";
+		url = States.Url + "ws";
 		connection = new HubConnectionBuilder().WithUrl(url).Build();	
 	}
 
@@ -66,6 +66,7 @@ public class SocketConnection : ISocketConn
 	{
 		await connection.StopAsync();
 		await connection.DisposeAsync();
+		instance = null;
 	}
 
 	public async void Send(ActionTypes action, int masterId, string message)

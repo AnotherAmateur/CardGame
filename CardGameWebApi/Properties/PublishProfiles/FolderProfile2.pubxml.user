@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <_PublishTargetUrl>C:\Users\dmitr\OneDrive\Desktop\web</_PublishTargetUrl>
+    <History>True|2023-05-31T21:45:35.7564548Z;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="MyAspNetConnection">
+      <Value>Server=PURPLESKY%3bDatabase=CardGameDb%3bTrusted_Connection=True%3bUser id=admin%3bPassword=1234</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+  <ItemGroup>
+    <EFMigrations Include="CardGameWebApi.DAL.CardGameDbContext">
+      <Value>Data Source=SQL6030.site4now.net%3bInitial Catalog=db_a99f40_cardgamedb%3bUser Id=db_a99f40_cardgamedb_admin%3bPassword=lomkost321</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>

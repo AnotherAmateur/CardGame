@@ -17,7 +17,7 @@ namespace CardGameWebApi.BAL
 		}
 
 		public IUserRep Users { get { return userRep; } }
-		public IGameSessionsRep GameSessions { get {  return gameSessionsRep; } }
+		public IGameSessionsRep GameSessions { get { return gameSessionsRep; } }
 		public ILobbyRep Lobbies { get { return lobbyRep; } }
 	}
 }

@@ -26,7 +26,7 @@ public partial class CardSelectionMenu : Control, ISocketConn
 
 	public override void _Ready()
 	{
-		socketConnection = SocketConnection.GetInstance(this);
+		socketConnection = SocketConnection.GetInstance(this);		
 
 		Instantiate = this;
 		minHandSize = 1;
@@ -35,24 +35,28 @@ public partial class CardSelectionMenu : Control, ISocketConn
 
 		var cardContainerSize = GetNode<ScrollContainer>("AllCardScrollContainer").Size;
 
-		cardSize = new Vector2(185, 277.5f);
+		cardSize = new Vector2(185f, 277.5f);
 
 		CardDataBase.UpdateCardDataBase();
+		GetNode<Label>("VBoxContainer/HBoxContainer/TotalCards").Text = CardDataBase.GetAllCards.Count.ToString();
 		LoadAllCards();
 		ChangeLeader();
 	}
 
 	private void LoadAllCards()
 	{
-		SelectedCards = new();
+		int nationCardsCount = 0;
 
 		foreach (var card in CardDataBase.GetAllCards.Where(x =>
 			x.Value.nation == CardDataBase.GetCardInfo(LeaderCard).nation || x.Value.type == CardTypes.Leader))
 		{
 			if (card.Value.type == CardTypes.Leader)
 			{
-				Nations.Add(card.Value.nation);
-				LeaderCards.Add(card.Key);
+				if (LeaderCards.Contains(card.Key) is false)
+				{
+					Nations.Add(card.Value.nation);
+					LeaderCards.Add(card.Key);
+				}			
 			}
 			else
 			{
@@ -66,8 +70,12 @@ public partial class CardSelectionMenu : Control, ISocketConn
 
 				allCardsGridContainer.GetNode<Control>(card.Key.ToString()).GetChild<SlaveCardScene>(0)
 					.SetParams(cardSize, texturePath, CardDataBase.GetCardInfo(card.Key));
+
+				++nationCardsCount;
 			}
 		}
+
+		GetNode<Label>("VBoxContainer/HBoxContainer2/TotalNationCards").Text = nationCardsCount.ToString();
 
 		for (int i = 0; i < allCardsGridContainer.Columns; i++)
 		{
@@ -78,6 +86,8 @@ public partial class CardSelectionMenu : Control, ISocketConn
 
 	private void ChangeLeader()
 	{
+		SelectedCards = new();
+
 		int index = LeaderCards.IndexOf(LeaderCard);
 		if (LeaderCards.Count == index + 1)
 		{
@@ -156,12 +166,12 @@ public partial class CardSelectionMenu : Control, ISocketConn
 				GetTree().ChangeSceneToPacked((PackedScene)GD.Load("res://GameFieldScreen.tscn"));
 			}
 			else
-			{				
+			{
 				PackedScene messageBoxScene = (PackedScene)GD.Load("res://message_box.tscn");
 				MessageBox messageBox = (MessageBox)messageBoxScene.Instantiate(PackedScene.GenEditState.Instance);
 				messageBox.SetMessage("Рука зафиксирована. \n Ожидание готовности оппонента.");
 				AddChild(messageBox);
-			}		
+			}
 		}
 	}
 
@@ -184,9 +194,88 @@ public partial class CardSelectionMenu : Control, ISocketConn
 			}
 		}
 	}
+
+	private void LoadCards(CardTypes cardType)
+	{
+		foreach (Node node in selectedCardsGridContainer.GetChildren())
+		{
+			selectedCardsGridContainer.RemoveChild(node);
+		}
+
+		foreach (Node node in allCardsGridContainer.GetChildren())
+		{
+			allCardsGridContainer.RemoveChild(node);
+		}
+
+		IEnumerable<KeyValuePair<int, CardDataBase.CardData>> cards;
+		if (cardType == CardTypes.Leader)
+		{
+			cards = CardDataBase.GetAllCards.Where(x =>
+			x.Value.nation == CardDataBase.GetCardInfo(LeaderCard).nation && x.Value.type != cardType);
+		}
+		else
+		{
+			cards = CardDataBase.GetAllCards.Where(x =>
+		x.Value.nation == CardDataBase.GetCardInfo(LeaderCard).nation && x.Value.type == cardType);
+		}
+		
+		foreach (var card in cards.Where(x => SelectedCards.Contains(x.Key) is false))
+		{
+			SlaveCardScene cardInstance = (SlaveCardScene)cardScene.Instantiate(PackedScene.GenEditState.Instance);
+			Control t = new();
+			t.Name = card.Key.ToString();
+			allCardsGridContainer.AddChild(t);
+			allCardsGridContainer.GetNode<Control>(card.Key.ToString()).AddChild(cardInstance);
+
+			string texturePath = CardDataBase.GetCardTexturePath(card.Key);
+
+			allCardsGridContainer.GetNode<Control>(card.Key.ToString()).GetChild<SlaveCardScene>(0)
+				.SetParams(cardSize, texturePath, CardDataBase.GetCardInfo(card.Key));
+		}
+
+		foreach (var card in cards.Where(x => SelectedCards.Contains(x.Key) is true))
+		{
+			SlaveCardScene cardInstance = (SlaveCardScene)cardScene.Instantiate(PackedScene.GenEditState.Instance);
+			Control t = new();
+			t.Name = card.Key.ToString();
+			selectedCardsGridContainer.AddChild(t);
+			selectedCardsGridContainer.GetNode<Control>(card.Key.ToString()).AddChild(cardInstance);
+
+			string texturePath = CardDataBase.GetCardTexturePath(card.Key);
+
+			selectedCardsGridContainer.GetNode<Control>(card.Key.ToString()).GetChild<SlaveCardScene>(0)
+				.SetParams(cardSize, texturePath, CardDataBase.GetCardInfo(card.Key));
+		}
+
+		for (int i = 0; i < allCardsGridContainer.Columns; i++)
+		{
+			allCardsGridContainer.AddChild(new Control());
+			selectedCardsGridContainer.AddChild(new Control());
+		}
+	}
+
+	private void _on_all_cards_btn_pressed()
+	{
+		LoadCards(CardTypes.Leader);
+	}
+
+	private void _on_group_1_btn_pressed()
+	{
+		LoadCards(CardTypes.Group1);
+	}
+
+	private void _on_group_2_btn_pressed()
+	{
+		LoadCards(CardTypes.Group2);
+	}
+
+	private void _on_group_3_btn_pressed()
+	{
+		LoadCards(CardTypes.Group3);
+	}
+
+	private void _on_special_cards_btn_pressed()
+	{
+		LoadCards(CardTypes.Special);
+	}
 }
-
-
-
-
-

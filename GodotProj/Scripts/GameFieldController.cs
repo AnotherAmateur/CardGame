@@ -2,7 +2,10 @@ using CardGameProj.Scripts;
 using CardGameProj.SeparateClasses;
 using Godot;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.Text;
 
 public partial class GameFieldController : Node2D, ISocketConn
@@ -26,7 +29,9 @@ public partial class GameFieldController : Node2D, ISocketConn
 		Instantiate = this;
 		socketConnection = SocketConnection.GetInstance(this);
 
-		Control cardsHandContainer = GetNode<Control>("Cards");	
+		InitializeColorRects();
+
+		Control cardsHandContainer = GetNode<Control>("Cards");
 
 		Control discardPileContainerTop = GetNode<Control>("DiscardPileContainerTop");
 		Control discardPileContainerBottom = GetNode<Control>("DiscardPileContainerBottom");
@@ -38,7 +43,7 @@ public partial class GameFieldController : Node2D, ISocketConn
 		Label totalCountBottom = GetNode<Control>("TotalCount").GetNode<Label>("Bottom");
 
 		Control RowsCountTopContainer = GetNode<Control>("RowsCount").GetNode<Control>("Top");
-		Control RowsCountBottomContainer = GetNode<Control>("RowsCount").GetNode<Control>("Bottom");		
+		Control RowsCountBottomContainer = GetNode<Control>("RowsCount").GetNode<Control>("Bottom");
 
 		leaderCardContainerBottom = GetNode<Control>("LeaderCardContainerBottom");
 		leaderCardContainerTop = GetNode<Control>("LeaderCardContainerTop");
@@ -59,7 +64,6 @@ public partial class GameFieldController : Node2D, ISocketConn
 
 		//GetNode<Label>("DeckSizeBottom").Text = player.Deck.Count.ToString();
 	}
-
 
 	public void CardSceneEventHandler(CardEvents cardEvent, int cardId)
 	{
@@ -86,15 +90,13 @@ public partial class GameFieldController : Node2D, ISocketConn
 			{
 				largeCardContainer.RemoveChild(childNode);
 			}
-			
+
 			SlaveCardScene cardInstance = (SlaveCardScene)cardScene.Instantiate(PackedScene.GenEditState.Instance);
 			largeCardContainer.AddChild(cardInstance);
 			cardInstance.SetParams(largeCardContainer.Size, CardDataBase.GetCardTexturePath(cardId),
 				CardDataBase.GetCardInfo(cardId), disconnectSignals: true);
 		}
 	}
-
-
 
 	private void _on_Pass_pressed()
 	{
@@ -125,6 +127,48 @@ public partial class GameFieldController : Node2D, ISocketConn
 		else
 		{
 			OS.Alert(String.Join("\n", "GameFieldController/OnReceiveMessage: ", action, masterId, message));
+		}
+	}
+
+	private void InitializeColorRects()
+	{
+		var controls = new List<Control>();
+		controls.Add(GetNode<Control>("LeaderCardContainerTop"));
+		controls.Add(GetNode<Control>("LeaderCardContainerBottom"));
+		controls.Add(GetNode<Control>("Cards"));
+		controls.Add(GetNode<Control>("LargeCardContainer"));
+
+		
+		for (int i = 1; i <= 3; i++)
+		{
+			var offset = new Vector2(512, 18);
+			var item = GetNode<Control>("FieldRowsContainer/Top/Row" + i.ToString());
+			var t = new ColorRect();
+			t.Size = new Vector2(item.Size.X, item.Size.Y);
+			t.Position = new Vector2(item.Position.X + offset.X, item.Position.Y + offset.Y);
+			t.Color = new Godot.Color("#ac9362");
+			t.MouseFilter = Control.MouseFilterEnum.Ignore;
+			AddChild(t);
+
+			offset = new Vector2(512, 418);
+			item = GetNode<Control>("FieldRowsContainer/Bottom/Row" + i.ToString());
+			t = new ColorRect();
+			t.Size = new Vector2(item.Size.X, item.Size.Y);
+			t.Position = new Vector2(item.Position.X + offset.X, item.Position.Y + offset.Y);
+			t.Color = new Godot.Color("#ac9362");
+			t.MouseFilter = Control.MouseFilterEnum.Ignore;
+			AddChild(t);
+		}
+
+		const int margin = 16;
+		foreach (var item in controls)
+		{
+			var t = new ColorRect();
+			t.Size = new Vector2(item.Size.X + margin, item.Size.Y + margin);
+			t.Position = new Vector2(item.Position.X - margin / 2, item.Position.Y - margin / 2);
+			t.Color = new Godot.Color("#ac9362");
+			t.MouseFilter = Control.MouseFilterEnum.Ignore;
+			AddChild(t);
 		}
 	}
 }

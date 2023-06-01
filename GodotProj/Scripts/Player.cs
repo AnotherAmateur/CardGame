@@ -68,7 +68,7 @@ public abstract class Player
 	{
 		MinCardScene cardInstance = (MinCardScene)GameFieldController.MinCardScene.Instantiate();
 		LeaderCardContainer.AddChild(cardInstance);
-		LeaderCardContainer.GetChild<MinCardScene>(0).SetParams(LeaderCardContainer.Size,
+		cardInstance.SetParams(LeaderCardContainer.Size,
 			CardDataBase.GetCardTexturePath(cardId), CardDataBase.GetCardInfo(LeaderCard));
 	}
 
@@ -90,6 +90,7 @@ public abstract class Player
 		//UpdateDiscardPileFlippedCard();
 
 		Vector2 rowRectSize = CardRowsContainer.GetChild<Control>(0).Size;
+		rowRectSize = new Vector2(rowRectSize.X = 50, rowRectSize.Y - 50);
 		Vector2 cardSize = new(rowRectSize.X / MaxHandSize, rowRectSize.Y);
 		Dictionary<CardTypes, List<int>> rangeSortedCards = new();
 

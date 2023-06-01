@@ -23,7 +23,7 @@ builder.Services.AddTransient<IGameSessionsRep, EfGameSession>();
 builder.Services.AddTransient<ILobbyRep, EfLobby>();
 builder.Services.AddScoped<DataManager>();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration.GetConnectionString("MyAspNetConnection");
 builder.Services.AddDbContext<CardGameDbContext>(options =>
 {
 	options.UseSqlServer(connectionString);
@@ -31,16 +31,11 @@ builder.Services.AddDbContext<CardGameDbContext>(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
 	app.UseSwagger();
 	app.UseSwaggerUI();
 }
-
-//app.UseHttpsRedirection();
-
-//app.UseAuthorization();
 
 app.MapControllers();
 
