@@ -1,9 +1,7 @@
 res://GameFieldScreen.tscn
-res://SlaveCardScene.tscn
-res://message_box.tscn
 res://CardSelectionMenu.tscn
-res://MinCardScene.tscn
 res://RoomList.tscn
-res://LoginForm.cs
 res://LoginForm.tscn
-res://Scripts/CardSelectionMenu.cs
+res://message_box.tscn
+res://MinCardScene.tscn
+res://SlaveCardScene.tscn

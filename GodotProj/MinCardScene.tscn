@@ -1,12 +1,14 @@
 [gd_scene load_steps=3 format=3 uid="uid://djlobxmhvrlak"]
 
 [ext_resource type="Script" path="res://Scripts/MinCardScene.cs" id="1_hvi6c"]
-[ext_resource type="Texture2D" uid="uid://bt04tbrw2vei0" path="res://Assets/CardFrames/base.png" id="1_qtwtn"]
+[ext_resource type="Texture2D" uid="uid://cc4yj2s715ds4" path="res://Assets/CardFrames/pngwing.com (1).png" id="2_ibhl4"]
 
 [node name="MinCardScene" type="Node2D"]
-z_index = 4096
+z_index = 100
 z_as_relative = false
 script = ExtResource("1_hvi6c")
+metadata/_edit_vertical_guides_ = [512.0]
+metadata/_edit_horizontal_guides_ = [770.0]
 
 [node name="Card" type="TextureButton" parent="."]
 self_modulate = Color(0.486275, 0.486275, 0.486275, 1)
@@ -25,11 +27,10 @@ mouse_filter = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="LabelsContainer"]
 layout_mode = 0
-offset_left = 27.0
+offset_left = 16.0
 offset_right = 449.0
 offset_bottom = 618.0
 mouse_filter = 2
-alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="LabelsContainer/VBoxContainer"]
 layout_mode = 2
@@ -52,31 +53,27 @@ theme_override_font_sizes/font_size = 60
 text = "Специфика:"
 uppercase = true
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="LabelsContainer/VBoxContainer"]
-layout_mode = 2
-mouse_filter = 2
-alignment = 1
-
-[node name="Paragraph" type="Label" parent="LabelsContainer/VBoxContainer/HBoxContainer2"]
+[node name="Paragraph" type="Label" parent="LabelsContainer/VBoxContainer"]
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
-theme_override_font_sizes/font_size = 60
+theme_override_font_sizes/font_size = 52
+text = "Социальная справедливость и этика"
 autowrap_mode = 3
-uppercase = true
 
 [node name="Control" type="Control" parent="LabelsContainer"]
 layout_mode = 3
 anchors_preset = 0
 offset_left = -25.0
 offset_top = -72.0
-offset_right = 15.0
-offset_bottom = -32.0
+offset_right = 487.0
+offset_bottom = 696.0
 mouse_filter = 2
 
 [node name="Frame" type="Sprite2D" parent="LabelsContainer/Control"]
-texture = ExtResource("1_qtwtn")
+scale = Vector2(0.578531, 0.582451)
+texture = ExtResource("2_ibhl4")
 centered = false
 
 [connection signal="gui_input" from="Card" to="." method="_on_card_gui_input"]

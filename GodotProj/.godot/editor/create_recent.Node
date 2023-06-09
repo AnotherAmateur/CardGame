@@ -1,9 +1,11 @@
-Label
-HBoxContainer
+Control
+MarginContainer
 VBoxContainer
+ColorRect
+Label
+CheckBox
+HBoxContainer
 Button
 CheckButton
-Control
-ColorRect
 RichTextLabel
 HTTPRequest

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://btl5d3mopj6yq"
-path="res://.godot/imported/11007.png-7e4ab598197eb542287077c7ee8a1d57.ctex"
+uid="uid://cc4yj2s715ds4"
+path="res://.godot/imported/pngwing.com (1).png-8c32a7de2e4f07905d9c19fd1fe148e1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Cards/Confucius/Group2/11007.png"
-dest_files=["res://.godot/imported/11007.png-7e4ab598197eb542287077c7ee8a1d57.ctex"]
+source_file="res://Assets/CardFrames/pngwing.com (1).png"
+dest_files=["res://.godot/imported/pngwing.com (1).png-8c32a7de2e4f07905d9c19fd1fe148e1.ctex"]
 
 [params]
 

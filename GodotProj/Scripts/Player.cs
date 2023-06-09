@@ -1,25 +1,38 @@
 using CardGameProj.Scripts;
+using CardGameProj.SeparateClasses;
 using Godot;
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 
 public abstract class Player
 {
+	private Label TotalCountLabel;
 	protected Control CardRowsContainer;
 	protected Control LeaderCardContainer;
 	protected Control DiscardPileContainer;
 	protected Control RowsCountContainer;
-	protected Label TotalCount;
-	protected int totalCount;
+	private HBoxContainer RoundVBoxContainer;
+
+	private static int round;
 	public const int MaxHandSize = 10;
 	protected int DiscardPileFlippedcardId;
-	protected bool isPass;
+	public bool IsPass { get; protected set; }
+	private static int gameResult;
 
 	public List<int> DiscardPile { get; protected set; }
 	public List<int> OnBoard { get; protected set; }
 	public int LeaderCard { get; protected set; }
+	public int TotalCount
+	{
+		get { return int.Parse(TotalCountLabel.Text); }
+		private set { TotalCountLabel.Text = value.ToString(); }
+	}
+
 
 	public Player(int leaderCard, Control cardRowsContainer, Control leaderCardContainer,
-		Control discardPileContainer, Label totalCount, Control rowsCountContainer)
+		Control discardPileContainer, Label totalCount, Control rowsCountContainer, HBoxContainer roundVBoxContainer)
 	{
 		DiscardPile = new();
 		OnBoard = new();
@@ -27,35 +40,38 @@ public abstract class Player
 		CardRowsContainer = cardRowsContainer;
 		LeaderCardContainer = leaderCardContainer;
 		DiscardPileContainer = discardPileContainer;
-		TotalCount = totalCount;
+		TotalCountLabel = totalCount;
+		RoundVBoxContainer = roundVBoxContainer;
+		round = 1;
+		gameResult = 0;
 
-		//UpdateTotalCount();
 		RowsCountContainer = rowsCountContainer;
 
 		SetLeaderCard(leaderCard);
+
+		UpdateRowsCount();
+		UpdateTotalCount();
 	}
 
-	protected void UpdateTotalCount()
+	private void UpdateTotalCount()
 	{
-		totalCount = 0;
-		foreach (Control row in CardRowsContainer.GetChildren())
+		int totalCount = 0;
+		foreach (Label rowCount in RowsCountContainer.GetChildren())
 		{
-			foreach (MinCardScene card in row.GetChildren())
-			{
-				totalCount += card.CardDamage;
-			}
+			totalCount += int.Parse((rowCount.Text == "") ? "0" : rowCount.Text);
 		}
 
-		TotalCount.Text = totalCount.ToString();
+		TotalCount = totalCount;
 	}
 
-	protected void UpdateRowsCount()
+	private void UpdateRowsCount()
 	{
-		int oneSideRowsNumber = 3;
+		const int oneSideRowsNumber = 3;
 		for (int i = 1; i <= oneSideRowsNumber; i++)
 		{
 			int sum = 0;
-			foreach (MinCardScene card in CardRowsContainer.GetNode<Control>("Row" + i).GetChildren())
+			foreach (MinCardScene card in CardRowsContainer.GetNode<Control>("Row" + i)
+				.GetChildren().Where(it => it.Name != "Label"))
 			{
 				sum += card.CardDamage;
 			}
@@ -70,6 +86,7 @@ public abstract class Player
 		LeaderCardContainer.AddChild(cardInstance);
 		cardInstance.SetParams(LeaderCardContainer.Size,
 			CardDataBase.GetCardTexturePath(cardId), CardDataBase.GetCardInfo(LeaderCard));
+		cardInstance.Name = "leaderCardInst";
 	}
 
 
@@ -84,13 +101,13 @@ public abstract class Player
 		}
 	}
 
-	public void UpdateBoard()
+	protected void UpdateBoard()
 	{
 		ClearBoard();
 		//UpdateDiscardPileFlippedCard();
 
 		Vector2 rowRectSize = CardRowsContainer.GetChild<Control>(0).Size;
-		rowRectSize = new Vector2(rowRectSize.X = 50, rowRectSize.Y - 50);
+		rowRectSize = new Vector2(rowRectSize.X - 50, rowRectSize.Y);
 		Vector2 cardSize = new(rowRectSize.X / MaxHandSize, rowRectSize.Y);
 		Dictionary<CardTypes, List<int>> rangeSortedCards = new();
 
@@ -117,25 +134,59 @@ public abstract class Player
 
 				var card = row.GetNode<MinCardScene>(cardId.ToString());
 				card.SetParams(cardSize, CardDataBase.GetCardTexturePath(cardId), CardDataBase.GetCardInfo(cardId));
-				card.Position = new Vector2(nextXCardPosition, 0);
+				card.Position = new Vector2(nextXCardPosition + 10, 0);
 				nextXCardPosition += cardSize.X;
 			}
 		}
 
-		UpdateTotalCount();
 		UpdateRowsCount();
+		UpdateTotalCount();
 	}
 
 	public void DoPass()
 	{
-		isPass = true;
+		IsPass = true;
 
-		if (Antagonist.Instantiate.isPass == Protagonist.Instantiate.isPass)
+		if (Antagonist.Instance.IsPass == Protagonist.Instance.IsPass)
 		{
-			Antagonist.Instantiate.OnBoard = new();
-			Protagonist.Instantiate.OnBoard = new();
-			Protagonist.Instantiate.UpdateBoard();
-			Antagonist.Instantiate.UpdateBoard();
+			Antagonist.Instance.IsPass = false;
+			Protagonist.Instance.IsPass = false;
+
+			switch (Antagonist.Instance.TotalCount.CompareTo(Protagonist.Instance.TotalCount))
+			{
+				case < 0:
+					Protagonist.Instance.RoundVBoxContainer.GetNode<CheckBox>("CheckBox" + round.ToString())
+						.ButtonPressed = true;
+					++gameResult;
+					break;
+				case > 0:
+					Antagonist.Instance.RoundVBoxContainer.GetNode<CheckBox>("CheckBox" + round.ToString())
+						.ButtonPressed = true;
+					--gameResult;
+					break;
+				case 0:
+					Protagonist.Instance.RoundVBoxContainer.GetNode<CheckBox>("CheckBox" + round.ToString())
+						.ButtonPressed = true;
+					Antagonist.Instance.RoundVBoxContainer.GetNode<CheckBox>("CheckBox" + round.ToString())
+						.ButtonPressed = true;
+					break;
+			}
+
+			if (Math.Abs(gameResult) == 2 || gameResult != 0 && round == 3)
+			{
+				GameFieldController.Instance.MatchCompleted((gameResult > 0) ? Protagonist.Instance : Antagonist.Instance);
+			}
+			else if (gameResult == 0 && round == 3)
+			{
+				GameFieldController.Instance.MatchCompleted(null);
+			}
+
+			Antagonist.Instance.OnBoard = new();
+			Protagonist.Instance.OnBoard = new();
+			Protagonist.Instance.UpdateBoard();
+			Antagonist.Instance.UpdateBoard();
+
+			++round;
 		}
 	}
 

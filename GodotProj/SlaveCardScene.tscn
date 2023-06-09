@@ -1,12 +1,14 @@
 [gd_scene load_steps=3 format=3 uid="uid://bct7mhyxmw7jx"]
 
 [ext_resource type="Script" path="res://Scripts/SlaveCardScene.cs" id="2"]
-[ext_resource type="Texture2D" uid="uid://bt04tbrw2vei0" path="res://Assets/CardFrames/base.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://cc4yj2s715ds4" path="res://Assets/CardFrames/pngwing.com (1).png" id="2_eofl7"]
 
 [node name="SlaveCardScene" type="Node2D"]
 z_index = 4096
 z_as_relative = false
 script = ExtResource("2")
+metadata/_edit_vertical_guides_ = [512.0]
+metadata/_edit_horizontal_guides_ = [768.0]
 
 [node name="Card" type="TextureButton" parent="."]
 self_modulate = Color(0.486275, 0.486275, 0.486275, 1)
@@ -14,7 +16,6 @@ offset_right = 512.0
 offset_bottom = 768.0
 
 [node name="LabelsContainer" type="Control" parent="."]
-z_index = 6
 layout_mode = 3
 anchors_preset = 0
 offset_left = 25.0
@@ -25,9 +26,9 @@ mouse_filter = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="LabelsContainer"]
 layout_mode = 0
-offset_left = 49.0
+offset_left = 24.0
 offset_top = -28.0
-offset_right = 412.0
+offset_right = 443.0
 offset_bottom = 172.0
 mouse_filter = 2
 theme_override_constants/separation = 0
@@ -69,10 +70,10 @@ uppercase = true
 
 [node name="MainText" type="Label" parent="LabelsContainer"]
 layout_mode = 0
-offset_left = 26.0
+offset_left = 19.0
 offset_top = 216.0
-offset_right = 436.0
-offset_bottom = 622.0
+offset_right = 443.0
+offset_bottom = 650.0
 theme_override_font_sizes/font_size = 34
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -83,11 +84,13 @@ layout_mode = 3
 anchors_preset = 0
 offset_left = -25.0
 offset_top = -72.0
-offset_right = 15.0
-offset_bottom = -32.0
+offset_right = 487.0
+offset_bottom = 696.0
+mouse_filter = 2
 
 [node name="Frame" type="Sprite2D" parent="LabelsContainer/Control"]
-texture = ExtResource("4")
+scale = Vector2(0.578531, 0.580938)
+texture = ExtResource("2_eofl7")
 centered = false
 
 [connection signal="mouse_entered" from="Card" to="." method="_on_Card_mouse_entered"]

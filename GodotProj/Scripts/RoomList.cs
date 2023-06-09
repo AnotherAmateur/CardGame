@@ -15,9 +15,7 @@ public partial class RoomList : Control, ISocketConn
 	private float buttonHeight;
 
 	public override void _Ready()
-	{
-		socketConnection = SocketConnection.GetInstance(this);
-
+	{		
 		listContainer = GetNode<VBoxContainer>("ScrollContainer/VBoxContainer");
 		buttonWidth = GetNode<ScrollContainer>("ScrollContainer").Size.X;
 		buttonHeight = 50;
@@ -96,6 +94,7 @@ public partial class RoomList : Control, ISocketConn
 	{
 		States.MasterId = int.Parse(button.Name);
 
+		socketConnection = SocketConnection.GetInstance(this);
 		socketConnection.Connect();
 		socketConnection.JoinGroup();
 	}
@@ -112,7 +111,10 @@ public partial class RoomList : Control, ISocketConn
 
 	public void OnHandleError(string exMessage)
 	{
-		OS.Alert(exMessage);
+		PackedScene messageBoxScene = (PackedScene)GD.Load("res://message_box.tscn");
+		MessageBox messageBox = (MessageBox)messageBoxScene.Instantiate(PackedScene.GenEditState.Instance);
+		messageBox.SetUp(exMessage, true);
+		AddChild(messageBox);
 	}
 
 	public void OnReceiveMessage(string action, string masterId, string message)

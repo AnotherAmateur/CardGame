@@ -9,19 +9,30 @@ public partial class Protagonist : Player
 
 	public List<int> Hand { get; private set; }
 	public List<int> Deck { get; private set; }
-	public static Protagonist Instantiate { get; protected set; }
+	public static Protagonist Instance { get; protected set; }
 
 
 	public Protagonist(int leaderCard, List<int> deck, Control cardRowsContainer, Control cardsHandContainer,
-		Control leaderCardContainer, Control discardPileContainer, Label totalCount, Control rowsCountContainer) :
-		base(leaderCard, cardRowsContainer, leaderCardContainer, discardPileContainer, totalCount, rowsCountContainer)
+		Control leaderCardContainer, Control discardPileContainer, Label totalCount, Control rowsCountContainer, HBoxContainer roundVBoxContainer) :
+		base(leaderCard, cardRowsContainer, leaderCardContainer, discardPileContainer, totalCount, rowsCountContainer, roundVBoxContainer)
 	{
 		Deck = deck;
 		Hand = new();
 		CardsHandContainer = cardsHandContainer;
-		Instantiate = this;
+		Instance = this;
 	}
 	
+	public new void DoPass()
+	{
+		base.DoPass();
+
+		//foreach (MinCardScene card in CardsHandContainer.GetChildren())
+		//{
+		//	card.GetNode<TextureButton>("Card").Disabled = true;
+		//}
+
+		//LeaderCardContainer.GetNode<TextureButton>("leaderCardInst/Card").Disabled = true;
+	}
 
 	public void PutCardFromHandOnBoard(int cardId)
 	{

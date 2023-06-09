@@ -18,6 +18,16 @@ public partial class LoginForm : Control
 
 	private void _on_Reg_pressed()
 	{
+		if (GetNode<LineEdit>("Login").Text.Length < 1 || GetNode<LineEdit>("Password").Text.Length < 1)
+		{
+			PackedScene messageBoxScene = (PackedScene)GD.Load("res://message_box.tscn");
+			MessageBox messageBox = (MessageBox)messageBoxScene.Instantiate(PackedScene.GenEditState.Instance);
+			messageBox.SetUp("Пароль и логин должны содержать не менее 1 символа", true);
+			AddChild(messageBox);
+
+			return;
+		}
+
 		GetNode<Button>("Reg").Disabled = true;
 		GetNode<Button>("Auth").Disabled = true;
 
@@ -39,6 +49,16 @@ public partial class LoginForm : Control
 
 	private void _on_Auth_pressed()
 	{
+		if (GetNode<LineEdit>("Login").Text.Length < 1 || GetNode<LineEdit>("Password").Text.Length < 1)
+		{
+			PackedScene messageBoxScene = (PackedScene)GD.Load("res://message_box.tscn");
+			MessageBox messageBox = (MessageBox)messageBoxScene.Instantiate(PackedScene.GenEditState.Instance);
+			messageBox.SetUp("Пароль и логин должны содержать не менее 1 символа", true);
+			AddChild(messageBox);
+
+			return;
+		}
+
 		GetNode<Button>("Reg").Disabled = true;
 		GetNode<Button>("Auth").Disabled = true;
 
@@ -75,7 +95,6 @@ public partial class LoginForm : Control
 				}
 
 				States.PlayerId = JsonSerializer.Deserialize<int>(json.Obj.ToString());
-				GD.Print("LoginForm 78: " + States.PlayerId);
 				if (States.PlayerId < 1)
 				{
 					OS.Alert("Response parsing error");
@@ -99,7 +118,7 @@ public partial class LoginForm : Control
 	{
 		if (button_pressed is true)
 		{
-		  States.Url = "http://localhost:7136/";
+			States.Url = "http://localhost:7136/";
 		}
 		else
 		{

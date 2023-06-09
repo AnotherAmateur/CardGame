@@ -12,24 +12,24 @@ public partial class GameFieldController : Node2D, ISocketConn
 {
 	public static PackedScene MinCardScene = (PackedScene)GD.Load("res://MinCardScene.tscn");
 	private PackedScene cardScene = (PackedScene)GD.Load("res://SlaveCardScene.tscn");
-	public static GameFieldController Instantiate { get; private set; }
+	public static GameFieldController Instance { get; private set; }
 	protected Control leaderCardContainerBottom;
 	protected Control leaderCardContainerTop;
 	private Control largeCardContainer;
-
 	private Protagonist protagonist;
 	private Antagonist antagonist;
-
 	private SocketConnection socketConnection;
-
 	private GameFieldController() { }
+	private Button passBtn;
 
 	public override void _Ready()
 	{
-		Instantiate = this;
+		Instance = this;
 		socketConnection = SocketConnection.GetInstance(this);
 
 		InitializeColorRects();
+
+		passBtn = GetNode<Button>("ToPass");
 
 		Control cardsHandContainer = GetNode<Control>("Cards");
 
@@ -39,8 +39,8 @@ public partial class GameFieldController : Node2D, ISocketConn
 		Control cardRowsContainerTop = GetNode<Control>("FieldRowsContainer").GetNode<Control>("Top");
 		Control cardRowsContainerBottom = GetNode<Control>("FieldRowsContainer").GetNode<Control>("Bottom");
 
-		Label totalCountTop = GetNode<Control>("TotalCount").GetNode<Label>("Top");
-		Label totalCountBottom = GetNode<Control>("TotalCount").GetNode<Label>("Bottom");
+		Label totalCountTop = GetNode<Label>("TotalCount/VBoxContainer/Top");
+		Label totalCountBottom = GetNode<Label>("TotalCount/VBoxContainer/Bottom");
 
 		Control RowsCountTopContainer = GetNode<Control>("RowsCount").GetNode<Control>("Top");
 		Control RowsCountBottomContainer = GetNode<Control>("RowsCount").GetNode<Control>("Bottom");
@@ -50,24 +50,27 @@ public partial class GameFieldController : Node2D, ISocketConn
 
 		largeCardContainer = GetNode<Control>("LargeCardContainer");
 
+		var roundVBoxTop = GetNode<HBoxContainer>("TotalCount/VBoxContainer/TopRoundCount");
+		var roundVBoxBottom = GetNode<HBoxContainer>("TotalCount/VBoxContainer/BottomRoundCount");
+
 		CardDataBase.UpdateCardDataBase();
+
+		antagonist = new(States.AntagonistLeaderCardId, cardRowsContainerTop, leaderCardContainerTop,
+			discardPileContainerTop, totalCountTop, RowsCountTopContainer, roundVBoxTop);
 
 		protagonist = new(CardSelectionMenu.LeaderCard, CardSelectionMenu.SelectedCards,
 			cardRowsContainerBottom, cardsHandContainer, leaderCardContainerBottom,
-			discardPileContainerBottom, totalCountTop, RowsCountBottomContainer);
+			discardPileContainerBottom, totalCountBottom, RowsCountBottomContainer, roundVBoxBottom);
 
 		protagonist.TakeCardsFromDeck(protagonist.GetRandomCardsFromDeck(
 			Math.Min(Player.MaxHandSize, CardSelectionMenu.SelectedCards.Count)));
-
-		antagonist = new(States.AntagonistLeaderCardId, cardRowsContainerTop, leaderCardContainerTop,
-			discardPileContainerTop, totalCountBottom, RowsCountTopContainer);
 
 		//GetNode<Label>("DeckSizeBottom").Text = player.Deck.Count.ToString();
 	}
 
 	public void CardSceneEventHandler(CardEvents cardEvent, int cardId)
 	{
-		if (cardEvent is CardEvents.LeftCllick)
+		if (cardEvent is CardEvents.LeftCllick && passBtn.Disabled is false)
 		{
 			if (CardDataBase.GetCardInfo(cardId).type == CardTypes.Leader)
 			{
@@ -100,18 +103,14 @@ public partial class GameFieldController : Node2D, ISocketConn
 
 	private void _on_Pass_pressed()
 	{
-		antagonist.DoPass();
-
-
-
-
-
-
+		passBtn.Disabled = (antagonist.IsPass) ? false : true;
+		socketConnection.Send(ActionTypes.Pass, States.MasterId, String.Empty);
+		protagonist.DoPass();	
 	}
 
 	public void OnHandleError(string exMessage)
 	{
-		OS.Alert(String.Join("\n", "GameFieldController/OnReceiveMessage: ", exMessage));
+		//OS.Alert(String.Join("\n", "GameFieldController/OnReceiveMessage: ", exMessage));
 	}
 
 	public void OnReceiveMessage(string action, string masterId, string message)
@@ -122,7 +121,8 @@ public partial class GameFieldController : Node2D, ISocketConn
 		}
 		else if (action == ActionTypes.Pass.ToString())
 		{
-
+			antagonist.DoPass();
+			passBtn.Disabled = false;
 		}
 		else
 		{
@@ -130,32 +130,62 @@ public partial class GameFieldController : Node2D, ISocketConn
 		}
 	}
 
+	public void MatchCompleted(Player winner)
+	{
+		string declareWinner = "";
+
+		if (winner == protagonist)
+		{
+			declareWinner = "Победа за вами!";
+		}
+		else if (winner == antagonist)
+		{
+			declareWinner = "Победа за оппонентом!";
+		}
+		else
+		{
+			declareWinner = "Ничья!";
+		}
+
+		socketConnection.Disconnect();
+
+		PackedScene messageBoxScene = (PackedScene)GD.Load("res://message_box.tscn");
+		MessageBox messageBox = (MessageBox)messageBoxScene.Instantiate(PackedScene.GenEditState.Instance);
+		messageBox.SetUp(declareWinner, true, true);
+		GetNode("Shape").AddChild(messageBox);
+	}
+
 	private void InitializeColorRects()
 	{
+		var color = new Godot.Color("#988153");
+
 		var controls = new List<Control>();
 		controls.Add(GetNode<Control>("LeaderCardContainerTop"));
 		controls.Add(GetNode<Control>("LeaderCardContainerBottom"));
 		controls.Add(GetNode<Control>("Cards"));
 		controls.Add(GetNode<Control>("LargeCardContainer"));
 
-		
+		float rowHeight = 127f;
+		float containerOffsetX = 524f;
+		float topMargin = GetNode<Control>("FieldRowsContainer").Position.Y;
+		var rowSize = new Vector2(GetNode<VBoxContainer>("FieldRowsContainer/Top").Size.X, rowHeight);
 		for (int i = 1; i <= 3; i++)
 		{
-			var offset = new Vector2(512, 18);
+			var offset = new Vector2(containerOffsetX, topMargin + (i - 1) * (4 + rowHeight));
 			var item = GetNode<Control>("FieldRowsContainer/Top/Row" + i.ToString());
 			var t = new ColorRect();
-			t.Size = new Vector2(item.Size.X, item.Size.Y);
+			t.Size = rowSize;
 			t.Position = new Vector2(item.Position.X + offset.X, item.Position.Y + offset.Y);
-			t.Color = new Godot.Color("#ac9362");
+			t.Color = color;
 			t.MouseFilter = Control.MouseFilterEnum.Ignore;
 			AddChild(t);
 
-			offset = new Vector2(512, 418);
 			item = GetNode<Control>("FieldRowsContainer/Bottom/Row" + i.ToString());
+			offset = new Vector2(containerOffsetX, topMargin + 397 + (i - 1) * (4 + rowHeight));
 			t = new ColorRect();
-			t.Size = new Vector2(item.Size.X, item.Size.Y);
+			t.Size = rowSize;
 			t.Position = new Vector2(item.Position.X + offset.X, item.Position.Y + offset.Y);
-			t.Color = new Godot.Color("#ac9362");
+			t.Color = color;
 			t.MouseFilter = Control.MouseFilterEnum.Ignore;
 			AddChild(t);
 		}
@@ -166,7 +196,7 @@ public partial class GameFieldController : Node2D, ISocketConn
 			var t = new ColorRect();
 			t.Size = new Vector2(item.Size.X + margin, item.Size.Y + margin);
 			t.Position = new Vector2(item.Position.X - margin / 2, item.Position.Y - margin / 2);
-			t.Color = new Godot.Color("#ac9362");
+			t.Color = color;
 			t.MouseFilter = Control.MouseFilterEnum.Ignore;
 			AddChild(t);
 		}

@@ -174,8 +174,9 @@ grow_vertical = 2
 
 [node name="AllCardsBtn" type="Button" parent="LeftBtnContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 13
-text = "Все карты"
+text = "Все"
 
 [node name="Group1Btn" type="Button" parent="LeftBtnContainer/HBoxContainer"]
 layout_mode = 2
@@ -204,8 +205,7 @@ text_overrun_behavior = 3
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 13
-text = "Спецаильные карты"
-alignment = 0
+text = "Специальные"
 text_overrun_behavior = 3
 
 [node name="RightBtnContainer" type="Control" parent="."]
@@ -227,8 +227,9 @@ grow_vertical = 2
 
 [node name="AllCardsBtn" type="Button" parent="RightBtnContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 13
-text = "Все карты"
+text = "Все"
 
 [node name="Group1Btn" type="Button" parent="RightBtnContainer/HBoxContainer"]
 layout_mode = 2
@@ -257,8 +258,7 @@ text_overrun_behavior = 3
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 13
-text = "Спецаильные карты"
-alignment = 0
+text = "Специальные"
 text_overrun_behavior = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]

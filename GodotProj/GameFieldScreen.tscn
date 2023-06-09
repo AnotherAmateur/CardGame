@@ -1,8 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://clbem1wntd7r1"]
 
 [ext_resource type="Texture2D" uid="uid://c34ahdeyp6d0l" path="res://Assets/Backgrounds/Scheme.png" id="1"]
-[ext_resource type="Script" path="res://Scripts/GameFieldController.cs" id="2"]
-[ext_resource type="Texture2D" uid="uid://bu84pxcmhuqvg" path="res://icon.png" id="3"]
+[ext_resource type="Script" path="res://Scripts/GameFieldController.cs" id="1_4rqmr"]
 [ext_resource type="Shader" path="res://Assets/Shaders/GameFieldScreen.gdshader" id="3_0rc4y"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bimft"]
@@ -11,6 +10,8 @@ shader_parameter/color = Color(0.356863, 0.176471, 0.00392157, 1)
 shader_parameter/multiplier = 0.59
 shader_parameter/softness = 1.0
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_aofq0"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kj2o2"]
 bg_color = Color(0.6, 0.6, 0.6, 0.529412)
 
@@ -18,9 +19,9 @@ bg_color = Color(0.6, 0.6, 0.6, 0.529412)
 bg_color = Color(0.517647, 0, 0.341176, 0.686275)
 
 [node name="GameField" type="Node2D"]
-script = ExtResource("2")
-metadata/_edit_horizontal_guides_ = [547.0, 350.0, 43.0, 200.0, 867.0, 1025.0, 679.0, 20.0, 148.0]
-metadata/_edit_vertical_guides_ = [1622.0, 1879.0, 525.0, 1572.0, 1033.0, 71.0, 190.0]
+script = ExtResource("1_4rqmr")
+metadata/_edit_horizontal_guides_ = [547.0, 350.0, 43.0, 200.0, 867.0, 1025.0, 679.0, 20.0, 148.0, 542.0]
+metadata/_edit_vertical_guides_ = [1622.0, 1879.0, 524.0, 1574.0, 1033.0, 71.0, 190.0, 637.0]
 
 [node name="BackColor" type="ColorRect" parent="."]
 offset_right = 1920.0
@@ -43,16 +44,14 @@ offset_bottom = 1075.0
 mouse_filter = 2
 
 [node name="DeckTopImg" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(1825.5, 111)
 scale = Vector2(1.67188, 2.3125)
-texture = ExtResource("3")
+texture = SubResource("CompressedTexture2D_aofq0")
 
 [node name="DeckBottomImg" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(1774, 895)
 scale = Vector2(1.67188, 2.3125)
-texture = ExtResource("3")
+texture = SubResource("CompressedTexture2D_aofq0")
 centered = false
 
 [node name="LeaderCardContainerTop" type="Control" parent="."]
@@ -74,9 +73,9 @@ offset_bottom = 1020.0
 [node name="Cards" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 527.0
+offset_left = 524.0
 offset_top = 905.0
-offset_right = 1572.0
+offset_right = 1574.0
 offset_bottom = 1059.0
 mouse_filter = 2
 
@@ -100,56 +99,130 @@ offset_top = 18.0
 offset_right = 1574.0
 offset_bottom = 806.0
 
-[node name="Top" type="Control" parent="FieldRowsContainer"]
-anchors_preset = 0
+[node name="Top" type="VBoxContainer" parent="FieldRowsContainer"]
+layout_mode = 1
 offset_right = 1049.0
-offset_bottom = 386.0
-
-[node name="Row1" type="Control" parent="FieldRowsContainer/Top"]
-anchors_preset = 0
-offset_left = 2.0
-offset_top = 265.0
-offset_right = 1047.0
-offset_bottom = 385.0
-
-[node name="Row2" type="Control" parent="FieldRowsContainer/Top"]
-anchors_preset = 0
-offset_left = 2.0
-offset_top = 135.0
-offset_right = 1047.0
-offset_bottom = 255.0
+offset_bottom = 389.0
 
 [node name="Row3" type="Control" parent="FieldRowsContainer/Top"]
-anchors_preset = 0
-offset_left = 1.0
-offset_top = 6.0
-offset_right = 1048.0
-offset_bottom = 125.0
+layout_mode = 2
+size_flags_vertical = 3
 
-[node name="Bottom" type="Control" parent="FieldRowsContainer"]
-anchors_preset = 0
-offset_top = 400.0
+[node name="Label" type="Label" parent="FieldRowsContainer/Top/Row3"]
+z_index = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 0.0705882)
+theme_override_font_sizes/font_size = 48
+text = "Социальная справедливость и этика"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Row2" type="Control" parent="FieldRowsContainer/Top"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="FieldRowsContainer/Top/Row2"]
+z_index = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 0.0705882)
+theme_override_font_sizes/font_size = 48
+text = "Личностное развитие и мотивация"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Row1" type="Control" parent="FieldRowsContainer/Top"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="FieldRowsContainer/Top/Row1"]
+z_index = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 0.0705882)
+theme_override_font_sizes/font_size = 48
+text = "Мудрость и философия"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Bottom" type="VBoxContainer" parent="FieldRowsContainer"]
+layout_mode = 0
+offset_top = 397.0
 offset_right = 1049.0
 offset_bottom = 786.0
 
-[node name="Row3" type="Control" parent="FieldRowsContainer/Bottom"]
-anchors_preset = 0
-offset_left = 2.0
-offset_top = 263.0
-offset_right = 1047.0
-offset_bottom = 383.0
+[node name="Row1" type="Control" parent="FieldRowsContainer/Bottom"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="FieldRowsContainer/Bottom/Row1"]
+z_index = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 0.0705882)
+theme_override_font_sizes/font_size = 48
+text = "Мудрость и философия"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
 
 [node name="Row2" type="Control" parent="FieldRowsContainer/Bottom"]
-anchors_preset = 0
-offset_left = 2.0
-offset_top = 133.0
-offset_right = 1047.0
-offset_bottom = 253.0
+layout_mode = 2
+size_flags_vertical = 3
 
-[node name="Row1" type="Control" parent="FieldRowsContainer/Bottom"]
-anchors_preset = 0
-offset_right = 1048.0
-offset_bottom = 123.0
+[node name="Label" type="Label" parent="FieldRowsContainer/Bottom/Row2"]
+z_index = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 0.0705882)
+theme_override_font_sizes/font_size = 48
+text = "Личностное развитие и мотивация"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Row3" type="Control" parent="FieldRowsContainer/Bottom"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="FieldRowsContainer/Bottom/Row3"]
+z_index = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 0.0705882)
+theme_override_font_sizes/font_size = 48
+text = "Социальная справедливость и этика"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
 
 [node name="DiscardPileContainerTop" type="Control" parent="."]
 layout_mode = 3
@@ -170,32 +243,90 @@ offset_bottom = 1040.0
 [node name="TotalCount" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 73.0
+offset_left = 71.0
 offset_top = 201.0
-offset_right = 192.0
+offset_right = 190.0
 offset_bottom = 865.0
 
-[node name="Top" type="Label" parent="TotalCount"]
+[node name="VBoxContainer" type="VBoxContainer" parent="TotalCount"]
 layout_mode = 1
-anchors_preset = 10
+anchors_preset = 15
 anchor_right = 1.0
-offset_bottom = 55.0
+anchor_bottom = 1.0
 grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Top" type="Label" parent="TotalCount/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 40
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Bottom" type="Label" parent="TotalCount"]
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -55.0
-grow_horizontal = 2
-grow_vertical = 0
+[node name="MarginContainer" type="MarginContainer" parent="TotalCount/VBoxContainer"]
+custom_minimum_size = Vector2(0, 180)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TopRoundCount" type="HBoxContainer" parent="TotalCount/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="CheckBox1" type="CheckBox" parent="TotalCount/VBoxContainer/TopRoundCount"]
+layout_mode = 2
+disabled = true
+button_mask = 0
+
+[node name="CheckBox2" type="CheckBox" parent="TotalCount/VBoxContainer/TopRoundCount"]
+layout_mode = 2
+disabled = true
+
+[node name="CheckBox3" type="CheckBox" parent="TotalCount/VBoxContainer/TopRoundCount"]
+layout_mode = 2
+disabled = true
+
+[node name="MarginContainer3" type="MarginContainer" parent="TotalCount/VBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TotalCount/VBoxContainer/MarginContainer3"]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+theme_override_styles/normal = SubResource("StyleBoxFlat_kj2o2")
+text = "Партии"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="BottomRoundCount" type="HBoxContainer" parent="TotalCount/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="CheckBox1" type="CheckBox" parent="TotalCount/VBoxContainer/BottomRoundCount"]
+layout_mode = 2
+disabled = true
+
+[node name="CheckBox2" type="CheckBox" parent="TotalCount/VBoxContainer/BottomRoundCount"]
+layout_mode = 2
+disabled = true
+
+[node name="CheckBox3" type="CheckBox" parent="TotalCount/VBoxContainer/BottomRoundCount"]
+layout_mode = 2
+disabled = true
+
+[node name="MarginContainer2" type="MarginContainer" parent="TotalCount/VBoxContainer"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Bottom" type="Label" parent="TotalCount/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 40
@@ -205,47 +336,54 @@ vertical_alignment = 1
 [node name="RowsCount" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 474.0
+offset_left = 442.0
 offset_top = 18.0
-offset_right = 525.0
+offset_right = 511.0
 offset_bottom = 802.0
 
 [node name="Top" type="Control" parent="RowsCount"]
 custom_minimum_size = Vector2(20, 20)
 anchors_preset = 0
-offset_right = 49.0
+offset_right = 50.0
 offset_bottom = 387.0
 
-[node name="Row1" type="Label" parent="RowsCount/Top"]
+[node name="Row3" type="Label" parent="RowsCount/Top"]
 custom_minimum_size = Vector2(20, 20)
 layout_mode = 0
+offset_left = -1.0
 offset_top = 35.0
-offset_right = 48.0
+offset_right = 50.0
 offset_bottom = 80.0
 theme_override_font_sizes/font_size = 24
-horizontal_alignment = 1
+horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Row2" type="Label" parent="RowsCount/Top"]
-custom_minimum_size = Vector2(20, 20)
-layout_mode = 0
-offset_top = 171.0
-offset_right = 49.0
-offset_bottom = 215.0
-theme_override_font_sizes/font_size = 24
-
-[node name="Row3" type="Label" parent="RowsCount/Top"]
+[node name="Row1" type="Label" parent="RowsCount/Top"]
 custom_minimum_size = Vector2(20, 20)
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -1.0
 offset_top = -79.0
 offset_bottom = -38.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_font_sizes/font_size = 24
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Row2" type="Label" parent="RowsCount/Top"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 0
+offset_left = -1.0
+offset_top = 171.0
+offset_right = 50.0
+offset_bottom = 215.0
+theme_override_font_sizes/font_size = 24
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="Bottom" type="Control" parent="RowsCount"]
 anchors_preset = 0
@@ -256,27 +394,30 @@ offset_bottom = 788.0
 
 [node name="Row1" type="Label" parent="RowsCount/Bottom"]
 layout_mode = 0
-offset_left = 3.0
 offset_top = 43.0
 offset_right = 51.0
 offset_bottom = 88.0
 theme_override_font_sizes/font_size = 24
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="Row2" type="Label" parent="RowsCount/Bottom"]
 layout_mode = 0
-offset_left = 1.0
 offset_top = 169.0
-offset_right = 47.0
+offset_right = 51.0
 offset_bottom = 214.0
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 24
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="Row3" type="Label" parent="RowsCount/Bottom"]
 layout_mode = 0
-offset_left = 2.0
 offset_top = 307.0
-offset_right = 49.0
+offset_right = 51.0
 offset_bottom = 350.0
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 24
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="LargeCardContainer" type="Control" parent="."]
 layout_mode = 3
@@ -307,5 +448,20 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_banbw")
 text = "Спасовать"
+
+[node name="VertColorRect" type="ColorRect" parent="."]
+z_index = 10
+offset_left = 526.0
+offset_top = 19.0
+offset_right = 637.0
+offset_bottom = 802.0
+color = Color(0.980392, 0.976471, 0.976471, 0.0470588)
+
+[node name="Shape" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
 
 [connection signal="pressed" from="ToPass" to="." method="_on_Pass_pressed"]

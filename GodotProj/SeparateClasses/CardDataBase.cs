@@ -5,6 +5,8 @@ using Godot;
 
 public static class CardDataBase
 {
+	static Random rand = new Random();
+
 	public struct CardData
 	{
 		public int id;
@@ -20,6 +22,7 @@ public static class CardDataBase
 			this.id = id;
 			this.type = type;
 			this.strength = strength;
+			//this.strength = rand.Next(1, 31);
 			this.nation = nation;
 			this.text = text;
 
@@ -277,9 +280,9 @@ public static class CardDataBase
 			(
 				id: cardId++,
 				type: CardTypes.Group1,
-				strength: 30,
+				strength: 20,
 				nation: CardNations.Confucius,
-				text: "Поступай"
+				text: "Тот, кто знает, что он не знает, — самый умный. Тот, кто не знает, что он не знает, — глупый."
 			));
 			cards.Add(cardId, new CardData
 			(
@@ -287,8 +290,168 @@ public static class CardDataBase
 				type: CardTypes.Group1,
 				strength: 20,
 				nation: CardNations.Confucius,
-				text: "Истинное"
+				text: "Лучше видеть один раз, чем слышать сто раз."
 			));
+			cards.Add(cardId, new CardData
+			(
+				id: cardId++,
+				type: CardTypes.Group1,
+				strength: 20,
+				nation: CardNations.Confucius,
+				text: "Человек, который хочет переместить гору, должен начать с того, чтобы убрать маленький камешек."
+			));
+			cards.Add(cardId, new CardData
+			(
+				id: cardId++,
+				type: CardTypes.Group1,
+				strength: 20,
+				nation: CardNations.Confucius,
+				text: "Истинная мудрость заключается в том, чтобы познать, что ты ничего не знаешь."
+			));
+			cards.Add(cardId, new CardData
+			(
+				id: cardId++,
+				type: CardTypes.Group1,
+				strength: 20,
+				nation: CardNations.Confucius,
+				text: "Знание без мышления — пустое; мышление без знания — опасно."
+			));
+			cards.Add(cardId, new CardData
+			(
+				id: cardId++,
+				type: CardTypes.Group1,
+				strength: 20,
+				nation: CardNations.Confucius,
+				text: "Учиться и не мыслить — напрасно трудиться."
+			));
+			cards.Add(cardId, new CardData
+			(
+				id: cardId++,
+				type: CardTypes.Group1,
+				strength: 20,
+				nation: CardNations.Confucius,
+				text: "Желание знаний — первое признак добродетели."
+			));
+
+
+			cardId = 1101;
+
+			cards.Add(cardId, new CardData
+			(
+				id: cardId++,
+				type: CardTypes.Group2,
+				strength: 30,
+				nation: CardNations.Confucius,
+				text: "Приступая к любому делу, помни о его цели."
+			));
+			cards.Add(cardId, new CardData
+			(
+				id: cardId++,
+				type: CardTypes.Group2,
+				strength: 20,
+				nation: CardNations.Confucius,
+				text: "Даже самый длинный путь начинается с первого шага."
+			));
+			cards.Add(cardId, new CardData
+			(
+				id: cardId++,
+				type: CardTypes.Group2,
+				strength: 20,
+				nation: CardNations.Confucius,
+				text: "Победа не всегда победа, поражение не всегда поражение."
+			));
+			cards.Add(cardId, new CardData
+			(
+				id: cardId++,
+				type: CardTypes.Group2,
+				strength: 20,
+				nation: CardNations.Confucius,
+				text: "Путешествие тысячи миль начинается с одного шага."
+			));
+			cards.Add(cardId, new CardData
+			(
+				id: cardId++,
+				type: CardTypes.Group2,
+				strength: 20,
+				nation: CardNations.Confucius,
+				text: "Никогда не отказывайся от своей цели, неважно, насколько далеко ты от нее находишься."
+			));
+			cards.Add(cardId, new CardData
+			(
+				id: cardId++,
+				type: CardTypes.Group2,
+				strength: 20,
+				nation: CardNations.Confucius,
+				text: "Самая большая слава не в том, чтобы никогда не падать, а в том, чтобы каждый раз подниматься после падения."
+			));
+			cards.Add(cardId, new CardData
+			(
+				id: cardId++,
+				type: CardTypes.Group2,
+				strength: 20,
+				nation: CardNations.Confucius,
+				text: "Неважно, насколько медленно ты идешь, главное — не останавливаться."
+			));
+
+			cardId = 1201;
+
+			cards.Add(cardId, new CardData
+			(
+				id: cardId++,
+				type: CardTypes.Group3,
+				strength: 20,
+				nation: CardNations.Confucius,
+				text: "Не делай другому то, чего не хотел бы для себя."
+			));
+			cards.Add(cardId, new CardData
+			(
+				id: cardId++,
+				type: CardTypes.Group3,
+				strength: 20,
+				nation: CardNations.Confucius,
+				text: "Справедливость основана на том, чтобы дать каждому то, что ему положено."
+			));
+			cards.Add(cardId, new CardData
+			(
+				id: cardId++,
+				type: CardTypes.Group3,
+				strength: 20,
+				nation: CardNations.Confucius,
+				text: "Лучший способ построить доверие — быть доверительным."
+			));
+			cards.Add(cardId, new CardData
+			(
+				id: cardId++,
+				type: CardTypes.Group3,
+				strength: 20,
+				nation: CardNations.Confucius,
+				text: "Великий человек предвидит все, что произойдет; маленький человек, что происходит."
+			));
+			cards.Add(cardId, new CardData
+			(
+				id: cardId++,
+				type: CardTypes.Group3,
+				strength: 20,
+				nation: CardNations.Confucius,
+				text: "Лучше потерять немного выгоды, чем утратить доверие."
+			));
+			cards.Add(cardId, new CardData
+			(
+				id: cardId++,
+				type: CardTypes.Group3,
+				strength: 20,
+				nation: CardNations.Confucius,
+				text: "Что ты не желаешь себе, не делай другим."
+			));
+			cards.Add(cardId, new CardData
+			(
+				id: cardId++,
+				type: CardTypes.Group3,
+				strength: 20,
+				nation: CardNations.Confucius,
+				text: "Справедливость без милосердия есть жестокость; милосердие без справедливости есть слабость."
+			));
+
 
 			cardId = 1301;
 

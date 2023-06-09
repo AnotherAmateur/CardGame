@@ -6,15 +6,14 @@ using System;
 
 public class SocketConnection : ISocketConn
 {
-	private readonly static HubConnection connection;
+	private static HubConnection connection;
 	private readonly static string url;
 	private ISocketConn scene;
 	private static SocketConnection instance;
 
 	static SocketConnection()
 	{
-		url = States.Url + "ws";
-		connection = new HubConnectionBuilder().WithUrl(url).Build();	
+		url = States.Url + "ws";	
 	}
 
 	private SocketConnection()
@@ -27,6 +26,7 @@ public class SocketConnection : ISocketConn
 	{
 		if (instance is null)
 		{
+			connection = new HubConnectionBuilder().WithUrl(url).Build();
 			instance = new SocketConnection();
 		}
 

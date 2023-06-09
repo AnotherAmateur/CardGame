@@ -10,31 +10,26 @@ public partial class SlaveCardScene : Node2D
 	private Vector2 initRectSize = new Vector2(States.InitCardSize.Item1, States.InitCardSize.Item2);
 	private bool disconnectSignals;
 
-
-	public override void _Ready()
-	{
-	}
-
+	public override void _Ready() { }
 
 	public void _on_Card_pressed()
 	{
 		if (disconnectSignals is false)
 		{
-			if (GameFieldController.Instantiate is null)
+			if (GameFieldController.Instance is null)
 			{
-				CardSelectionMenu.Instantiate.CardSceneEventHandler(CardEvents.LeftCllick, 
+				CardSelectionMenu.Instantiate.CardSceneEventHandler(CardEvents.LeftCllick,
 					int.Parse(Name));
 			}
 			else
 			{
-				GameFieldController.Instantiate.CardSceneEventHandler(CardEvents.LeftCllick, 
+				GameFieldController.Instance.CardSceneEventHandler(CardEvents.LeftCllick,
 					int.Parse(Name));
 			}
 		}
 	}
 
-
-	public void SetParams(Vector2 rectSize, string texturePath, CardDataBase.CardData card, 
+	public void SetParams(Vector2 rectSize, string texturePath, CardDataBase.CardData card,
 		bool disconnectSignals = false)
 	{
 		this.disconnectSignals = disconnectSignals;
@@ -51,12 +46,10 @@ public partial class SlaveCardScene : Node2D
 		GetNode<Label>("LabelsContainer/MainText").Text = card.text;
 	}
 
-
 	public void SetDamage(int damage)
 	{
 		CardDamage = damage;
 	}
-
 
 	public void DisableCardButton()
 	{
@@ -64,12 +57,11 @@ public partial class SlaveCardScene : Node2D
 		GetNode<TextureButton>("Card").SelfModulate = new Godot.Color("a7a7a7");
 	}
 
-
 	private void _on_Card_mouse_entered()
 	{
 		if (disconnectSignals is false)
 		{
-			Protagonist player = Protagonist.Instantiate;
+			Protagonist player = Protagonist.Instance;
 			if ((player is null) is false && player.Hand.Contains(int.Parse(Name)))
 			{
 				var initPosition = new Vector2(this.Position.X, this.Position.Y - yOffsetPx);
@@ -78,12 +70,11 @@ public partial class SlaveCardScene : Node2D
 		}
 	}
 
-
 	private void _on_Card_mouse_exited()
 	{
 		if (disconnectSignals is false)
 		{
-			Protagonist player = Protagonist.Instantiate;
+			Protagonist player = Protagonist.Instance;
 			if ((player is null) is false && player.Hand.Contains(int.Parse(Name)))
 			{
 				var initPosition = new Vector2(this.Position.X, this.Position.Y + yOffsetPx);
