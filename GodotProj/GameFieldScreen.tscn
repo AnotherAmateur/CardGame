@@ -20,8 +20,8 @@ bg_color = Color(0.517647, 0, 0.341176, 0.686275)
 
 [node name="GameField" type="Node2D"]
 script = ExtResource("1_4rqmr")
-metadata/_edit_horizontal_guides_ = [547.0, 350.0, 43.0, 200.0, 867.0, 1025.0, 679.0, 20.0, 148.0, 542.0]
-metadata/_edit_vertical_guides_ = [1622.0, 1879.0, 524.0, 1574.0, 1033.0, 71.0, 190.0, 637.0]
+metadata/_edit_horizontal_guides_ = [547.0, 350.0, 867.0, 1025.0, 677.0, 18.0, 540.0, 803.0, 407.0, 415.0, 145.0, 149.0, 276.0, 280.0]
+metadata/_edit_vertical_guides_ = [1622.0, 1879.0, 525.0, 1574.0, 1033.0, 71.0, 190.0, 388.0]
 
 [node name="BackColor" type="ColorRect" parent="."]
 offset_right = 1920.0
@@ -449,19 +449,74 @@ theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_banbw")
 text = "Спасовать"
 
-[node name="VertColorRect" type="ColorRect" parent="."]
-z_index = 10
-offset_left = 526.0
-offset_top = 19.0
-offset_right = 637.0
-offset_bottom = 802.0
-color = Color(0.980392, 0.976471, 0.976471, 0.0470588)
-
 [node name="Shape" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
 mouse_filter = 2
+
+[node name="SpecialCardsContainer" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 526.0
+offset_top = 18.0
+offset_right = 628.0
+offset_bottom = 804.0
+
+[node name="VertColorRect" type="ColorRect" parent="SpecialCardsContainer"]
+z_index = 10
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.980392, 0.976471, 0.976471, 0.0470588)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SpecialCardsContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 4
+
+[node name="TopRow3" type="Control" parent="SpecialCardsContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TopRow2" type="Control" parent="SpecialCardsContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TopRow1" type="Control" parent="SpecialCardsContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="SpecialCardsContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 3)
+layout_mode = 2
+
+[node name="BottomRow1" type="Control" parent="SpecialCardsContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BottomRow2" type="Control" parent="SpecialCardsContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BottomRow3" type="Control" parent="SpecialCardsContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TemporalSpCardContainer" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 261.0
+offset_top = 444.0
+offset_right = 389.0
+offset_bottom = 636.0
 
 [connection signal="pressed" from="ToPass" to="." method="_on_Pass_pressed"]

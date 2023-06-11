@@ -1,7 +1,10 @@
 using CardGameProj.SeparateClasses;
 using Godot;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Text;
+using System.Text.Json;
 
 public partial class RoomMenu : Control
 {
@@ -10,6 +13,15 @@ public partial class RoomMenu : Control
 	public override void _Ready()
 	{
 		httpRequest = GetNode<HttpRequest>("HTTPRequest");
+		GetPlayerInfo();
+	}
+
+	private void GetPlayerInfo()
+	{
+		string json = Json.Stringify(States.PlayerId);
+		string[] headers = new string[] { "Content-Type: application/json" };
+		string url = States.Url + "api/Game/getplayer";
+		httpRequest.Request(url, headers, HttpClient.Method.Post, json);
 	}
 
 	private void _on_JoinRoomButton_pressed()
@@ -19,30 +31,28 @@ public partial class RoomMenu : Control
 		AddChild(roomListInstance);
 	}
 
-	private void _on_http_request_request_completed(long result, long response_code, string[] headers, byte[] body)
+
+	private void _on_http_request_request_completed(long _, long response_code, string[] headers, byte[] body)
 	{
 		if (response_code == 200)
 		{
 			try
 			{
-				var json = Json.ParseString(Encoding.UTF8.GetString(body));
-
-				if (json.Obj is null)
-				{
-					throw new Exception("Unexpected server response (500)");
-				}
-
-				States.GameId = (int)json.Obj;
-				GetTree().ChangeSceneToPacked((PackedScene)GD.Load("res://CardSelectionMenu.tscn"));
+				string resultString = System.Text.Encoding.UTF8.GetString(body);
+				string[] playerInfo = resultString.Split(";", StringSplitOptions.RemoveEmptyEntries);
+				GetNode<Label>("PlayerInfoPanel/HBoxContainer/LoginLabel").Text = playerInfo[0];
+				GetNode<Label>("PlayerInfoPanel/HBoxContainer/RatingLabel").Text = playerInfo[1];
 			}
 			catch (Exception ex)
 			{
-				GetNode<Label>("StatusLabel").Text = ex.Message;
+				OS.Alert("Ошибка \n" + ex.Message);
+				GetTree().Quit();
 			}
 		}
 		else
 		{
-			GetNode<Label>("StatusLabel").Text = "Не удалось присоединиться. Код: " + response_code;
+			OS.Alert("Ошибка. Код: " + response_code);
+			GetTree().Quit();
 		}
 	}
 

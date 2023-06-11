@@ -13,6 +13,8 @@ public partial class GameFieldController : Node2D, ISocketConn
 	public static PackedScene MinCardScene = (PackedScene)GD.Load("res://MinCardScene.tscn");
 	private PackedScene cardScene = (PackedScene)GD.Load("res://SlaveCardScene.tscn");
 	public static GameFieldController Instance { get; private set; }
+	public VBoxContainer SpecialCardsContainer { get; private set; }
+	public Control TemporalSpCardContainer { get; private set; }
 	protected Control leaderCardContainerBottom;
 	protected Control leaderCardContainerTop;
 	private Control largeCardContainer;
@@ -47,8 +49,9 @@ public partial class GameFieldController : Node2D, ISocketConn
 
 		leaderCardContainerBottom = GetNode<Control>("LeaderCardContainerBottom");
 		leaderCardContainerTop = GetNode<Control>("LeaderCardContainerTop");
-
+		SpecialCardsContainer = GetNode<VBoxContainer>("SpecialCardsContainer/VBoxContainer");
 		largeCardContainer = GetNode<Control>("LargeCardContainer");
+		TemporalSpCardContainer = GetNode<Control>("TemporalSpCardContainer");
 
 		var roundVBoxTop = GetNode<HBoxContainer>("TotalCount/VBoxContainer/TopRoundCount");
 		var roundVBoxBottom = GetNode<HBoxContainer>("TotalCount/VBoxContainer/BottomRoundCount");
@@ -64,27 +67,26 @@ public partial class GameFieldController : Node2D, ISocketConn
 
 		protagonist.TakeCardsFromDeck(protagonist.GetRandomCardsFromDeck(
 			Math.Min(Player.MaxHandSize, CardSelectionMenu.SelectedCards.Count)));
-
-		//GetNode<Label>("DeckSizeBottom").Text = player.Deck.Count.ToString();
 	}
 
 	public void CardSceneEventHandler(CardEvents cardEvent, int cardId)
 	{
+		var cardInfo = CardDataBase.GetCardInfo(cardId);
+
 		if (cardEvent is CardEvents.LeftCllick && passBtn.Disabled is false)
 		{
-			if (CardDataBase.GetCardInfo(cardId).type == CardTypes.Leader)
+			switch (cardInfo.type)
 			{
-
-			}
-			else if (protagonist.Hand.Contains(cardId))
-			{
-				protagonist.PutCardFromHandOnBoard(cardId);
-
-				socketConnection.Send(ActionTypes.CardMove, States.MasterId, cardId.ToString());
-
-
-
-
+				case CardTypes.Leader:
+					// nothing for now
+					break;
+				default:
+					if (protagonist.Hand.Contains(cardId))
+					{
+						protagonist.PutCardFromHandOnBoard(cardInfo);
+						socketConnection.Send(ActionTypes.CardMove, States.MasterId, cardId.ToString());
+					}
+					break;
 			}
 		}
 		else if (cardEvent is CardEvents.RightClick)
@@ -97,7 +99,7 @@ public partial class GameFieldController : Node2D, ISocketConn
 			SlaveCardScene cardInstance = (SlaveCardScene)cardScene.Instantiate(PackedScene.GenEditState.Instance);
 			largeCardContainer.AddChild(cardInstance);
 			cardInstance.SetParams(largeCardContainer.Size, CardDataBase.GetCardTexturePath(cardId),
-				CardDataBase.GetCardInfo(cardId), disconnectSignals: true);
+				cardInfo, disconnectSignals: true);
 		}
 	}
 
@@ -105,7 +107,7 @@ public partial class GameFieldController : Node2D, ISocketConn
 	{
 		passBtn.Disabled = (antagonist.IsPass) ? false : true;
 		socketConnection.Send(ActionTypes.Pass, States.MasterId, String.Empty);
-		protagonist.DoPass();	
+		protagonist.DoPass();
 	}
 
 	public void OnHandleError(string exMessage)
@@ -118,6 +120,7 @@ public partial class GameFieldController : Node2D, ISocketConn
 		if (action == ActionTypes.CardMove.ToString())
 		{
 			antagonist.PutCardOnBoard(int.Parse(message));
+			protagonist.UpdateBoard();
 		}
 		else if (action == ActionTypes.Pass.ToString())
 		{
@@ -137,22 +140,32 @@ public partial class GameFieldController : Node2D, ISocketConn
 		if (winner == protagonist)
 		{
 			declareWinner = "Победа за вами!";
+			if (States.MasterId != States.PlayerId)
+			{
+				socketConnection.Send(ActionTypes.GameOver, States.MasterId, String.Join(";", States.PlayerId, States.PlayerId));
+			}			
 		}
 		else if (winner == antagonist)
 		{
 			declareWinner = "Победа за оппонентом!";
+			if (States.MasterId != States.PlayerId)
+			{
+				socketConnection.Send(ActionTypes.GameOver, States.MasterId, String.Join(";", States.PlayerId, States.MasterId));
+			}
 		}
 		else
 		{
 			declareWinner = "Ничья!";
+			if (States.MasterId != States.PlayerId)
+			{
+				socketConnection.Send(ActionTypes.GameOver, States.MasterId, States.PlayerId.ToString());
+			}
 		}
 
 		socketConnection.Disconnect();
 
-		PackedScene messageBoxScene = (PackedScene)GD.Load("res://message_box.tscn");
-		MessageBox messageBox = (MessageBox)messageBoxScene.Instantiate(PackedScene.GenEditState.Instance);
-		messageBox.SetUp(declareWinner, true, true);
-		GetNode("Shape").AddChild(messageBox);
+		MessageBox.Instance.SetUp(declareWinner, true, true);
+		GetNode("Shape").AddChild(MessageBox.Instance);
 	}
 
 	private void InitializeColorRects()
@@ -163,7 +176,8 @@ public partial class GameFieldController : Node2D, ISocketConn
 		controls.Add(GetNode<Control>("LeaderCardContainerTop"));
 		controls.Add(GetNode<Control>("LeaderCardContainerBottom"));
 		controls.Add(GetNode<Control>("Cards"));
-		controls.Add(GetNode<Control>("LargeCardContainer"));
+		controls.Add(GetNode<Control>("LargeCardContainer"));		
+		controls.Add(GetNode<Control>("TemporalSpCardContainer"));		
 
 		float rowHeight = 127f;
 		float containerOffsetX = 524f;
@@ -190,7 +204,7 @@ public partial class GameFieldController : Node2D, ISocketConn
 			AddChild(t);
 		}
 
-		const int margin = 16;
+		const int margin = 12;
 		foreach (var item in controls)
 		{
 			var t = new ColorRect();

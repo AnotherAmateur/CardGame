@@ -35,6 +35,19 @@ namespace CardGameWebApi.PL.Controllers
 			return Ok(lobbies);
 		}
 
+		[HttpPost("getplayer")]
+		public IActionResult GetPlayerInfo([FromBody] int id)
+		{
+			var user = dataManager.Users.GetUserById(id);
+			if (user is null)
+			{
+				return BadRequest();
+			}
+
+			string response = String.Join(";", user.Login, user.Rating);
+			return Ok(response);
+		}
+
 		[HttpPost("registration")]
 		public IActionResult Registration([FromBody] UnAuthorizedUserModel modelUser)
 		{

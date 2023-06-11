@@ -8,7 +8,7 @@ public partial class MinCardScene : Node2D
 	public int CardDamage { get; private set; }
 	private Vector2 initRectSize = new Vector2(States.InitCardSize.Item1, States.InitCardSize.Item2);
 
-	public override void _Ready() {}
+	public override void _Ready() { }
 
 	public void SetParams(Vector2 rectSize, string texturePath, CardDataBase.CardData card)
 	{
@@ -17,12 +17,12 @@ public partial class MinCardScene : Node2D
 		GetNode<TextureButton>("Card").TextureNormal = (Texture2D)GD.Load(texturePath);
 		float scaleFactorY = rectSize.Y / initRectSize.Y;
 		float scaleFactorX = rectSize.X / initRectSize.X;
-		//float scaleFactorX = scaleFactorY;
 		this.Scale = new Vector2(scaleFactorX, scaleFactorY);
 
 		CardDamage = card.strength;
 		GetNode<Label>("LabelsContainer/VBoxContainer/HBoxContainer/Strength").Text = CardDamage.ToString();
-		GetNode<Label>("LabelsContainer/VBoxContainer/Paragraph").Text = card.category.ToString();
+		GetNode<Label>("LabelsContainer/VBoxContainer/Paragraph").Text = 
+			(card.type == CardTypes.Special) ? card.text : card.category.ToString();
 	}
 
 	public void SetDamage(int damage)

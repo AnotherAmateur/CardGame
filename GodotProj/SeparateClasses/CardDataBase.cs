@@ -67,12 +67,10 @@ public static class CardDataBase
 		get { return new Dictionary<int, CardData>(cards); }
 	}
 
-
 	public static CardData GetCardInfo(int cardId)
 	{
 		return cards[cardId];
 	}
-
 
 	public static string GetCardTexturePath(int cardId)
 	{
@@ -80,13 +78,12 @@ public static class CardDataBase
 		return "res://Assets/Cards/" + card.nation + "/" + card.type + "/" + cardId + ".png";
 	}
 
-
 	public static void UpdateCardDataBase()
 	{
 		int cardId = 0;
 		cards = new();
 
-		// nation 1
+		// AI
 		{
 			cards.Add(cardId, new CardData(id: cardId++, type: CardTypes.Leader, strength: 20, nation: CardNations.AI, ""));
 
@@ -248,29 +245,29 @@ public static class CardDataBase
 			(
 				id: cardId++,
 				type: CardTypes.Special,
-				strength: 30,
+				strength: -5,
 				nation: CardNations.AI,
-				text: ""
+				text: "Уменьшает вес каждой карты на одной линии оппонента на указанное число"
 			));
 			cards.Add(cardId, new CardData
 			(
 				id: cardId++,
 				type: CardTypes.Special,
-				strength: 20,
+				strength: 0,
 				nation: CardNations.AI,
-				text: ""
+				text: "Отменяет все специальные карты"
 			));
 			cards.Add(cardId, new CardData
 			(
 				id: cardId++,
 				type: CardTypes.Special,
-				strength: 10,
+				strength: 5,
 				nation: CardNations.AI,
-				text: ""
+				text: "Увеличивает вес каждой карты на одной линии на указанное число"
 			));
 		}
 
-		// nation 2
+		// Confucius
 		{
 			cardId = 1000;
 
@@ -459,25 +456,25 @@ public static class CardDataBase
 			(
 				id: cardId++,
 				type: CardTypes.Special,
-				strength: 30,
+				strength: -5,
 				nation: CardNations.Confucius,
-				text: ""
+				text: "Уменьшает вес каждой карты на одной линии оппонента на указанное число"
 			));
 			cards.Add(cardId, new CardData
 			(
 				id: cardId++,
 				type: CardTypes.Special,
-				strength: 20,
+				strength: 0,
 				nation: CardNations.Confucius,
-				text: ""
+				text: "Отменяет все специальные карты"
 			));
 			cards.Add(cardId, new CardData
 			(
 				id: cardId++,
 				type: CardTypes.Special,
-				strength: 10,
+				strength: 5,
 				nation: CardNations.Confucius,
-				text: ""
+				text: "Увеличивает вес каждой карты на одной линии на указанное число"
 			));
 		}
 

@@ -4,6 +4,20 @@ using System;
 public partial class MessageBox : Control
 {
 	private bool goToRoomMenu;
+	private static MessageBox instance;
+	public static MessageBox Instance
+	{
+		get
+		{
+			if (instance is null)
+			{
+				PackedScene messageBoxScene = (PackedScene)GD.Load("res://message_box.tscn");
+				instance = (MessageBox)messageBoxScene.Instantiate(PackedScene.GenEditState.Instance);
+			}
+
+			return instance;
+		}
+	}
 
 	public override void _Ready() { }
 

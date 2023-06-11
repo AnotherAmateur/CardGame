@@ -44,7 +44,69 @@ theme_override_colors/font_focus_color = Color(0.172549, 0.192157, 0.247059, 1)
 theme_override_styles/normal = ExtResource("1")
 text = "Создать комнату"
 
+[node name="PlayerInfoPanel" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -231.0
+offset_right = 231.0
+offset_bottom = 40.0
+grow_horizontal = 2
+
+[node name="ColorRect" type="ColorRect" parent="PlayerInfoPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PlayerInfoPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="Label1" type="Label" parent="PlayerInfoPanel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Имя:"
+horizontal_alignment = 2
+vertical_alignment = 1
+text_overrun_behavior = 1
+
+[node name="LoginLabel" type="Label" parent="PlayerInfoPanel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+vertical_alignment = 1
+text_overrun_behavior = 1
+
+[node name="Label2" type="Label" parent="PlayerInfoPanel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Рейтинг:"
+horizontal_alignment = 2
+vertical_alignment = 1
+text_overrun_behavior = 1
+
+[node name="RatingLabel" type="Label" parent="PlayerInfoPanel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+vertical_alignment = 1
+text_overrun_behavior = 1
+
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
+use_threads = true
 
 [connection signal="pressed" from="JoinRoomButton" to="." method="_on_JoinRoomButton_pressed"]
 [connection signal="pressed" from="CreateRoomButton2" to="." method="_on_create_room_button_pressed"]

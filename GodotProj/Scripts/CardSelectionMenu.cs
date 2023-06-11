@@ -189,7 +189,6 @@ public partial class CardSelectionMenu : Control, ISocketConn
 
 			if (isReadyHere == true)
 			{
-				GD.Print(191);
 				GetTree().ChangeSceneToPacked((PackedScene)GD.Load("res://GameFieldScreen.tscn"));
 			}
 		}

@@ -1,7 +1,8 @@
+res://RoomMenu.tscn
 res://GameFieldScreen.tscn
-res://CardSelectionMenu.tscn
-res://RoomList.tscn
-res://LoginForm.tscn
 res://message_box.tscn
 res://MinCardScene.tscn
 res://SlaveCardScene.tscn
+res://Scripts/RoomMenu.cs
+res://RoomList.tscn
+res://WaiterScene.tscn

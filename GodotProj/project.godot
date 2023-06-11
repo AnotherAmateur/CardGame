@@ -13,6 +13,7 @@ config_version=5
 config/name="CardGameProj"
 run/main_scene="res://LoginForm.tscn"
 config/features=PackedStringArray("4.0", "C#")
+boot_splash/image="res://Assets/LoadImage/СatWithCrown.png"
 boot_splash/fullsize=false
 config/icon="res://icon.png"
 

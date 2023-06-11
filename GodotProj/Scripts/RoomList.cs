@@ -11,11 +11,15 @@ public partial class RoomList : Control, ISocketConn
 	private HttpRequest httpRequest;
 	private VBoxContainer listContainer;
 	private SocketConnection socketConnection;
+	private Label StatusLabel;
+	private Button RefreshButton;
 	private float buttonWidth;
 	private float buttonHeight;
 
 	public override void _Ready()
-	{		
+	{
+		StatusLabel = GetNode<Label>("StatusLabel");
+		RefreshButton = GetNode<Button>("RefreshButton");
 		listContainer = GetNode<VBoxContainer>("ScrollContainer/VBoxContainer");
 		buttonWidth = GetNode<ScrollContainer>("ScrollContainer").Size.X;
 		buttonHeight = 50;
@@ -27,7 +31,8 @@ public partial class RoomList : Control, ISocketConn
 
 	private void RefreshRoomList()
 	{
-		GetNode<Button>("RefreshButton").Disabled = true;
+		RefreshButton.Disabled = true;
+		StatusLabel.Text = "";
 
 		foreach (var item in listContainer.GetChildren())
 		{
@@ -41,7 +46,7 @@ public partial class RoomList : Control, ISocketConn
 
 	private void _on_HTTPRequest_request_completed(int result, int response_code, string[] headers, byte[] body)
 	{
-		GetNode<Button>("RefreshButton").Disabled = false;
+		RefreshButton.Disabled = false;
 
 		if (response_code == 200)
 		{
@@ -56,9 +61,9 @@ public partial class RoomList : Control, ISocketConn
 
 				List<string> resultList = JsonSerializer.Deserialize<List<string>>(json.Obj.ToString());
 
-				if (resultList is null)
+				if (resultList is null || resultList.Count == 0)
 				{
-					GetNode<Label>("StatusLabel").Text = "Нет свободных комнат";
+					StatusLabel.Text = "Нет свободных комнат";
 					return;
 				}
 
@@ -70,7 +75,7 @@ public partial class RoomList : Control, ISocketConn
 					var button = new Button();
 
 					button.CustomMinimumSize = new Vector2(buttonWidth, buttonHeight);
-					button.Text = "Имя:  " + idRatName[2] + "      Рейтинг:  " + idRatName[1];
+					button.Text = "Мастер комнаты:  " + idRatName[2] + "      Рейтинг:  " + idRatName[1];
 					button.Name = idRatName[0];
 					button.ButtonDown += () => _on_Room_click(button);
 
@@ -81,12 +86,12 @@ public partial class RoomList : Control, ISocketConn
 			}
 			catch (Exception ex)
 			{
-				GetNode<Label>("StatusLabel").Text = ex.Message;
+				StatusLabel.Text = ex.Message;
 			}
 		}
 		else
 		{
-			GetNode<Label>("StatusLabel").Text = "Список комнат недоступен. Код: " + response_code;
+			StatusLabel.Text = "Список комнат недоступен. Код: " + response_code;
 		}
 	}
 

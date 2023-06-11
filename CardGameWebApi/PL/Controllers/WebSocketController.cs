@@ -27,15 +27,28 @@ namespace CardGameWebApi.PL.Controllers
 			{
 				try
 				{
+					string[] mess = message.Split(";", StringSplitOptions.RemoveEmptyEntries);
 					var user1 = dataManager.Users.GetUserById(int.Parse(masterId));
-					var user2 = dataManager.Users.GetUserById(int.Parse(message));
-					dataManager.GameSessions.AddSession(new GameSession { FirstPlayer = user1, SecondPlayer = user2, Winner = user2 });
+					var user2 = dataManager.Users.GetUserById(int.Parse(mess[0]));
 
-					int user2Rat = user2.Rating;
-					user2.Rating = (user1.Rating >= user2.Rating) ? user2.Rating + 10 : user2.Rating;
-					user1.Rating = (user1.Rating >= user2Rat) ? user1.Rating - 10 : user1.Rating;
-					dataManager.Users.UpdateUser(user1);
-					dataManager.Users.UpdateUser(user2);
+					if (mess.Length > 1)
+					{						
+						var winner = dataManager.Users.GetUserById(int.Parse(mess[1]));
+						dataManager.GameSessions.AddSession(new GameSession { FirstPlayer = user1, SecondPlayer = user2, Winner = winner });
+
+						int looserId = (winner.UserId == user1.UserId) ? user2.UserId : user1.UserId;
+						var looser = dataManager.Users.GetUserById(looserId);
+
+						int winnerRat = winner.Rating;
+						winner.Rating = (looser.Rating >= winnerRat) ? winnerRat + 10 : winnerRat;
+						looser.Rating = (looser.Rating >= winnerRat) ? looser.Rating - 10 : looser.Rating;
+						dataManager.Users.UpdateUser(looser);
+						dataManager.Users.UpdateUser(winner);
+					}
+					else
+					{
+						dataManager.GameSessions.AddSession(new GameSession { FirstPlayer = user1, SecondPlayer = user2 });
+					}
 				}
 				catch (Exception ex)
 				{
@@ -62,7 +75,7 @@ namespace CardGameWebApi.PL.Controllers
 			else if (groupMasterSlave[masterId].Value.Item2 is null)
 			{
 				groupMasterSlave[masterId] = (groupMasterSlave[masterId].Value.Item1, Context.ConnectionId);
-				Clients.All.SendAsync("send", ActionTypes.Start.ToString(), masterId.ToString(), "nomessage");
+				Clients.Group(masterId).SendAsync("send", ActionTypes.Start.ToString(), masterId.ToString(), "nomessage");
 
 				try
 				{
