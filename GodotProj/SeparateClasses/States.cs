@@ -7,6 +7,7 @@ namespace CardGameProj.SeparateClasses
 		public static string Login { get; set; }
 		public static int MasterId { get; set; }
 		public static int AntagonistLeaderCardId { get; set; }
+		public static int ProtagonistLeaderCardId { get; set; }
 
 		public readonly static (float, float) InitCardSize = (512, 768);
 

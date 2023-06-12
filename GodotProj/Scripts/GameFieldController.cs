@@ -4,6 +4,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Text;
@@ -28,8 +29,6 @@ public partial class GameFieldController : Node2D, ISocketConn
 	{
 		Instance = this;
 		socketConnection = SocketConnection.GetInstance(this);
-
-		InitializeColorRects();
 
 		passBtn = GetNode<Button>("ToPass");
 
@@ -61,12 +60,16 @@ public partial class GameFieldController : Node2D, ISocketConn
 		antagonist = new(States.AntagonistLeaderCardId, cardRowsContainerTop, leaderCardContainerTop,
 			discardPileContainerTop, totalCountTop, RowsCountTopContainer, roundVBoxTop);
 
-		protagonist = new(CardSelectionMenu.LeaderCard, CardSelectionMenu.SelectedCards,
+		protagonist = new(States.ProtagonistLeaderCardId, CardSelectionMenu.SelectedCards,
 			cardRowsContainerBottom, cardsHandContainer, leaderCardContainerBottom,
 			discardPileContainerBottom, totalCountBottom, RowsCountBottomContainer, roundVBoxBottom);
 
 		protagonist.TakeCardsFromDeck(protagonist.GetRandomCardsFromDeck(
 			Math.Min(Player.MaxHandSize, CardSelectionMenu.SelectedCards.Count)));
+
+		UpdateDeckTextures();
+		UpdateDeckSize();
+		InitializeColorRects();
 	}
 
 	public void CardSceneEventHandler(CardEvents cardEvent, int cardId)
@@ -143,7 +146,7 @@ public partial class GameFieldController : Node2D, ISocketConn
 			if (States.MasterId != States.PlayerId)
 			{
 				socketConnection.Send(ActionTypes.GameOver, States.MasterId, String.Join(";", States.PlayerId, States.PlayerId));
-			}			
+			}
 		}
 		else if (winner == antagonist)
 		{
@@ -176,8 +179,10 @@ public partial class GameFieldController : Node2D, ISocketConn
 		controls.Add(GetNode<Control>("LeaderCardContainerTop"));
 		controls.Add(GetNode<Control>("LeaderCardContainerBottom"));
 		controls.Add(GetNode<Control>("Cards"));
-		controls.Add(GetNode<Control>("LargeCardContainer"));		
-		controls.Add(GetNode<Control>("TemporalSpCardContainer"));		
+		controls.Add(GetNode<Control>("LargeCardContainer"));
+		controls.Add(GetNode<Control>("TemporalSpCardContainer"));
+		controls.Add(GetNode<Control>("DeckTopImg"));
+		controls.Add(GetNode<Control>("DeckBottomImg"));
 
 		float rowHeight = 127f;
 		float containerOffsetX = 524f;
@@ -214,6 +219,27 @@ public partial class GameFieldController : Node2D, ISocketConn
 			t.MouseFilter = Control.MouseFilterEnum.Ignore;
 			AddChild(t);
 		}
+	}
+
+	public void UpdateDeckTextures()
+	{
+		var topTexture = GetNode<Sprite2D>("DeckTopImg/Texture");		
+		string texturePath = CardDataBase.GetFlippedCardTexturePath(
+			CardDataBase.GetCardInfo(States.AntagonistLeaderCardId).nation);
+		topTexture.Texture = (Texture2D)GD.Load(texturePath);
+
+		if (protagonist.Deck.Count > 0)
+		{
+			var bottomTexture = GetNode<Sprite2D>("DeckBottomImg/Texture");
+			texturePath = CardDataBase.GetFlippedCardTexturePath(
+				CardDataBase.GetCardInfo(States.ProtagonistLeaderCardId).nation);
+			bottomTexture.Texture = (Texture2D)GD.Load(texturePath);
+		}
+	}
+	
+	public void UpdateDeckSize()
+	{
+		GetNode<Label>("DeckBottomImg/DeckSizeBottom").Text = protagonist.Deck.Count.ToString();
 	}
 }
 

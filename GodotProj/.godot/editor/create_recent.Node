@@ -1,11 +1,12 @@
-MarginContainer
+Button
+ColorRect
+Sprite2D
 Control
+MarginContainer
 HTTPRequest
 Label
 HBoxContainer
-ColorRect
 VBoxContainer
 CheckBox
-Button
 CheckButton
 RichTextLabel

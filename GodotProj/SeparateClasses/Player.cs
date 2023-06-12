@@ -146,7 +146,7 @@ public abstract class Player
 		}
 
 		int i = 1;
-		int cardMarginRight = 10;
+		int cardMarginRight = 5;
 		foreach (var range in rangeSortedCards)
 		{
 			string path = (this is Antagonist) ? "Top" : "Bottom";
@@ -176,32 +176,35 @@ public abstract class Player
 
 		if (Antagonist.Instance.IsPass == Protagonist.Instance.IsPass)
 		{
-			Antagonist.Instance.IsPass = false;
-			Protagonist.Instance.IsPass = false;
+			var protagonist = Protagonist.Instance;
+			var antagonist = Antagonist.Instance;
 
-			switch (Antagonist.Instance.TotalCount.CompareTo(Protagonist.Instance.TotalCount))
+			antagonist.IsPass = false;
+			protagonist.IsPass = false;
+
+			switch (antagonist.TotalCount.CompareTo(protagonist.TotalCount))
 			{
 				case < 0:
-					Protagonist.Instance.RoundVBoxContainer.GetNode<CheckBox>("CheckBox" + round.ToString())
+					protagonist.RoundVBoxContainer.GetNode<CheckBox>("CheckBox" + round.ToString())
 						.ButtonPressed = true;
 					++gameResult;
 					break;
 				case > 0:
-					Antagonist.Instance.RoundVBoxContainer.GetNode<CheckBox>("CheckBox" + round.ToString())
+					antagonist.RoundVBoxContainer.GetNode<CheckBox>("CheckBox" + round.ToString())
 						.ButtonPressed = true;
 					--gameResult;
 					break;
 				case 0:
-					Protagonist.Instance.RoundVBoxContainer.GetNode<CheckBox>("CheckBox" + round.ToString())
+					protagonist.RoundVBoxContainer.GetNode<CheckBox>("CheckBox" + round.ToString())
 						.ButtonPressed = true;
-					Antagonist.Instance.RoundVBoxContainer.GetNode<CheckBox>("CheckBox" + round.ToString())
+					antagonist.RoundVBoxContainer.GetNode<CheckBox>("CheckBox" + round.ToString())
 						.ButtonPressed = true;
 					break;
 			}
 
 			if (Math.Abs(gameResult) == 2 || gameResult != 0 && round == 3)
 			{
-				GameFieldController.Instance.MatchCompleted((gameResult > 0) ? Protagonist.Instance : Antagonist.Instance);
+				GameFieldController.Instance.MatchCompleted((gameResult > 0) ? protagonist : antagonist);
 			}
 			else if (gameResult == 0 && round == 3)
 			{
@@ -210,17 +213,23 @@ public abstract class Player
 
 			if (round < 3)
 			{
-				Antagonist.Instance.OnBoard = new();
-				Protagonist.Instance.OnBoard = new();
-				Protagonist.Instance.UpdateBoard();
-				Antagonist.Instance.UpdateBoard();
+				antagonist.OnBoard = new();
+				protagonist.OnBoard = new();
+				protagonist.UpdateBoard();
+				antagonist.UpdateBoard();
 				++round;
+
+				int cardCount = 0;
+				var cardList = protagonist.GetRandomCardsFromDeck(
+					Math.Min(MaxHandSize - protagonist.Hand.Count, protagonist.Deck.Count));
+				if (cardList.Count > 0)
+				{
+					protagonist.TakeCardsFromDeck(cardList);
+					GameFieldController.Instance.UpdateDeckTextures();
+				}			
 			}
 		}
 	}
-
-	abstract protected void UpdateDiscardPileFlippedCard();
-	abstract protected void UpdateDeckSize();
 
 	protected void PutSpecialCard(CardDataBase.CardData cardInfo)
 	{

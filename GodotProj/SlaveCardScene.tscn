@@ -93,6 +93,4 @@ scale = Vector2(0.578531, 0.580938)
 texture = ExtResource("2_eofl7")
 centered = false
 
-[connection signal="mouse_entered" from="Card" to="." method="_on_Card_mouse_entered"]
-[connection signal="mouse_exited" from="Card" to="." method="_on_Card_mouse_exited"]
 [connection signal="pressed" from="Card" to="." method="_on_Card_pressed"]

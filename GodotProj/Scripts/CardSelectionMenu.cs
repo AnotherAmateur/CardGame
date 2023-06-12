@@ -11,7 +11,11 @@ public partial class CardSelectionMenu : Control, ISocketConn
 	public static List<int> LeaderCards { get; private set; } = new();
 	public static List<CardNations> Nations { get; private set; } = new();
 	public static CardNations Nation { get; private set; }
-	public static int LeaderCard { get; private set; }
+	public int LeaderCard
+	{
+		get { return States.ProtagonistLeaderCardId; }
+		private set { States.ProtagonistLeaderCardId = value; }
+	}
 
 	private PackedScene cardScene = (PackedScene)GD.Load("res://SlaveCardScene.tscn");
 	private GridContainer allCardsGridContainer;
@@ -26,7 +30,7 @@ public partial class CardSelectionMenu : Control, ISocketConn
 
 	public override void _Ready()
 	{
-		socketConnection = SocketConnection.GetInstance(this);		
+		socketConnection = SocketConnection.GetInstance(this);
 
 		Instantiate = this;
 		minHandSize = 1;
@@ -56,7 +60,7 @@ public partial class CardSelectionMenu : Control, ISocketConn
 				{
 					Nations.Add(card.Value.nation);
 					LeaderCards.Add(card.Key);
-				}			
+				}
 			}
 			else
 			{
@@ -217,7 +221,7 @@ public partial class CardSelectionMenu : Control, ISocketConn
 			cards = CardDataBase.GetAllCards.Where(x =>
 		x.Value.nation == CardDataBase.GetCardInfo(LeaderCard).nation && x.Value.type == cardType);
 		}
-		
+
 		foreach (var card in cards.Where(x => SelectedCards.Contains(x.Key) is false))
 		{
 			SlaveCardScene cardInstance = (SlaveCardScene)cardScene.Instantiate(PackedScene.GenEditState.Instance);
@@ -277,4 +281,29 @@ public partial class CardSelectionMenu : Control, ISocketConn
 	{
 		LoadCards(CardTypes.Special);
 	}
+
+	private void _on_take_all_cards_btn_pressed()
+	{
+		foreach (Control cardHolder in allCardsGridContainer.GetChildren())
+		{
+			foreach (SlaveCardScene card in cardHolder.GetChildren())
+			{
+				card._on_Card_pressed();
+			}
+		}
+	}
+
+	private void _on_drop_all_cards_btn_pressed()
+	{
+		foreach (Control cardHolder in selectedCardsGridContainer.GetChildren())
+		{
+			foreach (SlaveCardScene card in cardHolder.GetChildren())
+			{
+				card._on_Card_pressed();
+			}
+		}
+	}
 }
+
+
+

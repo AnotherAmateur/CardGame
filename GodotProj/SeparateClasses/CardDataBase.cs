@@ -78,6 +78,11 @@ public static class CardDataBase
 		return "res://Assets/Cards/" + card.nation + "/" + card.type + "/" + cardId + ".png";
 	}
 
+	public static string GetFlippedCardTexturePath(CardNations cardNation)
+	{
+		return "res://Assets/FlippedCards/" + cardNation.ToString() + ".png";
+	}
+
 	public static void UpdateCardDataBase()
 	{
 		int cardId = 0;

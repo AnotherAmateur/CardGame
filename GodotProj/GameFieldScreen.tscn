@@ -10,29 +10,37 @@ shader_parameter/color = Color(0.356863, 0.176471, 0.00392157, 1)
 shader_parameter/multiplier = 0.59
 shader_parameter/softness = 1.0
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_aofq0"]
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kj2o2"]
 bg_color = Color(0.6, 0.6, 0.6, 0.529412)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_banbw"]
 bg_color = Color(0.517647, 0, 0.341176, 0.686275)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qcwep"]
+bg_color = Color(0, 0, 0, 0.356863)
 
 [node name="GameField" type="Node2D"]
 script = ExtResource("1_4rqmr")
-metadata/_edit_horizontal_guides_ = [547.0, 350.0, 867.0, 1025.0, 677.0, 18.0, 540.0, 803.0, 407.0, 415.0, 145.0, 149.0, 276.0, 280.0]
-metadata/_edit_vertical_guides_ = [1622.0, 1879.0, 525.0, 1574.0, 1033.0, 71.0, 190.0, 388.0]
+metadata/_edit_horizontal_guides_ = [547.0, 350.0, 867.0, 1025.0, 677.0, 18.0, 540.0, 803.0, 407.0, 415.0, 145.0, 149.0, 276.0, 280.0, 1047.0]
+metadata/_edit_vertical_guides_ = [1622.0, 1879.0, 525.0, 1574.0, 1033.0, 71.0, 190.0, 388.0, 1770.0, 1873.0]
 
 [node name="BackColor" type="ColorRect" parent="."]
 offset_right = 1920.0
 offset_bottom = 1080.0
 mouse_filter = 2
 color = Color(0.803922, 0.705882, 0.509804, 1)
+metadata/_edit_lock_ = true
 
 [node name="FieldImg" type="Sprite2D" parent="."]
 visible = false
 texture = ExtResource("1")
 centered = false
+metadata/_edit_lock_ = true
 
 [node name="Shader" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_bimft")
@@ -42,17 +50,7 @@ offset_top = -5.0
 offset_right = 1934.0
 offset_bottom = 1075.0
 mouse_filter = 2
-
-[node name="DeckTopImg" type="Sprite2D" parent="."]
-position = Vector2(1825.5, 111)
-scale = Vector2(1.67188, 2.3125)
-texture = SubResource("CompressedTexture2D_aofq0")
-
-[node name="DeckBottomImg" type="Sprite2D" parent="."]
-position = Vector2(1774, 895)
-scale = Vector2(1.67188, 2.3125)
-texture = SubResource("CompressedTexture2D_aofq0")
-centered = false
+metadata/_edit_lock_ = true
 
 [node name="LeaderCardContainerTop" type="Control" parent="."]
 layout_mode = 3
@@ -61,6 +59,7 @@ offset_left = 76.0
 offset_top = 47.0
 offset_right = 186.0
 offset_bottom = 196.0
+metadata/_edit_lock_ = true
 
 [node name="LeaderCardContainerBottom" type="Control" parent="."]
 layout_mode = 3
@@ -69,6 +68,7 @@ offset_left = 79.0
 offset_top = 871.0
 offset_right = 186.0
 offset_bottom = 1020.0
+metadata/_edit_lock_ = true
 
 [node name="Cards" type="Control" parent="."]
 layout_mode = 3
@@ -78,18 +78,14 @@ offset_top = 905.0
 offset_right = 1574.0
 offset_bottom = 1059.0
 mouse_filter = 2
-
-[node name="DeckSizeBottom" type="Label" parent="."]
-offset_left = 1803.0
-offset_top = 1013.0
-offset_right = 1861.0
-offset_bottom = 1047.0
+metadata/_edit_lock_ = true
 
 [node name="DeckSizeTop" type="Label" parent="."]
 offset_left = 1805.0
 offset_top = 157.0
 offset_right = 1845.0
 offset_bottom = 183.0
+metadata/_edit_lock_ = true
 
 [node name="FieldRowsContainer" type="Control" parent="."]
 layout_mode = 3
@@ -98,6 +94,7 @@ offset_left = 524.0
 offset_top = 18.0
 offset_right = 1574.0
 offset_bottom = 806.0
+metadata/_edit_lock_ = true
 
 [node name="Top" type="VBoxContainer" parent="FieldRowsContainer"]
 layout_mode = 1
@@ -231,6 +228,7 @@ offset_left = 1621.0
 offset_top = 39.0
 offset_right = 1722.0
 offset_bottom = 182.0
+metadata/_edit_lock_ = true
 
 [node name="DiscardPileContainerBottom" type="Control" parent="."]
 layout_mode = 3
@@ -239,6 +237,7 @@ offset_left = 1618.0
 offset_top = 897.0
 offset_right = 1721.0
 offset_bottom = 1040.0
+metadata/_edit_lock_ = true
 
 [node name="TotalCount" type="Control" parent="."]
 layout_mode = 3
@@ -247,6 +246,7 @@ offset_left = 71.0
 offset_top = 201.0
 offset_right = 190.0
 offset_bottom = 865.0
+metadata/_edit_lock_ = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TotalCount"]
 layout_mode = 1
@@ -340,6 +340,7 @@ offset_left = 442.0
 offset_top = 18.0
 offset_right = 511.0
 offset_bottom = 802.0
+metadata/_edit_lock_ = true
 
 [node name="Top" type="Control" parent="RowsCount"]
 custom_minimum_size = Vector2(20, 20)
@@ -426,6 +427,7 @@ offset_left = 1638.0
 offset_top = 350.0
 offset_right = 1863.0
 offset_bottom = 679.0
+metadata/_edit_lock_ = true
 
 [node name="Label" type="Label" parent="."]
 offset_left = 1623.0
@@ -438,16 +440,18 @@ text = "Кликните правой кнопкой мыши по любой к
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
+metadata/_edit_lock_ = true
 
 [node name="ToPass" type="Button" parent="."]
-offset_left = 966.0
-offset_top = 849.0
-offset_right = 1101.0
-offset_bottom = 885.0
+offset_left = 946.0
+offset_top = 840.0
+offset_right = 1121.0
+offset_bottom = 872.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_banbw")
 text = "Спасовать"
+metadata/_edit_lock_ = true
 
 [node name="Shape" type="Control" parent="."]
 layout_mode = 3
@@ -455,6 +459,7 @@ anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
 mouse_filter = 2
+metadata/_edit_lock_ = true
 
 [node name="SpecialCardsContainer" type="Control" parent="."]
 layout_mode = 3
@@ -463,6 +468,7 @@ offset_left = 526.0
 offset_top = 18.0
 offset_right = 628.0
 offset_bottom = 804.0
+metadata/_edit_lock_ = true
 
 [node name="VertColorRect" type="ColorRect" parent="SpecialCardsContainer"]
 z_index = 10
@@ -518,5 +524,48 @@ offset_left = 261.0
 offset_top = 444.0
 offset_right = 389.0
 offset_bottom = 636.0
+metadata/_edit_lock_ = true
+
+[node name="DeckTopImg" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1770.0
+offset_top = 33.0
+offset_right = 1873.0
+offset_bottom = 187.0
+metadata/_edit_lock_ = true
+
+[node name="Texture" type="Sprite2D" parent="DeckTopImg"]
+scale = Vector2(0.2, 0.2)
+centered = false
+
+[node name="DeckBottomImg" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1770.0
+offset_top = 893.0
+offset_right = 1873.0
+offset_bottom = 1047.0
+metadata/_edit_lock_ = true
+
+[node name="Texture" type="Sprite2D" parent="DeckBottomImg"]
+z_index = 2
+scale = Vector2(0.2, 0.2)
+centered = false
+
+[node name="DeckSizeBottom" type="Label" parent="DeckBottomImg"]
+z_index = 2
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_qcwep")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="pressed" from="ToPass" to="." method="_on_Pass_pressed"]

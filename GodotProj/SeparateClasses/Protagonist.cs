@@ -44,33 +44,36 @@ public partial class Protagonist : Player
 		UpdateHand();
 	}
 
-
 	public List<int> GetRandomCardsFromDeck(int count)
 	{
-		if (count > Deck.Count)
-		{
-			string err = "There are not enough cards in the deck";
-			OS.Alert(String.Join("\n", "Protagonist/GetRandomCardsFromDeck: ", err));
-		}
-
-		Godot.RandomNumberGenerator random = new();
-		HashSet<int> uniqueNumbers = new();
-		while (uniqueNumbers.Count < count)
-		{
-			random.Randomize();
-			int number = random.RandiRange(0, Deck.Count - 1);
-			uniqueNumbers.Add(number);
-		}
-
 		List<int> result = new();
-		foreach (int index in uniqueNumbers)
+		if (count > 0)
 		{
-			result.Add(Deck[index]);
+			if (count > Deck.Count)
+			{
+				string err = "There are not enough cards in the deck";
+				OS.Alert(String.Join("\n", "Protagonist/GetRandomCardsFromDeck: ", err));
+			}
+
+			Godot.RandomNumberGenerator random = new();
+			HashSet<int> uniqueNumbers = new();
+			while (uniqueNumbers.Count < count)
+			{
+				random.Randomize();
+				int number = random.RandiRange(0, Deck.Count - 1);
+				uniqueNumbers.Add(number);
+			}
+			
+			foreach (int index in uniqueNumbers)
+			{
+				result.Add(Deck[index]);
+			}
+
+			return result;
 		}
 
 		return result;
 	}
-
 
 	public void TakeCardsFromDeck(List<int> cards)
 	{
@@ -91,9 +94,10 @@ public partial class Protagonist : Player
 		Deck = remainingСards;
 		Hand.AddRange(cards);
 
+		
 		UpdateHand();
+		GameFieldController.Instance.UpdateDeckSize();
 	}
-
 
 	public void UpdateHand()
 	{
@@ -118,32 +122,6 @@ public partial class Protagonist : Player
 			card.Position = new Vector2(nextCardPosition, 0);
 			nextCardPosition += cardSize.X;
 		}
-	}
-
-
-	protected override void UpdateDiscardPileFlippedCard()
-	{
-		if (DiscardPile.Count == 0)
-		{
-			foreach (Node node in DiscardPileContainer.GetChildren())
-			{
-				DiscardPileContainer.RemoveChild(node);
-			}
-		}
-		else if (DiscardPile.Contains(DiscardPileFlippedcardId) is false)
-		{
-			Godot.RandomNumberGenerator random = new();
-			random.Randomize();
-			int index = random.RandiRange(0, DiscardPile.Count - 1);
-			DiscardPileFlippedcardId = DiscardPile[index];
-			MinCardScene cardInstance = (MinCardScene)GameFieldController.MinCardScene.Instantiate();
-			DiscardPileContainer.AddChild(cardInstance);
-		}
-	}
-
-	protected override void UpdateDeckSize()
-	{
-
 	}
 }
 

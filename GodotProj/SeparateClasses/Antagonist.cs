@@ -26,15 +26,5 @@ public partial class Antagonist : Player
 			UpdateBoard();
 		}
 	}
-
-	protected override void UpdateDiscardPileFlippedCard()
-	{
-
-	}
-
-	protected override void UpdateDeckSize()
-	{
-
-	}
 }
 

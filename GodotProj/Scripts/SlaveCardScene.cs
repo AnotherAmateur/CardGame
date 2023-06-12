@@ -50,38 +50,6 @@ public partial class SlaveCardScene : Node2D
 	{
 		CardDamage = damage;
 	}
-
-	public void DisableCardButton()
-	{
-		GetNode<TextureButton>("Card").Disabled = true;
-		GetNode<TextureButton>("Card").SelfModulate = new Godot.Color("a7a7a7");
-	}
-
-	private void _on_Card_mouse_entered()
-	{
-		if (disconnectSignals is false)
-		{
-			Protagonist player = Protagonist.Instance;
-			if ((player is null) is false && player.Hand.Contains(int.Parse(Name)))
-			{
-				var initPosition = new Vector2(this.Position.X, this.Position.Y - yOffsetPx);
-				this.Position = initPosition;
-			}
-		}
-	}
-
-	private void _on_Card_mouse_exited()
-	{
-		if (disconnectSignals is false)
-		{
-			Protagonist player = Protagonist.Instance;
-			if ((player is null) is false && player.Hand.Contains(int.Parse(Name)))
-			{
-				var initPosition = new Vector2(this.Position.X, this.Position.Y + yOffsetPx);
-				this.Position = initPosition;
-			}
-		}
-	}
 }
 
 
