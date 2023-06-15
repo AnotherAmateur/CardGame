@@ -52,6 +52,7 @@ public static class CardDataBase
 					break;
 				case CardTypes.Leader:
 					category = nation + ", мудрец";
+					strength = 0;
 					break;
 				case CardTypes.Special:
 					category = "Специальная карта";

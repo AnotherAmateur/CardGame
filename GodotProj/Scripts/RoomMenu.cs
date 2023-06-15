@@ -62,4 +62,9 @@ public partial class RoomMenu : Control
 		WaiterScene waiterInstance = (WaiterScene)waiterScene.Instantiate();
 		AddChild(waiterInstance);
 	}
+
+	private void _on_pve_btn_pressed()
+	{
+		//GetTree().ChangeSceneToPacked((PackedScene)GD.Load("res://CardSelectionMenu.tscn"));
+	}
 }

@@ -112,15 +112,15 @@ public abstract class Player
 				row.RemoveChild(node);
 			}
 		}
+	}
 
+	private void ClearSpCards()
+	{
 		foreach (Node row in SpecialCardsContainer.GetChildren())
 		{
 			foreach (MinCardScene node in row.GetChildren())
 			{
-				if (OnBoard.Contains(int.Parse(node.Name)))
-				{
-					row.RemoveChild(node);
-				}
+				row.RemoveChild(node);
 			}
 		}
 	}
@@ -173,12 +173,12 @@ public abstract class Player
 	public void DoPass()
 	{
 		IsPass = true;
+		var gameCtrl = GameFieldController.Instance;
+		var protagonist = Protagonist.Instance;
+		var antagonist = Antagonist.Instance;
 
 		if (Antagonist.Instance.IsPass == Protagonist.Instance.IsPass)
 		{
-			var protagonist = Protagonist.Instance;
-			var antagonist = Antagonist.Instance;
-
 			antagonist.IsPass = false;
 			protagonist.IsPass = false;
 
@@ -188,27 +188,32 @@ public abstract class Player
 					protagonist.RoundVBoxContainer.GetNode<CheckBox>("CheckBox" + round.ToString())
 						.ButtonPressed = true;
 					++gameResult;
+					gameCtrl.SetTurn(protagonist);
 					break;
 				case > 0:
 					antagonist.RoundVBoxContainer.GetNode<CheckBox>("CheckBox" + round.ToString())
 						.ButtonPressed = true;
 					--gameResult;
+					gameCtrl.SetTurn(antagonist);
 					break;
 				case 0:
 					protagonist.RoundVBoxContainer.GetNode<CheckBox>("CheckBox" + round.ToString())
 						.ButtonPressed = true;
 					antagonist.RoundVBoxContainer.GetNode<CheckBox>("CheckBox" + round.ToString())
 						.ButtonPressed = true;
+					gameCtrl.InitFirstTurn();
 					break;
 			}
 
 			if (Math.Abs(gameResult) == 2 || gameResult != 0 && round == 3)
 			{
-				GameFieldController.Instance.MatchCompleted((gameResult > 0) ? protagonist : antagonist);
+				gameCtrl.SetTurn(null);
+				gameCtrl.MatchCompleted((gameResult > 0) ? protagonist : antagonist);
 			}
 			else if (gameResult == 0 && round == 3)
 			{
-				GameFieldController.Instance.MatchCompleted(null);
+				gameCtrl.SetTurn(null);
+				gameCtrl.MatchCompleted(null);
 			}
 
 			if (round < 3)
@@ -217,6 +222,7 @@ public abstract class Player
 				protagonist.OnBoard = new();
 				protagonist.UpdateBoard();
 				antagonist.UpdateBoard();
+				ClearSpCards();
 				++round;
 
 				int cardCount = 0;
@@ -225,9 +231,13 @@ public abstract class Player
 				if (cardList.Count > 0)
 				{
 					protagonist.TakeCardsFromDeck(cardList);
-					GameFieldController.Instance.UpdateDeckTextures();
-				}			
+					gameCtrl.UpdateDeckTextures();
+				}
 			}
+		}
+		else
+		{
+			gameCtrl.SetTurn((protagonist.IsPass) ? antagonist : protagonist);
 		}
 	}
 

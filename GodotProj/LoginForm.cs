@@ -20,10 +20,9 @@ public partial class LoginForm : Control
 	{
 		if (GetNode<LineEdit>("Login").Text.Length < 1 || GetNode<LineEdit>("Password").Text.Length < 1)
 		{
-			PackedScene messageBoxScene = (PackedScene)GD.Load("res://message_box.tscn");
-			MessageBox messageBox = (MessageBox)messageBoxScene.Instantiate(PackedScene.GenEditState.Instance);
-			messageBox.SetUp("Пароль и логин должны содержать не менее 1 символа", true);
-			AddChild(messageBox);
+			var msgBox = MessageBox.Instance;
+			msgBox.SetUp("Пароль и логин должны содержать не менее 1 символа", true);
+			AddChild(msgBox);
 
 			return;
 		}
@@ -51,11 +50,9 @@ public partial class LoginForm : Control
 	{
 		if (GetNode<LineEdit>("Login").Text.Length < 1 || GetNode<LineEdit>("Password").Text.Length < 1)
 		{
-			PackedScene messageBoxScene = (PackedScene)GD.Load("res://message_box.tscn");
-			MessageBox messageBox = (MessageBox)messageBoxScene.Instantiate(PackedScene.GenEditState.Instance);
-			messageBox.SetUp("Пароль и логин должны содержать не менее 1 символа", true);
-			AddChild(messageBox);
-
+			var msgBox = MessageBox.Instance;
+			msgBox.SetUp("Пароль и логин должны содержать не менее 1 символа", true);
+			AddChild(msgBox);
 			return;
 		}
 

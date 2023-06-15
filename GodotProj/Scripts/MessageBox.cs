@@ -9,12 +9,8 @@ public partial class MessageBox : Control
 	{
 		get
 		{
-			if (instance is null)
-			{
-				PackedScene messageBoxScene = (PackedScene)GD.Load("res://message_box.tscn");
-				instance = (MessageBox)messageBoxScene.Instantiate(PackedScene.GenEditState.Instance);
-			}
-
+			PackedScene messageBoxScene = (PackedScene)GD.Load("res://message_box.tscn");
+			instance = (MessageBox)messageBoxScene.Instantiate();
 			return instance;
 		}
 	}

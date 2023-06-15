@@ -3,11 +3,6 @@ using CardGameProj.SeparateClasses;
 using Godot;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Text;
 
 public partial class GameFieldController : Node2D, ISocketConn
 {
@@ -24,6 +19,7 @@ public partial class GameFieldController : Node2D, ISocketConn
 	private SocketConnection socketConnection;
 	private GameFieldController() { }
 	private Button passBtn;
+	private bool isBoardActive;
 
 	public override void _Ready()
 	{
@@ -70,13 +66,14 @@ public partial class GameFieldController : Node2D, ISocketConn
 		UpdateDeckTextures();
 		UpdateDeckSize();
 		InitializeColorRects();
+		InitFirstTurn();
 	}
 
 	public void CardSceneEventHandler(CardEvents cardEvent, int cardId)
 	{
 		var cardInfo = CardDataBase.GetCardInfo(cardId);
 
-		if (cardEvent is CardEvents.LeftCllick && passBtn.Disabled is false)
+		if (cardEvent is CardEvents.LeftCllick && isBoardActive)
 		{
 			switch (cardInfo.type)
 			{
@@ -86,6 +83,11 @@ public partial class GameFieldController : Node2D, ISocketConn
 				default:
 					if (protagonist.Hand.Contains(cardId))
 					{
+						if (antagonist.IsPass is false)
+						{
+							SetTurn(antagonist);
+						}
+
 						protagonist.PutCardFromHandOnBoard(cardInfo);
 						socketConnection.Send(ActionTypes.CardMove, States.MasterId, cardId.ToString());
 					}
@@ -111,6 +113,7 @@ public partial class GameFieldController : Node2D, ISocketConn
 		passBtn.Disabled = (antagonist.IsPass) ? false : true;
 		socketConnection.Send(ActionTypes.Pass, States.MasterId, String.Empty);
 		protagonist.DoPass();
+		OnPassDeclare();
 	}
 
 	public void OnHandleError(string exMessage)
@@ -124,11 +127,24 @@ public partial class GameFieldController : Node2D, ISocketConn
 		{
 			antagonist.PutCardOnBoard(int.Parse(message));
 			protagonist.UpdateBoard();
+			if (protagonist.IsPass is false)
+			{
+				SetTurn(protagonist);
+			}
 		}
 		else if (action == ActionTypes.Pass.ToString())
 		{
 			antagonist.DoPass();
+			OnPassDeclare();
 			passBtn.Disabled = false;
+		}
+		else if (action == ActionTypes.FirstPlayer.ToString())
+		{
+			SetTurn((message.CompareTo(protagonist.ToString()) == 0) ? antagonist : protagonist);
+		}
+		else if (action == ActionTypes.DeckSizeUpdated.ToString())
+		{
+			UpdateDeckSize(message);
 		}
 		else
 		{
@@ -167,8 +183,9 @@ public partial class GameFieldController : Node2D, ISocketConn
 
 		socketConnection.Disconnect();
 
-		MessageBox.Instance.SetUp(declareWinner, true, true);
-		GetNode("Shape").AddChild(MessageBox.Instance);
+		var msgBox = MessageBox.Instance;
+		msgBox.SetUp(declareWinner, true, true);
+		GetNode("Shape").AddChild(msgBox);
 	}
 
 	private void InitializeColorRects()
@@ -223,24 +240,79 @@ public partial class GameFieldController : Node2D, ISocketConn
 
 	public void UpdateDeckTextures()
 	{
-		var topTexture = GetNode<Sprite2D>("DeckTopImg/Texture");		
+		var topTexture = GetNode<Sprite2D>("DeckTopImg/Texture");
 		string texturePath = CardDataBase.GetFlippedCardTexturePath(
 			CardDataBase.GetCardInfo(States.AntagonistLeaderCardId).nation);
 		topTexture.Texture = (Texture2D)GD.Load(texturePath);
 
-		if (protagonist.Deck.Count > 0)
+		var bottomTexture = GetNode<Sprite2D>("DeckBottomImg/Texture");
+		texturePath = CardDataBase.GetFlippedCardTexturePath(
+			CardDataBase.GetCardInfo(States.ProtagonistLeaderCardId).nation);
+		bottomTexture.Texture = (Texture2D)GD.Load(texturePath);
+	}
+
+	public void UpdateDeckSize(string newCount = null)
+	{
+		if (newCount is null)
 		{
-			var bottomTexture = GetNode<Sprite2D>("DeckBottomImg/Texture");
-			texturePath = CardDataBase.GetFlippedCardTexturePath(
-				CardDataBase.GetCardInfo(States.ProtagonistLeaderCardId).nation);
-			bottomTexture.Texture = (Texture2D)GD.Load(texturePath);
+			newCount = protagonist.Deck.Count.ToString();
+			GetNode<Label>("DeckBottomImg/DeckSizeBottom").Text = newCount;
+			socketConnection.Send(ActionTypes.DeckSizeUpdated, States.MasterId, newCount);
+		}
+		else
+		{
+			GetNode<Label>("DeckTopImg/DeckSizeTop").Text = newCount;
 		}
 	}
-	
-	public void UpdateDeckSize()
+
+	private void ChangeTurnLabel(Player player)
 	{
-		GetNode<Label>("DeckBottomImg/DeckSizeBottom").Text = protagonist.Deck.Count.ToString();
+		string antTurn = "Ход оппонента";
+		string protTurn = "Ваш ход";
+		var label = GetNode<Label>("TurnLabel");
+
+		if (player == protagonist)
+		{
+			label.Text = protTurn;
+			label.AddThemeColorOverride("", new Godot.Color("#ffffff"));
+		}
+		else if (player == antagonist)
+		{
+			label.Text = antTurn;
+			label.AddThemeColorOverride("", new Godot.Color("#a30003"));
+		}
+		else
+		{
+			label.Text = "";
+		}
+	}
+
+	public Player RandFirstPlayer()
+	{
+		return (new Random().Next(0, 2) == 0) ? antagonist : protagonist;
+	}
+
+	public void SetTurn(Player player)
+	{
+		ChangeTurnLabel(player);
+
+		isBoardActive = (player == protagonist) ? true : false;
+	}
+
+	public void OnPassDeclare()
+	{
+		string pass = "ПАС";
+		GetNode<Label>("LeaderCardContainerTop/Label").Text = (antagonist.IsPass) ? pass : "";
+		GetNode<Label>("LeaderCardContainerBottom/Label").Text = (protagonist.IsPass) ? pass : "";
+	}
+
+	public void InitFirstTurn()
+	{
+		if (States.MasterId == States.PlayerId)
+		{
+			Player firstPlayer = RandFirstPlayer();
+			SetTurn(firstPlayer);
+			socketConnection.Send(ActionTypes.FirstPlayer, States.MasterId, firstPlayer.ToString());
+		}
 	}
 }
-
-

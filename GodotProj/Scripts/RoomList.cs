@@ -116,10 +116,9 @@ public partial class RoomList : Control, ISocketConn
 
 	public void OnHandleError(string exMessage)
 	{
-		PackedScene messageBoxScene = (PackedScene)GD.Load("res://message_box.tscn");
-		MessageBox messageBox = (MessageBox)messageBoxScene.Instantiate(PackedScene.GenEditState.Instance);
-		messageBox.SetUp(exMessage, true);
-		AddChild(messageBox);
+		var msgBox = MessageBox.Instance;
+		msgBox.SetUp(exMessage, true);
+		AddChild(msgBox);
 	}
 
 	public void OnReceiveMessage(string action, string masterId, string message)

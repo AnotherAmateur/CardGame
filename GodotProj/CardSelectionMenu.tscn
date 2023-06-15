@@ -1,14 +1,19 @@
-[gd_scene load_steps=4 format=3 uid="uid://c5wlqvrqkgy86"]
+[gd_scene load_steps=5 format=3 uid="uid://c5wlqvrqkgy86"]
 
 [ext_resource type="Script" path="res://Scripts/CardSelectionMenu.cs" id="2"]
 [ext_resource type="FontFile" uid="uid://c1t3i4aqum6l3" path="res://FontReg.tres" id="3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p3kjh"]
 bg_color = Color(0.27451, 0.121569, 0.341176, 1)
-corner_radius_top_left = 12
-corner_radius_top_right = 12
-corner_radius_bottom_right = 12
-corner_radius_bottom_left = 12
+corner_radius_top_left = 20
+corner_radius_bottom_left = 20
+corner_detail = 1
+shadow_size = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t2abf"]
+bg_color = Color(0.27451, 0.121569, 0.341176, 1)
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
 corner_detail = 1
 shadow_size = 2
 
@@ -93,15 +98,17 @@ offset_top = 635.0
 offset_right = 238.0
 offset_bottom = 665.0
 theme_override_styles/normal = SubResource("StyleBoxFlat_p3kjh")
-text = "Взять все карты"
+text = "Весь раздел туда"
 
 [node name="DropAllCardsBtn" type="Button" parent="NationInfoPanel"]
+layout_mode = 0
 offset_left = 39.0
 offset_top = 672.0
 offset_right = 238.0
 offset_bottom = 702.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_p3kjh")
-text = "Сбросить все карты"
+theme_override_styles/normal = SubResource("StyleBoxFlat_t2abf")
+text = "Весь раздел сюда
+"
 
 [node name="StartButton" type="Button" parent="."]
 layout_mode = 0

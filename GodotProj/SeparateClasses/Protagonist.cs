@@ -39,7 +39,7 @@ public partial class Protagonist : Player
 			OnBoard.Add(cardInfo.id);
 			UpdateBoard();
 		}
-		
+
 		Hand.Remove(cardInfo.id);
 		UpdateHand();
 	}
@@ -122,6 +122,11 @@ public partial class Protagonist : Player
 			card.Position = new Vector2(nextCardPosition, 0);
 			nextCardPosition += cardSize.X;
 		}
+	}
+
+	public override string ToString()
+	{
+		return "protagonist";
 	}
 }
 

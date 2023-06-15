@@ -10,12 +10,12 @@ public partial class Antagonist : Player
 		HBoxContainer roundVBoxContainer) : base(leaderCard, cardRowsContainer, leaderCardContainer, 
 			discardPileContainer, totalCount, rowsCountContainer, roundVBoxContainer)
 	{
-		Instance = this;
+		Instance = this;		
 	}
 
 	public void PutCardOnBoard(int cardId)
 	{
-		var cardInfo = CardDataBase.GetCardInfo(cardId);
+		var cardInfo = CardDataBase.GetCardInfo(cardId);		
 		if (cardInfo.type == CardTypes.Special)
 		{
 			PutSpecialCard(cardInfo);
@@ -25,6 +25,11 @@ public partial class Antagonist : Player
 			OnBoard.Add(cardInfo.id);
 			UpdateBoard();
 		}
+	}
+
+	public override string ToString()
+	{
+		return "antagonist";
 	}
 }
 

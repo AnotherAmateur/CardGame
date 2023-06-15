@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://clbem1wntd7r1"]
+[gd_scene load_steps=9 format=3 uid="uid://clbem1wntd7r1"]
 
 [ext_resource type="Texture2D" uid="uid://c34ahdeyp6d0l" path="res://Assets/Backgrounds/Scheme.png" id="1"]
 [ext_resource type="Script" path="res://Scripts/GameFieldController.cs" id="1_4rqmr"]
 [ext_resource type="Shader" path="res://Assets/Shaders/GameFieldScreen.gdshader" id="3_0rc4y"]
+[ext_resource type="FontFile" uid="uid://2hvktth0a5ot" path="res://Assets/Fonts/NotoSerifJP-Light.otf" id="4_jdnuf"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bimft"]
 shader = ExtResource("3_0rc4y")
@@ -61,6 +62,22 @@ offset_right = 186.0
 offset_bottom = 196.0
 metadata/_edit_lock_ = true
 
+[node name="Label" type="Label" parent="LeaderCardContainerTop"]
+z_index = 4096
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0.6, 0.415686, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("4_jdnuf")
+theme_override_font_sizes/font_size = 28
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
 [node name="LeaderCardContainerBottom" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
@@ -69,6 +86,22 @@ offset_top = 871.0
 offset_right = 186.0
 offset_bottom = 1020.0
 metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="LeaderCardContainerBottom"]
+z_index = 4096
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0.6, 0.415686, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("4_jdnuf")
+theme_override_font_sizes/font_size = 28
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
 
 [node name="Cards" type="Control" parent="."]
 layout_mode = 3
@@ -536,8 +569,24 @@ offset_bottom = 187.0
 metadata/_edit_lock_ = true
 
 [node name="Texture" type="Sprite2D" parent="DeckTopImg"]
+z_index = 2
 scale = Vector2(0.2, 0.2)
 centered = false
+
+[node name="DeckSizeTop" type="Label" parent="DeckTopImg"]
+z_index = 2
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_qcwep")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="DeckBottomImg" type="Control" parent="."]
 layout_mode = 3
@@ -567,5 +616,19 @@ theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_qcwep")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="TurnLabel" type="Label" parent="."]
+offset_left = 253.0
+offset_top = 682.0
+offset_right = 393.0
+offset_bottom = 793.0
+theme_override_colors/font_shadow_color = Color(0.529412, 0.345098, 0, 1)
+theme_override_constants/shadow_outline_size = 2
+theme_override_font_sizes/font_size = 24
+text = "Ход оппонента"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+metadata/_edit_lock_ = true
 
 [connection signal="pressed" from="ToPass" to="." method="_on_Pass_pressed"]

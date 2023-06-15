@@ -1,12 +1,12 @@
+Control
+Label
+RichTextLabel
+VBoxContainer
 Button
 ColorRect
 Sprite2D
-Control
 MarginContainer
 HTTPRequest
-Label
 HBoxContainer
-VBoxContainer
 CheckBox
 CheckButton
-RichTextLabel

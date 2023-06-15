@@ -171,10 +171,9 @@ public partial class CardSelectionMenu : Control, ISocketConn
 			}
 			else
 			{
-				PackedScene messageBoxScene = (PackedScene)GD.Load("res://message_box.tscn");
-				MessageBox messageBox = (MessageBox)messageBoxScene.Instantiate(PackedScene.GenEditState.Instance);
-				messageBox.SetUp("Рука зафиксирована \n Ожидание готовности оппонента", false);
-				AddChild(messageBox);
+				var msgBox = MessageBox.Instance;
+				msgBox.SetUp("Рука зафиксирована \n Ожидание готовности оппонента", false);
+				AddChild(msgBox);
 			}
 		}
 	}
