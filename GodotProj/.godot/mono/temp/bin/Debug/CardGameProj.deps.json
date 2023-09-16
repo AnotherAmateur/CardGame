@@ -8,32 +8,32 @@
     ".NETCoreApp,Version=v6.0": {
       "CardGameProj/1.0.0": {
         "dependencies": {
-          "Godot.SourceGenerators": "4.0.3",
-          "GodotSharp": "4.0.3",
-          "GodotSharpEditor": "4.0.3",
+          "Godot.SourceGenerators": "4.1.1",
+          "GodotSharp": "4.1.1",
+          "GodotSharpEditor": "4.1.1",
           "Microsoft.AspNetCore.SignalR.Client": "6.0.16"
         },
         "runtime": {
           "CardGameProj.dll": {}
         }
       },
-      "Godot.SourceGenerators/4.0.3": {},
-      "GodotSharp/4.0.3": {
+      "Godot.SourceGenerators/4.1.1": {},
+      "GodotSharp/4.1.1": {
         "runtime": {
           "lib/net6.0/GodotSharp.dll": {
-            "assemblyVersion": "4.0.3.0",
-            "fileVersion": "4.0.3.0"
+            "assemblyVersion": "4.1.1.0",
+            "fileVersion": "4.1.1.0"
           }
         }
       },
-      "GodotSharpEditor/4.0.3": {
+      "GodotSharpEditor/4.1.1": {
         "dependencies": {
-          "GodotSharp": "4.0.3"
+          "GodotSharp": "4.1.1"
         },
         "runtime": {
           "lib/net6.0/GodotSharpEditor.dll": {
-            "assemblyVersion": "4.0.3.0",
-            "fileVersion": "4.0.3.0"
+            "assemblyVersion": "4.1.1.0",
+            "fileVersion": "4.1.1.0"
           }
         }
       },
@@ -220,26 +220,26 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Godot.SourceGenerators/4.0.3": {
+    "Godot.SourceGenerators/4.1.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-2hehxauxcdFV59mJuYtKLnIPY+09kH7tkGQYv+YnTY0G1Axea9/GPi4Dc0svqqC3/NBQqwMBGpNrFFppy27+pg==",
-      "path": "godot.sourcegenerators/4.0.3",
-      "hashPath": "godot.sourcegenerators.4.0.3.nupkg.sha512"
+      "sha512": "sha512-Kti3AjqGFT/myqAg87ykwoGAMrSUZkQaLdpZRWqvO0w2VhDtwUgEEKZk5HK94GzlWHOHZx2UW2fO88G7h56VgA==",
+      "path": "godot.sourcegenerators/4.1.1",
+      "hashPath": "godot.sourcegenerators.4.1.1.nupkg.sha512"
     },
-    "GodotSharp/4.0.3": {
+    "GodotSharp/4.1.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-zyqDcUMn8B2mO0kp3Vkhjww+56vZgyVOir83KD/VYAWN9dziAUI4Yh4Pb7WdOE+i0HrivS2cNlndC+2dqwFgrw==",
-      "path": "godotsharp/4.0.3",
-      "hashPath": "godotsharp.4.0.3.nupkg.sha512"
+      "sha512": "sha512-r07Z+O82m5dAqeJMYHDJCGdD0p1gb8vNVi+kIFYGjDNk39Ys3fgsm+x7ZpHEfNSW2oHTn62SCuCE38UAVy17MA==",
+      "path": "godotsharp/4.1.1",
+      "hashPath": "godotsharp.4.1.1.nupkg.sha512"
     },
-    "GodotSharpEditor/4.0.3": {
+    "GodotSharpEditor/4.1.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-FpyzFn/R+tn3IOdHZGQi7oNQwtLSXvCxg7dbxaYWyEudLrHmx6f7QMwTlrX1k4bcyfBXpTaBLGWmrpYdswTMyg==",
-      "path": "godotsharpeditor/4.0.3",
-      "hashPath": "godotsharpeditor.4.0.3.nupkg.sha512"
+      "sha512": "sha512-t29ltWPBHhWDKncK2XFXmHx29jGOqtsR9PFdkjIcRWG5+PdcCJNrCng5cls/H+zGtluGF5L6rNBFbFlBBvTgkA==",
+      "path": "godotsharpeditor/4.1.1",
+      "hashPath": "godotsharpeditor.4.1.1.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Connections.Abstractions/6.0.16": {
       "type": "package",

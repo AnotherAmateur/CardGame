@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "f32xiBLJYhgzX6tI/2c3bwEMwb5jqt6euGAg4uTr+bnYJY0aUzzX1U1wo0mcD0ZA2AaHJUaOszfVvK5W0od5HA==",
+  "dgSpecHash": "5AKpPSqKwyoNH1EP5ocMjwpoKrEoyqS3+Amc6ezXecnNmgLiiy6sMEIhxtMrB3JEj1kr46SDAvnBRjCarvXMLQ==",
   "success": true,
   "projectFilePath": "D:\\Uni\\Курсовая 3 курс\\CardGameGitHub\\CardGame\\CardGameWebApi\\CardGameWebApi.csproj",
   "expectedPackageFiles": [
@@ -53,10 +53,9 @@
     "C:\\Users\\dmitr\\.nuget\\packages\\system.security.principal.windows\\4.7.0\\system.security.principal.windows.4.7.0.nupkg.sha512",
     "C:\\Users\\dmitr\\.nuget\\packages\\system.text.encoding.codepages\\4.7.0\\system.text.encoding.codepages.4.7.0.nupkg.sha512",
     "C:\\Users\\dmitr\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512",
-    "C:\\Users\\dmitr\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x86\\6.0.16\\microsoft.netcore.app.runtime.win-x86.6.0.16.nupkg.sha512",
-    "C:\\Users\\dmitr\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x86\\6.0.16\\microsoft.windowsdesktop.app.runtime.win-x86.6.0.16.nupkg.sha512",
-    "C:\\Users\\dmitr\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x86\\6.0.16\\microsoft.aspnetcore.app.runtime.win-x86.6.0.16.nupkg.sha512",
-    "C:\\Users\\dmitr\\.nuget\\packages\\microsoft.netcore.app.crossgen2.win-x64\\6.0.16\\microsoft.netcore.app.crossgen2.win-x64.6.0.16.nupkg.sha512"
+    "C:\\Users\\dmitr\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x86\\6.0.21\\microsoft.netcore.app.runtime.win-x86.6.0.21.nupkg.sha512",
+    "C:\\Users\\dmitr\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x86\\6.0.21\\microsoft.windowsdesktop.app.runtime.win-x86.6.0.21.nupkg.sha512",
+    "C:\\Users\\dmitr\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x86\\6.0.21\\microsoft.aspnetcore.app.runtime.win-x86.6.0.21.nupkg.sha512"
   ],
   "logs": []
 }

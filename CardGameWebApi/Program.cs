@@ -23,7 +23,7 @@ builder.Services.AddTransient<IGameSessionsRep, EfGameSession>();
 builder.Services.AddTransient<ILobbyRep, EfLobby>();
 builder.Services.AddScoped<DataManager>();
 
-var connectionString = builder.Configuration.GetConnectionString("MyAspNetConnection");
+var connectionString = builder.Configuration.GetConnectionString("SomeeConnection");
 builder.Services.AddDbContext<CardGameDbContext>(options =>
 {
 	options.UseSqlServer(connectionString);

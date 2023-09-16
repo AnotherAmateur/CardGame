@@ -11,6 +11,6 @@ namespace CardGameProj.SeparateClasses
 
 		public readonly static (float, float) InitCardSize = (512, 768);
 
-		public static string Url = "http://bloghda-001-site1.htempurl.com/";
+		public static string Url = "http://palma22-001-site1.gtempurl.com/";
 	}
 }

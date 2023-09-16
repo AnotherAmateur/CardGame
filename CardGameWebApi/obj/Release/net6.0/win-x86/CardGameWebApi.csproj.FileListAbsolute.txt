@@ -380,7 +380,6 @@ D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\CardGameWebApi\bin\Re
 D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\CardGameWebApi\bin\Release\net6.0\win-x86\hostfxr.dll
 D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\CardGameWebApi\bin\Release\net6.0\win-x86\hostpolicy.dll
 D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\CardGameWebApi\bin\Release\net6.0\win-x86\mscordaccore.dll
-D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\CardGameWebApi\bin\Release\net6.0\win-x86\mscordaccore_x86_x86_6.0.1623.17311.dll
 D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\CardGameWebApi\bin\Release\net6.0\win-x86\mscordbi.dll
 D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\CardGameWebApi\bin\Release\net6.0\win-x86\mscorrc.dll
 D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\CardGameWebApi\bin\Release\net6.0\win-x86\msquic.dll
@@ -407,3 +406,4 @@ D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\CardGameWebApi\obj\Re
 D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\CardGameWebApi\obj\Release\net6.0\win-x86\CardGameWebApi.pdb
 D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\CardGameWebApi\obj\Release\net6.0\win-x86\CardGameWebApi.genruntimeconfig.cache
 D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\CardGameWebApi\obj\Release\net6.0\win-x86\ref\CardGameWebApi.dll
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\CardGameWebApi\bin\Release\net6.0\win-x86\mscordaccore_x86_x86_6.0.2123.36311.dll

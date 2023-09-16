@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <parameters>
-  <parameter name="IIS Web Application Name" description="" value="bloghda-001-site1" tags="IisApp">
+  <parameter name="IIS Web Application Name" description="" value="palma22-001-site1" tags="IisApp">
     <parameterEntry kind="ProviderPath" scope="IisApp" match="^D:\\Uni\\Курсовая\ 3\ курс\\CardGameGitHub\\CardGame\\CardGameWebApi\\obj\\Release\\net6\.0\\win-x86\\PubTmp\\Out\\$" />
-  </parameter>
-  <parameter name="CardGameWebApi.DAL.CardGameDbContext" description="" value="Data Source=SQL6030.site4now.net;Initial Catalog=db_a99f40_cardgamedb;User Id=db_a99f40_cardgamedb_admin;Password=lomkost321" tags="dbfullsql">
-    <parameterEntry kind="ProviderPath" scope="dbfullsql" match="^D:\\Uni\\Курсовая\ 3\ курс\\CardGameGitHub\\CardGame\\CardGameWebApi\\obj\\Release\\net6\.0\\win-x86\\PubTmp\\EFSQLScripts\\CardGameWebApi\.DAL\.CardGameDbContext\.sql$" />
   </parameter>
 </parameters>

@@ -1,9 +1,7 @@
-res://Scripts/RoomMenu.cs
-res://GameFieldScreen.tscn
 res://message_box.tscn
 res://MinCardScene.tscn
+res://GameFieldScreen.tscn
 res://RoomMenu.tscn
 res://RoomList.tscn
 res://WaiterScene.tscn
 res://CardSelectionMenu.tscn
-res://Scripts/GameFieldController.cs

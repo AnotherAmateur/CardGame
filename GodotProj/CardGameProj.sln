@@ -5,6 +5,8 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardGameProj", "CardGameProj.csproj", "{12FA14A8-BEC3-4019-95F3-4F73A06B5FB9}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AiBot", "..\AiBot\AiBot.csproj", "{4BF2F2BB-A419-4650-B12E-DB9E61A41922}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,14 @@ Global
 		{12FA14A8-BEC3-4019-95F3-4F73A06B5FB9}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
 		{12FA14A8-BEC3-4019-95F3-4F73A06B5FB9}.Release|Any CPU.ActiveCfg = ExportRelease|Any CPU
 		{12FA14A8-BEC3-4019-95F3-4F73A06B5FB9}.Release|Any CPU.Build.0 = ExportRelease|Any CPU
+		{4BF2F2BB-A419-4650-B12E-DB9E61A41922}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BF2F2BB-A419-4650-B12E-DB9E61A41922}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BF2F2BB-A419-4650-B12E-DB9E61A41922}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BF2F2BB-A419-4650-B12E-DB9E61A41922}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{4BF2F2BB-A419-4650-B12E-DB9E61A41922}.ExportRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{4BF2F2BB-A419-4650-B12E-DB9E61A41922}.ExportRelease|Any CPU.Build.0 = Release|Any CPU
+		{4BF2F2BB-A419-4650-B12E-DB9E61A41922}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BF2F2BB-A419-4650-B12E-DB9E61A41922}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
