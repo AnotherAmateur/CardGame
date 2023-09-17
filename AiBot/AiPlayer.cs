@@ -19,10 +19,15 @@ namespace AiBot
 
         public AiPlayer(CardNations nation)
         {
+            Hand = new();            
+            OnBoard = new();
+            SpOnBoard = new();
             Nation = nation;
-            Deck = CardDataBase.GetAllCards.Where(x => x.Value.nation == Nation).Select(x => x.Key).ToList();
-            var cardList = GetRandomCardsFromDeck(Math.Min(GameController.MaxHandSize, Deck.Count));
+            Deck = CardDataBase.GetAllCards.Where(x => x.Value.nation == Nation && x.Value.type != CardTypes.Leader)
+                .Select(x => x.Key).ToList();
+            var cardList = GetRandomCardsFromDeck();
             TakeCardsFromDeck(cardList);
+            InitTotalsByRows();
         }
 
 
@@ -35,7 +40,7 @@ namespace AiBot
 
             if (card.type == CardTypes.Special)
             {
-                OnBoard.Add(card);
+                SpOnBoard.Add(card);
             }
             else
             {
@@ -45,8 +50,14 @@ namespace AiBot
             Hand.Remove(card);
         }
 
-        public List<int> GetRandomCardsFromDeck(int count)
+        private List<int> GetRandomCardsFromDeck(int count = -1)
         {
+            if (count == -1)
+            {
+                count = Math.Min(Math.Min(GameController.MaxHandSize, Deck.Count),
+                GameController.MaxHandSize - Hand.Count);
+            }
+
             List<int> result = new();
             if (count > 0)
             {
@@ -74,7 +85,7 @@ namespace AiBot
             return result;
         }
 
-        public void TakeCardsFromDeck(List<int> cards)
+        private void TakeCardsFromDeck(List<int> cards)
         {
             if (cards.Count == 0)
             {
@@ -95,6 +106,23 @@ namespace AiBot
             }
         }
 
-      
+        public void InitTotalsByRows()
+        {
+            TotalsByRows = new();
+            TotalsByRows.Add(CardTypes.Group1, 0);
+            TotalsByRows.Add(CardTypes.Group2, 0);
+            TotalsByRows.Add(CardTypes.Group3, 0);
+        }
+
+        public void NewRound()
+        {
+            InitTotalsByRows();
+            OnBoard.Clear();
+            SpOnBoard.Clear();
+            Total = 0;
+
+            var cardList = GetRandomCardsFromDeck();
+            TakeCardsFromDeck(cardList);
+        }
     }
 }
