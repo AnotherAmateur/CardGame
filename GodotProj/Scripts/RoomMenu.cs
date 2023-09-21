@@ -12,8 +12,9 @@ public partial class RoomMenu : Control
 
 	public override void _Ready()
 	{
+		States.PVE = false;
 		httpRequest = GetNode<HttpRequest>("HTTPRequest");
-		GetPlayerInfo();
+		GetPlayerInfo();       
 	}
 
 	private void GetPlayerInfo()
@@ -30,7 +31,6 @@ public partial class RoomMenu : Control
 		RoomList roomListInstance = (RoomList)roomListScene.Instantiate();
 		AddChild(roomListInstance);
 	}
-
 
 	private void _on_http_request_request_completed(long _, long response_code, string[] headers, byte[] body)
 	{
@@ -65,6 +65,7 @@ public partial class RoomMenu : Control
 
 	private void _on_pve_btn_pressed()
 	{
-		//GetTree().ChangeSceneToPacked((PackedScene)GD.Load("res://CardSelectionMenu.tscn"));
+		States.PVE = true;
+		GetTree().ChangeSceneToPacked((PackedScene)GD.Load("res://CardSelectionMenu.tscn"));
 	}
 }

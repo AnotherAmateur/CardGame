@@ -3,6 +3,7 @@ using CardGameProj.SeparateClasses;
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public partial class GameFieldController : Node2D, ISocketConn
 {
@@ -20,11 +21,21 @@ public partial class GameFieldController : Node2D, ISocketConn
 	private GameFieldController() { }
 	private Button passBtn;
 	private bool isBoardActive;
+	private AiPlayer aiPlayer;
 
 	public override void _Ready()
 	{
 		Instance = this;
-		socketConnection = SocketConnection.GetInstance(this);
+
+		if (States.PVE)
+		{
+			int randNation = Random.Shared.Next(CardDataBase.Nations.Count);
+			aiPlayer = new AiPlayer(CardDataBase.Nations[randNation]);
+		}
+		else
+		{
+            socketConnection = SocketConnection.GetInstance(this);
+        }	
 
 		passBtn = GetNode<Button>("ToPass");
 
@@ -50,8 +61,6 @@ public partial class GameFieldController : Node2D, ISocketConn
 
 		var roundVBoxTop = GetNode<HBoxContainer>("TotalCount/VBoxContainer/TopRoundCount");
 		var roundVBoxBottom = GetNode<HBoxContainer>("TotalCount/VBoxContainer/BottomRoundCount");
-
-		CardDataBase.UpdateCardDataBase();
 
 		antagonist = new(States.AntagonistLeaderCardId, cardRowsContainerTop, leaderCardContainerTop,
 			discardPileContainerTop, totalCountTop, RowsCountTopContainer, roundVBoxTop);
@@ -89,7 +98,15 @@ public partial class GameFieldController : Node2D, ISocketConn
 						}
 
 						protagonist.PutCardFromHandOnBoard(cardInfo);
-						socketConnection.Send(ActionTypes.CardMove, States.MasterId, cardId.ToString());
+
+						if (States.PVE)
+						{
+
+						}
+						else
+						{
+                            socketConnection.Send(ActionTypes.CardMove, States.MasterId, cardId.ToString());
+                        }						
 					}
 					break;
 			}
@@ -101,7 +118,7 @@ public partial class GameFieldController : Node2D, ISocketConn
 				largeCardContainer.RemoveChild(childNode);
 			}
 
-			SlaveCardScene cardInstance = (SlaveCardScene)cardScene.Instantiate(PackedScene.GenEditState.Instance);
+			SlaveCardScene cardInstance = (SlaveCardScene)cardScene.Instantiate();
 			largeCardContainer.AddChild(cardInstance);
 			cardInstance.SetParams(largeCardContainer.Size, CardDataBase.GetCardTexturePath(cardId),
 				cardInfo, disconnectSignals: true);
@@ -315,4 +332,36 @@ public partial class GameFieldController : Node2D, ISocketConn
 			socketConnection.Send(ActionTypes.FirstPlayer, States.MasterId, firstPlayer.ToString());
 		}
 	}
+
+    public string GetCurState()
+    {
+        List<string> curState = new();
+
+        string protagonistDeckSize = (protagonist.Deck.Count / 3).ToString();
+        curState.Add(protagonistDeckSize);
+
+        string antagonistDeckSize = (aiPlayer.Deck.Count / 3).ToString();
+        curState.Add(antagonistDeckSize);
+
+        string gamesResults = Player.gameResult.ToString();
+        curState.Add(gamesResults);
+
+        string rowsTotalsPl1 = string.Join("", (protagonist.TotalsByRows.Values).Select(x => x / 3));
+        curState.Add(rowsTotalsPl1);
+
+        string rowsTotalsBot = string.Join("", (antagonist.TotalsByRows.Values).Select(x => x / 3));
+        curState.Add(rowsTotalsBot);
+
+        string spCardsOnBoard = string.Join("", protagonist.SpOnBoard.Union(antagonist.SpOnBoard)
+                .OrderBy(x => x.id).Select(x => x.id));
+        curState.Add(spCardsOnBoard);
+
+        string handSize = aiPlayer.Hand.Count().ToString();
+        curState.Add(handSize);
+
+        string handWeight = (aiPlayer.Hand.Select(x => x.strength).Sum() / 5).ToString();
+        curState.Add(handWeight);
+
+        return string.Join('_', curState);
+    }
 }

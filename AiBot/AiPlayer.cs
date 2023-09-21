@@ -16,7 +16,6 @@ namespace AiBot
         public bool IsPassed { get; set; }
         public CardNations Nation { get; private set; }
 
-
         public AiPlayer(CardNations nation)
         {
             Hand = new();            
@@ -29,7 +28,6 @@ namespace AiBot
             TakeCardsFromDeck(cardList);
             InitTotalsByRows();
         }
-
 
         public void PutCard(CardDataBase.CardData card)
         {

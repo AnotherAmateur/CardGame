@@ -30,18 +30,31 @@ public partial class CardSelectionMenu : Control, ISocketConn
 
 	public override void _Ready()
 	{
-		socketConnection = SocketConnection.GetInstance(this);
+		if (States.PVE is false)
+		{
+            socketConnection = SocketConnection.GetInstance(this);
+        }       
 
 		Instantiate = this;
 		minHandSize = 1;
-		allCardsGridContainer = GetNode<ScrollContainer>("AllCardScrollContainer").GetNode<GridContainer>("GridContainer");
-		selectedCardsGridContainer = GetNode<ScrollContainer>("SelectionCardScrollContainer").GetNode<GridContainer>("GridContainer");
+		allCardsGridContainer = GetNode<GridContainer>("AllCardScrollContainer/GridContainer");
+		selectedCardsGridContainer = GetNode<GridContainer>("SelectionCardScrollContainer/GridContainer");
 
 		var cardContainerSize = GetNode<ScrollContainer>("AllCardScrollContainer").Size;
 
 		cardSize = new Vector2(185f, 277.5f);
 
-		CardDataBase.UpdateCardDataBase();
+		try
+		{
+			CardDataBase.UpdateCardDataBase();
+		}
+		catch (System.Exception ex)
+		{
+			var msgBox = MessageBox.Instance;
+			msgBox.SetUp(ex.Message, true, true);
+			AddChild(msgBox);
+		}
+
 		GetNode<Label>("VBoxContainer/HBoxContainer/TotalCards").Text = CardDataBase.GetAllCards.Count.ToString();
 		LoadAllCards();
 		ChangeLeader();
@@ -64,17 +77,16 @@ public partial class CardSelectionMenu : Control, ISocketConn
 			}
 			else
 			{
-				SlaveCardScene cardInstance = (SlaveCardScene)cardScene.Instantiate(PackedScene.GenEditState.Instance);
-				Control t = new();
-				t.Name = card.Key.ToString();
-				allCardsGridContainer.AddChild(t);
-				allCardsGridContainer.GetNode<Control>(card.Key.ToString()).AddChild(cardInstance);
-
+				SlaveCardScene cardInstance = (SlaveCardScene)cardScene.Instantiate();
+				if (cardInstance is null)
+				{
+					OS.Alert("cardInstance is null");
+				}
+				Control t = new() { Name = card.Key.ToString() };
 				string texturePath = CardDataBase.GetCardTexturePath(card.Key);
-
-				allCardsGridContainer.GetNode<Control>(card.Key.ToString()).GetChild<SlaveCardScene>(0)
-					.SetParams(cardSize, texturePath, CardDataBase.GetCardInfo(card.Key));
-
+				cardInstance.SetParams(cardSize, texturePath, CardDataBase.GetCardInfo(card.Key));
+				t.AddChild(cardInstance);
+				allCardsGridContainer.AddChild(t);
 				++nationCardsCount;
 			}
 		}
@@ -162,18 +174,25 @@ public partial class CardSelectionMenu : Control, ISocketConn
 	{
 		if (SelectedCards.Count() >= minHandSize)
 		{
-			isReadyHere = true;
-			socketConnection.Send(ActionTypes.Ready, States.MasterId, LeaderCard.ToString());
-
-			if (isReadyThere == true)
+			if (States.PVE)
 			{
 				GetTree().ChangeSceneToPacked((PackedScene)GD.Load("res://GameFieldScreen.tscn"));
 			}
 			else
 			{
-				var msgBox = MessageBox.Instance;
-				msgBox.SetUp("Рука зафиксирована \n Ожидание готовности оппонента", false);
-				AddChild(msgBox);
+				isReadyHere = true;
+				socketConnection.Send(ActionTypes.Ready, States.MasterId, LeaderCard.ToString());
+
+				if (isReadyThere == true)
+				{
+					GetTree().ChangeSceneToPacked((PackedScene)GD.Load("res://GameFieldScreen.tscn"));
+				}
+				else
+				{
+					var msgBox = MessageBox.Instance;
+					msgBox.SetUp("Рука зафиксирована \n Ожидание готовности оппонента", false);
+					AddChild(msgBox);
+				}
 			}
 		}
 	}
@@ -223,7 +242,7 @@ public partial class CardSelectionMenu : Control, ISocketConn
 
 		foreach (var card in cards.Where(x => SelectedCards.Contains(x.Key) is false))
 		{
-			SlaveCardScene cardInstance = (SlaveCardScene)cardScene.Instantiate(PackedScene.GenEditState.Instance);
+			SlaveCardScene cardInstance = (SlaveCardScene)cardScene.Instantiate();
 			Control t = new();
 			t.Name = card.Key.ToString();
 			allCardsGridContainer.AddChild(t);
@@ -237,7 +256,7 @@ public partial class CardSelectionMenu : Control, ISocketConn
 
 		foreach (var card in cards.Where(x => SelectedCards.Contains(x.Key) is true))
 		{
-			SlaveCardScene cardInstance = (SlaveCardScene)cardScene.Instantiate(PackedScene.GenEditState.Instance);
+			SlaveCardScene cardInstance = (SlaveCardScene)cardScene.Instantiate();
 			Control t = new();
 			t.Name = card.Key.ToString();
 			selectedCardsGridContainer.AddChild(t);
@@ -303,6 +322,3 @@ public partial class CardSelectionMenu : Control, ISocketConn
 		}
 	}
 }
-
-
-

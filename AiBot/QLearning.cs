@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Transactions;
-
-namespace AiBot
+﻿namespace AiBot
 {
     public class QLearning
     {
@@ -15,21 +7,33 @@ namespace AiBot
         private double discountFactor;
         private Random random;
         private int actionsCount;
-        private Dictionary<int, int> QtoGTranslator;
-        private Dictionary<int, int> GtoQTranslator;
+        private bool randInit;
+        private double initValue;
+        public Dictionary<int, int> QtoGTranslator { get; private set; }
+        public Dictionary<int, int> GtoQTranslator { get; private set; }
 
 
-        public QLearning(int actionsCount, double learningRate, double discountFactor, 
-            Dictionary<int, int> QtoGTranslator, Dictionary<int, int> GtoQTranslator)
+        public QLearning(int actionsCount, double learningRate, double discountFactor,
+            Dictionary<int, int> QtoGTranslator, Dictionary<int, int> GtoQTranslator, bool randInit, double initValue)
         {
             this.learningRate = learningRate;
             this.discountFactor = discountFactor;
             this.actionsCount = actionsCount;
             this.QtoGTranslator = QtoGTranslator;
             this.GtoQTranslator = GtoQTranslator;
+            this.randInit = randInit;
+            this.initValue = initValue;
 
             QTable = new();
             random = new Random();
+        }
+
+        public QLearning(Dictionary<int, double[]> qTable, int actionsCount, Dictionary<int, int> qtoGTranslator, Dictionary<int, int> gtoQTranslator)
+        {
+            QTable = qTable;
+            this.actionsCount = actionsCount;
+            QtoGTranslator = qtoGTranslator;
+            GtoQTranslator = gtoQTranslator;
         }
 
         public int ChooseAction(int state, double eps, List<int> validActions)
@@ -38,7 +42,7 @@ namespace AiBot
 
             if (QTable.ContainsKey(state) is false)
             {
-                QTable.Add(state, new double[actionsCount]);
+                QTable.Add(state, InitActRewards());
             }
 
             if (random.NextDouble() < eps)
@@ -98,6 +102,33 @@ namespace AiBot
             }
 
             return maxQValue;
+        }
+
+        public void SetQTable(Dictionary<int, double[]> qTable)
+        {
+            QTable = qTable;
+        }
+
+        private double[] InitActRewards()
+        {
+            double[] actRewArray = new double[actionsCount];
+
+            if (randInit)
+            {
+                for (int i = 0; i < actRewArray.Length; i++)
+                {
+                    actRewArray[i] = random.NextDouble();
+                }
+            }
+            else
+            {
+                for (int i = 0; i < actRewArray.Length; i++)
+                {
+                    actRewArray[i] = initValue;
+                }
+            }
+
+            return actRewArray;
         }
     }
 }

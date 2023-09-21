@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "nfWVhXiWzl7bS9yPujSLT6Jov3CRCKr87IsQxcGGH+lYZrUVguQ726hcFGjS4mZvShiAYruP4ZCjJWc+E7mqKQ==",
+  "dgSpecHash": "lChSETY9yhv5/NBlm+BAv/fD16djUGQLOTMXNLF7We9Nvyw/zvKMJDY3itkzqGHQ5BhJedqWFQ7oHnfoMd+VqQ==",
   "success": true,
   "projectFilePath": "D:\\Uni\\Курсовая 3 курс\\CardGameGitHub\\CardGame\\GodotProj\\CardGameProj.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\dmitr\\.nuget\\packages\\godot.sourcegenerators\\4.1.1\\godot.sourcegenerators.4.1.1.nupkg.sha512",
     "C:\\Users\\dmitr\\.nuget\\packages\\godotsharp\\4.1.1\\godotsharp.4.1.1.nupkg.sha512",
+    "C:\\Users\\dmitr\\.nuget\\packages\\godotsharpeditor\\4.1.1\\godotsharpeditor.4.1.1.nupkg.sha512",
     "C:\\Users\\dmitr\\.nuget\\packages\\microsoft.aspnetcore.connections.abstractions\\6.0.16\\microsoft.aspnetcore.connections.abstractions.6.0.16.nupkg.sha512",
     "C:\\Users\\dmitr\\.nuget\\packages\\microsoft.aspnetcore.http.connections.client\\6.0.16\\microsoft.aspnetcore.http.connections.client.6.0.16.nupkg.sha512",
     "C:\\Users\\dmitr\\.nuget\\packages\\microsoft.aspnetcore.http.connections.common\\6.0.16\\microsoft.aspnetcore.http.connections.common.6.0.16.nupkg.sha512",
@@ -20,13 +21,11 @@
     "C:\\Users\\dmitr\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\6.0.3\\microsoft.extensions.logging.abstractions.6.0.3.nupkg.sha512",
     "C:\\Users\\dmitr\\.nuget\\packages\\microsoft.extensions.options\\6.0.0\\microsoft.extensions.options.6.0.0.nupkg.sha512",
     "C:\\Users\\dmitr\\.nuget\\packages\\microsoft.extensions.primitives\\6.0.0\\microsoft.extensions.primitives.6.0.0.nupkg.sha512",
+    "C:\\Users\\dmitr\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\dmitr\\.nuget\\packages\\system.diagnostics.diagnosticsource\\6.0.0\\system.diagnostics.diagnosticsource.6.0.0.nupkg.sha512",
     "C:\\Users\\dmitr\\.nuget\\packages\\system.io.pipelines\\6.0.3\\system.io.pipelines.6.0.3.nupkg.sha512",
     "C:\\Users\\dmitr\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
-    "C:\\Users\\dmitr\\.nuget\\packages\\system.threading.channels\\6.0.0\\system.threading.channels.6.0.0.nupkg.sha512",
-    "C:\\Users\\dmitr\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\6.0.21\\microsoft.netcore.app.runtime.win-x64.6.0.21.nupkg.sha512",
-    "C:\\Users\\dmitr\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\6.0.21\\microsoft.windowsdesktop.app.runtime.win-x64.6.0.21.nupkg.sha512",
-    "C:\\Users\\dmitr\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\6.0.21\\microsoft.aspnetcore.app.runtime.win-x64.6.0.21.nupkg.sha512"
+    "C:\\Users\\dmitr\\.nuget\\packages\\system.threading.channels\\6.0.0\\system.threading.channels.6.0.0.nupkg.sha512"
   ],
   "logs": []
 }
