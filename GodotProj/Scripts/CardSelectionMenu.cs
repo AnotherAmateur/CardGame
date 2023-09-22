@@ -32,8 +32,8 @@ public partial class CardSelectionMenu : Control, ISocketConn
 	{
 		if (States.PVE is false)
 		{
-            socketConnection = SocketConnection.GetInstance(this);
-        }       
+			socketConnection = SocketConnection.GetInstance(this);
+		}       
 
 		Instantiate = this;
 		minHandSize = 1;

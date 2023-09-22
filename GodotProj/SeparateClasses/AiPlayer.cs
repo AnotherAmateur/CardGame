@@ -1,7 +1,7 @@
-﻿using CardGameProj.Scripts;
+using CardGameProj.Scripts;
+using Godot;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace CardGameProj.SeparateClasses
@@ -17,31 +17,37 @@ namespace CardGameProj.SeparateClasses
 
         public AiPlayer(CardNations nation)
         {
-            QTable = ReadQTableFromFile();
-            Hand = new();
             Nation = nation;
+            ReadQTableFromFile();
+            InitTranslators();
+            Hand = new();          
             Deck = CardDataBase.GetAllCards.Where(x => x.Value.nation == Nation && x.Value.type != CardTypes.Leader)
                 .Select(x => x.Key).ToList();
-            var cardList = GetRandomCardsFromDeck();
-            TakeCardsFromDeck(cardList);
+            NewRound();
         }
 
-        public void PutCard(CardDataBase.CardData card)
+        private void InitTranslators()
         {
-            if (Hand.Contains(card) is false)
-            {
-                throw new Exception();
-            }
+            QtoGTranslator = new();
+            GtoQTranslator = new();
 
-            Hand.Remove(card);
+            QtoGTranslator.Add(0, (int)ActionTypes.Pass);
+            GtoQTranslator.Add((int)ActionTypes.Pass, 0);
+
+            int index = 1;
+            foreach (var card in CardDataBase.GetAllCards.Where(x => x.Value.nation == Nation).ToArray())
+            {
+                QtoGTranslator.Add(index, card.Key);
+                GtoQTranslator.Add(card.Key, index);
+                index++;
+            }
         }
 
         private List<int> GetRandomCardsFromDeck(int count = -1)
         {
             if (count == -1)
             {
-                count = Math.Min(Math.Min(Player.MaxHandSize, Deck.Count),
-                Player.MaxHandSize - Hand.Count);
+                count = Math.Min(Deck.Count, Player.MaxHandSize - Hand.Count);
             }
 
             List<int> result = new();
@@ -52,11 +58,10 @@ namespace CardGameProj.SeparateClasses
                     throw new Exception();
                 }
 
-                Random random = new();
                 HashSet<int> uniqueNumbers = new();
                 while (uniqueNumbers.Count < count)
                 {
-                    int number = random.Next(0, Deck.Count);
+                    int number = Random.Shared.Next(0, Deck.Count);
                     uniqueNumbers.Add(number);
                 }
 
@@ -90,15 +95,47 @@ namespace CardGameProj.SeparateClasses
             {
                 Hand.Add(CardDataBase.GetCardInfo(item));
             }
+
+            GameFieldController.Instance.UpdateDeckSize(Deck.Count.ToString());
         }
 
-        public void NewRound()
+        private void NewRound()
         {
             var cardList = GetRandomCardsFromDeck();
             TakeCardsFromDeck(cardList);
         }
 
-        public int ChooseAction(string rawState)
+        public int ApplyAction(string rawState)
+        {
+            int action = GetBestAction(rawState);
+
+            if (action == (int)ActionTypes.Pass)
+            {
+                NewRound();
+            }
+            else
+            {
+                var cardInfo = CardDataBase.GetCardInfo(action);
+                switch (cardInfo.type)
+                {
+                    case CardTypes.Group1:
+                    case CardTypes.Group2:
+                    case CardTypes.Group3:
+                        Hand.Remove(cardInfo);
+                        break;
+                    case CardTypes.Leader:
+                        break;
+                    case CardTypes.Special:
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            return action;
+        }
+
+        private int GetBestAction(string rawState)
         {
             int state = GetStateHash(rawState);
             var validActions = GetValidActions();
@@ -132,15 +169,15 @@ namespace CardGameProj.SeparateClasses
             return QtoGTranslator[bestAction];
         }
 
-        public List<int> GetValidActions()
+        private List<int> GetValidActions()
         {
             var actions = Hand.Select(x => x.id).ToList();
             actions.Add((int)ActionTypes.Pass);
 
-            return actions;
+            return actions.Select(x => GtoQTranslator[x]).ToList();
         }
 
-        int GetStateHash(string input)
+        private int GetStateHash(string input)
         {
             int hash = 17;
             foreach (char c in input)
@@ -151,24 +188,19 @@ namespace CardGameProj.SeparateClasses
             return hash;
         }
 
-        Dictionary<int, double[]> ReadQTableFromFile()
+        private void ReadQTableFromFile()
         {
-            Dictionary<int, double[]> qTable = new();
-            string path = $"{Nation.ToString().ToLower()}.QTable";
+            QTable = new();
+            string path = $"res://Data/QTableData/{Nation.ToString().ToLower()}_QTable.txt";
+            string data = Godot.FileAccess.Open(path, Godot.FileAccess.ModeFlags.Read).GetAsText();
 
-            using (var sr = new StreamReader(path))
+            foreach (string line in data.Split('\n', StringSplitOptions.RemoveEmptyEntries))
             {
-                string? line;
-                while ((line = sr.ReadLine()) != null)
-                {
-                    string[] temp = line.Split(':', StringSplitOptions.RemoveEmptyEntries);
-                    int state = int.Parse(temp[0]);
-                    double[] rewards = temp[1].Split('/', StringSplitOptions.RemoveEmptyEntries).Select(x => double.Parse(x)).ToArray();
-                    qTable.Add(state, rewards);
-                }
+                string[] temp = line.Split(':', StringSplitOptions.RemoveEmptyEntries);
+                int state = int.Parse(temp[0]);
+                double[] rewards = temp[1].Split('/', StringSplitOptions.RemoveEmptyEntries).Select(x => double.Parse(x)).ToArray();
+                QTable.Add(state, rewards);
             }
-
-            return qTable;
         }
     }
 }

@@ -238,11 +238,11 @@ namespace AiBot
 
             List<string> curState = new();
 
-            string protagonistDeckSize = (player.Deck.Count() / 3).ToString();
-            curState.Add(protagonistDeckSize);
+            string pl1DeckSize = (player.Deck.Count() / 3).ToString();
+            curState.Add(pl1DeckSize);
 
-            string antagonistDeckSize = (targetPlayer.Deck.Count() / 3).ToString();
-            curState.Add(antagonistDeckSize);
+            string targetPlayerDeckSize = (targetPlayer.Deck.Count() / 3).ToString();
+            curState.Add(targetPlayerDeckSize);
 
             string gamesResults = Pl1GamesMargin.ToString();
             curState.Add(gamesResults);

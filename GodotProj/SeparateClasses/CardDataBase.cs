@@ -90,16 +90,19 @@ public static class CardDataBase
 
     public static void UpdateCardDataBase()
     {
-        string cardDataPath = "res://Data/CardData/Cards.json";
-        string jsonData = Godot.FileAccess.Open(cardDataPath, Godot.FileAccess.ModeFlags.Read).GetAsText();
-
-        if (jsonData is null)
+        if (cards is null)
         {
-            throw new Exception("Data reading failed");
-        }
+            string cardDataPath = "res://Data/CardData/Cards.json";
+            string jsonData = Godot.FileAccess.Open(cardDataPath, Godot.FileAccess.ModeFlags.Read).GetAsText();
 
-        cards = JsonConvert.DeserializeObject<Dictionary<int, CardData>>(jsonData);
+            if (jsonData is null)
+            {
+                throw new Exception("Data reading failed");
+            }
 
-        Nations = Enum.GetValues(typeof(CardNations)).Cast<CardNations>().ToList();
+            cards = JsonConvert.DeserializeObject<Dictionary<int, CardData>>(jsonData);
+
+            Nations = Enum.GetValues(typeof(CardNations)).Cast<CardNations>().ToList();
+        }        
     }
 }

@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 public abstract class Player
 {
@@ -272,27 +274,23 @@ public abstract class Player
                 SpecialCardsContainer.GetNode((this is Protagonist) ? "BottomRow2" : "TopRow2").AddChild(cardInstance);
                 break;
             case 0:
-                TemporalSpCardContainer.AddChild(cardInstance);
-
-                cardInstance.SetParams(TemporalSpCardContainer.Size,
-                    CardDataBase.GetCardTexturePath(cardInfo.id), cardInfo);
-
-                foreach (Node row in SpecialCardsContainer.GetChildren())
                 {
-                    foreach (MinCardScene node in row.GetChildren())
-                    {
-                        row.RemoveChild(node);
-                    }
-                }
+                    TemporalSpCardContainer.AddChild(cardInstance);
 
-                System.Threading.Timer timer = null;
-                timer = new System.Threading.Timer((obj) =>
+                    cardInstance.SetParams(TemporalSpCardContainer.Size,
+                        CardDataBase.GetCardTexturePath(cardInfo.id), cardInfo);
+
+                    foreach (Node row in SpecialCardsContainer.GetChildren())
                     {
-                        RemoveTemporalSpCard();
-                        timer.Dispose();
-                    },
-                    null, 3000, System.Threading.Timeout.Infinite);
-                break;
+                        foreach (MinCardScene node in row.GetChildren())
+                        {
+                            row.RemoveChild(node);
+                        }
+                    }
+                    RemoveTemporalSpCard();
+
+                    break;
+                }
         }
 
         Protagonist.Instance.UpdateRowsCount();
@@ -301,8 +299,11 @@ public abstract class Player
         Antagonist.Instance.UpdateTotalCount();
     }
 
-    private void RemoveTemporalSpCard()
+    private async void RemoveTemporalSpCard()
     {
+        int msecDelay = 3000;
+        await Task.Delay(msecDelay);
+
         foreach (var node in TemporalSpCardContainer.GetChildren())
         {
             TemporalSpCardContainer.RemoveChild(node);

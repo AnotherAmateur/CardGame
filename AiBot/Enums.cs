@@ -5,9 +5,6 @@ namespace CardGameProj.Scripts
 	public enum CardRanks { Common, Rare, Legendary };
 	public enum ActionTypes
 	{
-		CardMove = -100,
-		Pass = -200,
-		GameOver,
-		FirstPlayer
+		Pass = -200
 	}
 }

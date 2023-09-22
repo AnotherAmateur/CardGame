@@ -59,3 +59,5 @@ D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono
 D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\obj\Debug\CardGameProj.pdb
 D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\obj\Debug\ref\CardGameProj.dll
 D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\bin\Debug\Newtonsoft.Json.dll
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\obj\Debug\CardGameProj.Properties.Resources.resources
+D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\obj\Debug\CardGameProj.csproj.GenerateResource.cache

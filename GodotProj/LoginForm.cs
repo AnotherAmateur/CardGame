@@ -1,10 +1,8 @@
+using CardGameProj.SeparateClasses;
 using Godot;
 using Godot.Collections;
 using System;
-using System.Reflection.Metadata;
 using System.Text;
-using System.Diagnostics;
-using CardGameProj.SeparateClasses;
 using System.Text.Json;
 
 public partial class LoginForm : Control
@@ -13,7 +11,7 @@ public partial class LoginForm : Control
 
 	public override void _Ready()
 	{
-		httpRequest = GetNode<HttpRequest>("HTTPRequest");
+        httpRequest = GetNode<HttpRequest>("HTTPRequest");
 	}
 
 	private void _on_Reg_pressed()

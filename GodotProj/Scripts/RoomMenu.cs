@@ -65,7 +65,8 @@ public partial class RoomMenu : Control
 
 	private void _on_pve_btn_pressed()
 	{
-		States.PVE = true;
+		States.MasterId = States.PlayerId;
+        States.PVE = true;
 		GetTree().ChangeSceneToPacked((PackedScene)GD.Load("res://CardSelectionMenu.tscn"));
 	}
 }

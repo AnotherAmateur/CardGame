@@ -26,10 +26,5 @@ public partial class Antagonist : Player
 			UpdateBoard();
 		}
 	}
-
-	public override string ToString()
-	{
-		return "antagonist";
-	}
 }
 
