@@ -22,5 +22,6 @@
   </ItemGroup>
   <PropertyGroup>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <OutputType>Library</OutputType>
   </PropertyGroup>
 </Project>

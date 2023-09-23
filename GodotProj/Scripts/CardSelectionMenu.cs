@@ -141,15 +141,15 @@ public partial class CardSelectionMenu : Control, ISocketConn
 
 	public void CardSceneEventHandler(CardEvents cardEvent, int cardId)
 	{
-		if (cardEvent is CardEvents.LeftCllick)
+        if (cardEvent is CardEvents.LeftCllick)
 		{
-			if (CardDataBase.GetCardInfo(cardId).type == CardTypes.Leader)
+            if (CardDataBase.GetCardInfo(cardId).type == CardTypes.Leader)
 			{
 				ChangeLeader();
 			}
 			else if (SelectedCards.Contains(cardId))
 			{
-				Control temp = selectedCardsGridContainer.GetNode<Control>(cardId.ToString());
+                Control temp = selectedCardsGridContainer.GetNode<Control>(cardId.ToString());
 				selectedCardsGridContainer.RemoveChild(selectedCardsGridContainer.GetNode<Control>(cardId.ToString()));
 				allCardsGridContainer.AddChild(temp);
 				allCardsGridContainer.MoveChild(temp, 0);
@@ -158,7 +158,7 @@ public partial class CardSelectionMenu : Control, ISocketConn
 			}
 			else
 			{
-				Control temp = allCardsGridContainer.GetNode<Control>(cardId.ToString());
+                Control temp = allCardsGridContainer.GetNode<Control>(cardId.ToString());
 				allCardsGridContainer.RemoveChild(allCardsGridContainer.GetNode<Control>(cardId.ToString()));
 				selectedCardsGridContainer.AddChild(temp);
 				selectedCardsGridContainer.MoveChild(temp, 0);
@@ -304,9 +304,9 @@ public partial class CardSelectionMenu : Control, ISocketConn
 	{
 		foreach (Control cardHolder in allCardsGridContainer.GetChildren())
 		{
-			foreach (SlaveCardScene card in cardHolder.GetChildren())
+            foreach (SlaveCardScene card in cardHolder.GetChildren())
 			{
-				card._on_Card_pressed();
+                card._on_Card_pressed();
 			}
 		}
 	}

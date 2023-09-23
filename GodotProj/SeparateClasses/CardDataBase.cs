@@ -6,9 +6,7 @@ using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 
 public static class CardDataBase
-{
-    static Random rand = new Random();
-
+{   
     public struct CardData
     {
         public int id;
@@ -103,6 +101,6 @@ public static class CardDataBase
             cards = JsonConvert.DeserializeObject<Dictionary<int, CardData>>(jsonData);
 
             Nations = Enum.GetValues(typeof(CardNations)).Cast<CardNations>().ToList();
-        }        
+        }
     }
 }

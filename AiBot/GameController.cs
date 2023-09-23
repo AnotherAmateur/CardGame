@@ -32,8 +32,8 @@ namespace AiBot
     public class GameController
     {
         public const int MaxHandSize = 10;
-        public AiPlayer player { get; private set; }
-        public AiPlayer targetPlayer { get; private set; }
+        public AiPlayer Player { get; private set; }
+        public AiPlayer TargetPlayer { get; private set; }
         public AiPlayer? CurrentPlayer { get; private set; }
         public int Pl1GamesMargin { get; private set; }
         public int Round { get; private set; }
@@ -45,8 +45,8 @@ namespace AiBot
         {
             Round = 1;
             Winner = null;
-            player = new AiPlayer(pl1Nation);
-            targetPlayer = new AiPlayer(pl2Nation);
+            Player = new AiPlayer(pl1Nation);
+            TargetPlayer = new AiPlayer(pl2Nation);
             StatesLog = new(100);
 
             SetTurn(RandFirstPlayer());
@@ -55,65 +55,65 @@ namespace AiBot
 
         private void UpdateTotals()
         {
-            player.InitTotalsByRows();
-            targetPlayer.InitTotalsByRows();
+            Player.InitTotalsByRows();
+            TargetPlayer.InitTotalsByRows();
 
-            foreach (var card in player.OnBoard)
+            foreach (var card in Player.OnBoard)
             {
-                player.TotalsByRows[card.type] += card.strength;
+                Player.TotalsByRows[card.type] += card.strength;
             }
 
-            foreach (var card in targetPlayer.OnBoard)
+            foreach (var card in TargetPlayer.OnBoard)
             {
-                targetPlayer.TotalsByRows[card.type] += card.strength;
+                TargetPlayer.TotalsByRows[card.type] += card.strength;
             }
 
-            foreach (var spCard in player.SpOnBoard)
+            foreach (var spCard in Player.SpOnBoard)
             {
                 switch (spCard.strength)
                 {
                     case < 0:
-                        targetPlayer.TotalsByRows[CardTypes.Group1] += spCard.strength *
-                            targetPlayer.OnBoard.Where(x => x.type == CardTypes.Group1).Count();
+                        TargetPlayer.TotalsByRows[CardTypes.Group1] += spCard.strength *
+                            TargetPlayer.OnBoard.Where(x => x.type == CardTypes.Group1).Count();
                         break;
                     case > 0:
-                        player.TotalsByRows[CardTypes.Group2] += spCard.strength *
-                             player.OnBoard.Where(x => x.type == CardTypes.Group2).Count();
+                        Player.TotalsByRows[CardTypes.Group2] += spCard.strength *
+                             Player.OnBoard.Where(x => x.type == CardTypes.Group2).Count();
                         break;
                     case 0:
                         throw new Exception();
                 }
             }
 
-            foreach (var spCard in targetPlayer.SpOnBoard)
+            foreach (var spCard in TargetPlayer.SpOnBoard)
             {
                 switch (spCard.strength)
                 {
                     case < 0:
-                        player.TotalsByRows[CardTypes.Group1] += spCard.strength *
-                            player.OnBoard.Where(x => x.type == CardTypes.Group1).Count();
+                        Player.TotalsByRows[CardTypes.Group1] += spCard.strength *
+                            Player.OnBoard.Where(x => x.type == CardTypes.Group1).Count();
                         break;
                     case > 0:
-                        targetPlayer.TotalsByRows[CardTypes.Group2] += spCard.strength *
-                             targetPlayer.OnBoard.Where(x => x.type == CardTypes.Group2).Count();
+                        TargetPlayer.TotalsByRows[CardTypes.Group2] += spCard.strength *
+                             TargetPlayer.OnBoard.Where(x => x.type == CardTypes.Group2).Count();
                         break;
                     case 0:
                         throw new Exception();
                 }
             }
 
-            player.Total = player.TotalsByRows.Values.Sum();
-            targetPlayer.Total = targetPlayer.TotalsByRows.Values.Sum();
+            Player.Total = Player.TotalsByRows.Values.Sum();
+            TargetPlayer.Total = TargetPlayer.TotalsByRows.Values.Sum();
         }
 
         private AiPlayer GetEnemy(AiPlayer aiPlayer)
         {
-            return aiPlayer == player ? targetPlayer : player;
+            return aiPlayer == Player ? TargetPlayer : Player;
         }
 
         public void MakeMove(int action)
         {
-            StatesLog.Add(new(player.Total, targetPlayer.Total, Pl1GamesMargin, CurrentPlayer, Round));
+            StatesLog.Add(new(Player.Total, TargetPlayer.Total, Pl1GamesMargin, CurrentPlayer, Round));
 
             if (action == (int)ActionTypes.Pass)
             {
@@ -130,8 +130,8 @@ namespace AiBot
 
                 if (card.type == CardTypes.Special && card.strength == 0)
                 {
-                    player.SpOnBoard.Clear();
-                    targetPlayer.SpOnBoard.Clear();
+                    Player.SpOnBoard.Clear();
+                    TargetPlayer.SpOnBoard.Clear();
                 }
                 else
                 {
@@ -185,22 +185,21 @@ namespace AiBot
         public void DoPass()
         {
             CurrentPlayer.IsPassed = true;
-            var enemy = GetEnemy(CurrentPlayer);
 
-            if (player.IsPassed && targetPlayer.IsPassed)
+            if (Player.IsPassed && TargetPlayer.IsPassed)
             {
-                player.IsPassed = false;
-                targetPlayer.IsPassed = false;
+                Player.IsPassed = false;
+                TargetPlayer.IsPassed = false;
 
-                switch (targetPlayer.Total.CompareTo(player.Total))
+                switch (TargetPlayer.Total.CompareTo(Player.Total))
                 {
                     case < 0:
                         ++Pl1GamesMargin;
-                        SetTurn(player);
+                        SetTurn(Player);
                         break;
                     case > 0:
                         --Pl1GamesMargin;
-                        SetTurn(targetPlayer);
+                        SetTurn(TargetPlayer);
                         break;
                     case 0:
                         SetTurn(RandFirstPlayer());
@@ -210,7 +209,7 @@ namespace AiBot
                 if (Math.Abs(Pl1GamesMargin) == 2 || Pl1GamesMargin != 0 && Round == 3)
                 {
                     SetTurn(null);
-                    Winner = (Pl1GamesMargin > 0) ? player : targetPlayer;
+                    Winner = (Pl1GamesMargin > 0) ? Player : TargetPlayer;
                     return;
                 }
                 else if (Pl1GamesMargin == 0 && Round == 3)
@@ -221,14 +220,14 @@ namespace AiBot
 
                 if (Round < 3)
                 {
-                    player.NewRound();
-                    targetPlayer.NewRound();
+                    Player.NewRound();
+                    TargetPlayer.NewRound();
                     ++Round;
                 }
             }
             else
             {
-                SetTurn(player.IsPassed ? targetPlayer : player);
+                SetTurn(Player.IsPassed ? TargetPlayer : Player);
             }
         }
 
@@ -238,26 +237,26 @@ namespace AiBot
 
             List<string> curState = new();
 
-            string pl1DeckSize = (player.Deck.Count() / 3).ToString();
+            string pl1DeckSize = (Player.Deck.Count / 3).ToString();
             curState.Add(pl1DeckSize);
 
-            string targetPlayerDeckSize = (targetPlayer.Deck.Count() / 3).ToString();
+            string targetPlayerDeckSize = (TargetPlayer.Deck.Count / 3).ToString();
             curState.Add(targetPlayerDeckSize);
 
             string gamesResults = Pl1GamesMargin.ToString();
             curState.Add(gamesResults);
 
-            string rowsTotalsPl1 = string.Join("", (player.TotalsByRows.Values).Select(x => x / 3));
+            string rowsTotalsPl1 = string.Join("", (Player.TotalsByRows.Values).Select(x => x / 3));
             curState.Add(rowsTotalsPl1);
 
-            string rowsTotalsTargetPl = string.Join("", (targetPlayer.TotalsByRows.Values).Select(x => x / 3));
+            string rowsTotalsTargetPl = string.Join("", (TargetPlayer.TotalsByRows.Values).Select(x => x / 3));
             curState.Add(rowsTotalsTargetPl);
 
-            string spCardsOnBoard = string.Join("", player.SpOnBoard.Union(targetPlayer.SpOnBoard)
+            string spCardsOnBoard = string.Join("", Player.SpOnBoard.Union(TargetPlayer.SpOnBoard)
                 .OrderBy(x => x.id).Select(x => x.id));
             curState.Add(spCardsOnBoard);
 
-            string handSize = CurrentPlayer.Hand.Count().ToString();
+            string handSize = CurrentPlayer.Hand.Count.ToString();
             curState.Add(handSize);
 
             string handWeight = (CurrentPlayer.Hand.Select(x => x.strength).Sum() / 5).ToString();
@@ -268,7 +267,7 @@ namespace AiBot
 
         public AiPlayer RandFirstPlayer()
         {
-            var t = new Random().Next(0, 2) == 0 ? player : targetPlayer;
+            var t = new Random().Next(0, 2) == 0 ? Player : TargetPlayer;
             return t;
         }
 

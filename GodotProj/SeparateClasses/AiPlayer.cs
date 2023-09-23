@@ -147,7 +147,7 @@ namespace CardGameProj.SeparateClasses
             }
 
             double maxQValue = double.MinValue;
-            int bestAction = int.MinValue;
+            int bestAction;
             List<int> maxValIndxs = new();
 
             foreach (int action in validActions)
@@ -165,7 +165,7 @@ namespace CardGameProj.SeparateClasses
                 }
             }
 
-            bestAction = maxValIndxs[Random.Shared.Next(maxValIndxs.Count())];
+            bestAction = maxValIndxs[Random.Shared.Next(maxValIndxs.Count)];
             return QtoGTranslator[bestAction];
         }
 

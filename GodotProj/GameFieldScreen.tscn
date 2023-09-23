@@ -631,4 +631,5 @@ vertical_alignment = 1
 autowrap_mode = 3
 metadata/_edit_lock_ = true
 
+[connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
 [connection signal="pressed" from="ToPass" to="." method="_on_Pass_pressed"]

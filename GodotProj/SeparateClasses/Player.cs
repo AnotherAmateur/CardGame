@@ -1,11 +1,9 @@
 using CardGameProj.Scripts;
-using CardGameProj.SeparateClasses;
 using Godot;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 public abstract class Player
@@ -23,7 +21,7 @@ public abstract class Player
     public const int MaxHandSize = 10;
     protected int DiscardPileFlippedcardId;
     public bool IsPass { get; protected set; }
-    public static int gameResult { get; protected set; }
+    public static int GameResult { get; protected set; }
     public Dictionary<CardTypes, int> TotalsByRows { get; private set; }
     public List<int> DiscardPile { get; protected set; }
     public List<int> OnBoard { get; protected set; }
@@ -50,7 +48,7 @@ public abstract class Player
         TotalCountLabel = totalCount;
         RoundVBoxContainer = roundVBoxContainer;
         round = 1;
-        gameResult = 0;
+        GameResult = 0;
         SpecialCardsContainer = GameFieldController.Instance.SpecialCardsContainer;
         TemporalSpCardContainer = GameFieldController.Instance.TemporalSpCardContainer;
 
@@ -80,7 +78,7 @@ public abstract class Player
         {
             int sum = 0;
             int rowCardCount = 0;
-            foreach (MinCardScene card in CardRowsContainer.GetNode<Control>("Row" + i)
+            foreach (MinCardScene card in CardRowsContainer.GetNode<MinCardScene>("Row" + i)
                 .GetChildren().Where(it => it.Name != "Label"))
             {
                 sum += card.CardDamage;
@@ -162,13 +160,12 @@ public abstract class Player
             rangeSortedCards[cardinfo.type].Add(card);
         }
 
-        int i = 1;
         int cardMarginRight = 5;
         foreach (var range in rangeSortedCards)
         {
             string path = (this is Antagonist) ? "Top" : "Bottom";
 
-            Control row = CardRowsContainer.GetNode<Control>("Row" + i++);
+            Control row = CardRowsContainer.GetNode<Control>("Row" + ((int)range.Key + 1));
             float nextXCardPosition = (rowRectSize.X - cardSize.X * range.Value.Count) / 2;
             foreach (int cardId in range.Value)
             {
@@ -204,13 +201,13 @@ public abstract class Player
                 case < 0:
                     protagonist.RoundVBoxContainer.GetNode<CheckBox>("CheckBox" + round.ToString())
                         .ButtonPressed = true;
-                    ++gameResult;
+                    ++GameResult;
                     gameCtrl.SetTurn(protagonist);
                     break;
                 case > 0:
                     antagonist.RoundVBoxContainer.GetNode<CheckBox>("CheckBox" + round.ToString())
                         .ButtonPressed = true;
-                    --gameResult;
+                    --GameResult;
                     gameCtrl.SetTurn(antagonist);
                     break;
                 case 0:
@@ -222,12 +219,12 @@ public abstract class Player
                     break;
             }
 
-            if (Math.Abs(gameResult) == 2 || gameResult != 0 && round == 3)
+            if (Math.Abs(GameResult) == 2 || GameResult != 0 && round == 3)
             {
                 gameCtrl.SetTurn(null);
-                gameCtrl.MatchCompleted((gameResult > 0) ? protagonist : antagonist);
+                gameCtrl.MatchCompleted((GameResult > 0) ? protagonist : antagonist);
             }
-            else if (gameResult == 0 && round == 3)
+            else if (GameResult == 0 && round == 3)
             {
                 gameCtrl.SetTurn(null);
                 gameCtrl.MatchCompleted(null);
@@ -242,7 +239,6 @@ public abstract class Player
                 ClearSpCards();
                 ++round;
 
-                int cardCount = 0;
                 var cardList = protagonist.GetRandomCardsFromDeck(
                     Math.Min(MaxHandSize - protagonist.Hand.Count, protagonist.Deck.Count));
                 if (cardList.Count > 0)
@@ -304,10 +300,16 @@ public abstract class Player
         int msecDelay = 3000;
         await Task.Delay(msecDelay);
 
-        foreach (var node in TemporalSpCardContainer.GetChildren())
+        if (Node.IsInstanceValid(TemporalSpCardContainer))
         {
-            TemporalSpCardContainer.RemoveChild(node);
-        }
+            foreach (var node in TemporalSpCardContainer.GetChildren())
+            {
+                if (Node.IsInstanceValid(node))
+                {
+                    TemporalSpCardContainer.RemoveChild(node);
+                }
+            }
+        }      
     }
 }
 

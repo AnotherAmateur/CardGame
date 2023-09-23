@@ -64,8 +64,8 @@ public class BotPlaying
             GameController gameController = new(Nation1, Nation2);
 
             Dictionary<QLearning, AiPlayer> botPlayerRel = new()
-                { { bot1, gameController.player },
-                  { bot2, gameController.targetPlayer } };
+                { { bot1, gameController.Player },
+                  { bot2, gameController.TargetPlayer } };
 
             do
             {

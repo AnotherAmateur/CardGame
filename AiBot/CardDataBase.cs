@@ -3,9 +3,7 @@ using System;
 using System.Collections.Generic;
 
 public static class CardDataBase
-{
-	static Random rand = new Random();
-
+{	
 	public struct CardData
 	{
 		public int id;

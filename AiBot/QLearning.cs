@@ -53,7 +53,7 @@
             else
             {
                 double maxQValue = double.MinValue;
-                int bestAction = int.MinValue;
+                int bestAction;
                 List<int> maxValIndxs = new();
 
                 foreach (int action in validActions)
@@ -71,7 +71,7 @@
                     }
                 }
 
-                bestAction = maxValIndxs[random.Next(maxValIndxs.Count())];
+                bestAction = maxValIndxs[random.Next(maxValIndxs.Count)];
                 return QtoGTranslator[bestAction];
             }
         }

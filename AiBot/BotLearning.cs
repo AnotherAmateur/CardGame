@@ -66,8 +66,8 @@ public class BotLearning
             List<MovesLog> movesLog = new();
 
             Dictionary<QLearning, AiPlayer> botPlayerRel = new() 
-                { { bot1, gameController.player },
-                  { botTarget, gameController.targetPlayer } };
+                { { bot1, gameController.Player },
+                  { botTarget, gameController.TargetPlayer } };
 
             double curEps = Math.Max(InitMaxEps - (i / MatchesCount), 0.1);
 

@@ -4,7 +4,6 @@ using Godot;
 
 public partial class SlaveCardScene : Node2D
 {
-
 	private int yOffsetPx = 20;
 	public int CardDamage { get; private set; }
 	private Vector2 initRectSize = new Vector2(States.InitCardSize.Item1, States.InitCardSize.Item2);
@@ -14,16 +13,16 @@ public partial class SlaveCardScene : Node2D
 
 	public void _on_Card_pressed()
 	{
-		if (disconnectSignals is false)
+        if (disconnectSignals is false)
 		{
-			if (GameFieldController.Instance is null)
+            if (GameFieldController.Instance is null)
 			{
-				CardSelectionMenu.Instantiate.CardSceneEventHandler(CardEvents.LeftCllick,
+                CardSelectionMenu.Instantiate.CardSceneEventHandler(CardEvents.LeftCllick,
 					int.Parse(Name));
 			}
 			else
 			{
-				GameFieldController.Instance.CardSceneEventHandler(CardEvents.LeftCllick,
+                GameFieldController.Instance.CardSceneEventHandler(CardEvents.LeftCllick,
 					int.Parse(Name));
 			}
 		}
@@ -51,10 +50,3 @@ public partial class SlaveCardScene : Node2D
 		CardDamage = damage;
 	}
 }
-
-
-
-
-
-
-
