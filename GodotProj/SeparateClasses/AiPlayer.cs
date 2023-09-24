@@ -1,5 +1,4 @@
 using CardGameProj.Scripts;
-using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,19 +7,20 @@ namespace CardGameProj.SeparateClasses
 {
     public class AiPlayer
     {
+        private Random random;
         private Dictionary<int, int> QtoGTranslator;
         private Dictionary<int, int> GtoQTranslator;
         public List<int> Deck { get; private set; }
         public List<CardDataBase.CardData> Hand { get; private set; }
         public CardNations Nation { get; private set; }
         public Dictionary<int, double[]> QTable { get; private set; }
-
         public AiPlayer(CardNations nation)
         {
+            random = new();
             Nation = nation;
             ReadQTableFromFile();
             InitTranslators();
-            Hand = new();          
+            Hand = new();
             Deck = CardDataBase.GetAllCards.Where(x => x.Value.nation == Nation && x.Value.type != CardTypes.Leader)
                 .Select(x => x.Key).ToList();
             NewRound();
@@ -61,7 +61,7 @@ namespace CardGameProj.SeparateClasses
                 HashSet<int> uniqueNumbers = new();
                 while (uniqueNumbers.Count < count)
                 {
-                    int number = Random.Shared.Next(0, Deck.Count);
+                    int number = random.Next(0, Deck.Count);
                     uniqueNumbers.Add(number);
                 }
 
@@ -142,7 +142,7 @@ namespace CardGameProj.SeparateClasses
 
             if (QTable.ContainsKey(state) is false)
             {
-                int randAction = validActions[Random.Shared.Next(validActions.Count)];
+                int randAction = validActions[random.Next(validActions.Count)];
                 return QtoGTranslator[randAction];
             }
 
@@ -165,7 +165,7 @@ namespace CardGameProj.SeparateClasses
                 }
             }
 
-            bestAction = maxValIndxs[Random.Shared.Next(maxValIndxs.Count)];
+            bestAction = maxValIndxs[random.Next(maxValIndxs.Count)];
             return QtoGTranslator[bestAction];
         }
 

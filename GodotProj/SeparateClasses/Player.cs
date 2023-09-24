@@ -78,7 +78,7 @@ public abstract class Player
         {
             int sum = 0;
             int rowCardCount = 0;
-            foreach (MinCardScene card in CardRowsContainer.GetNode<MinCardScene>("Row" + i)
+            foreach (MinCardScene card in CardRowsContainer.GetNode<Control>("Row" + i)
                 .GetChildren().Where(it => it.Name != "Label"))
             {
                 sum += card.CardDamage;
@@ -124,12 +124,17 @@ public abstract class Player
         {
             foreach (Node node in row.GetChildren())
             {
+                if (node is Label)
+                {
+                    continue;
+                }
+
                 row.RemoveChild(node);
             }
         }
     }
 
-    private void ClearSpCards()
+    private void CleanSpCards()
     {
         foreach (Node row in SpecialCardsContainer.GetChildren())
         {
@@ -144,9 +149,10 @@ public abstract class Player
     {
         ClearBoard();
 
-        Vector2 rowRectSize = CardRowsContainer.GetChild<Control>(0).Size;
-        rowRectSize = new Vector2(rowRectSize.X - 50, rowRectSize.Y);
-        Vector2 cardSize = new(rowRectSize.X / MaxHandSize, rowRectSize.Y);
+        Vector2 rowRectSize = GameFieldController.CardRowSize;
+        int extraSpaceBtwnCards = 5;
+        Vector2 cardSize = new(rowRectSize.X / MaxHandSize - extraSpaceBtwnCards, rowRectSize.Y);
+
         Dictionary<CardTypes, List<int>> rangeSortedCards = new();
 
         foreach (int card in OnBoard)
@@ -195,6 +201,7 @@ public abstract class Player
         {
             antagonist.IsPass = false;
             protagonist.IsPass = false;
+            CleanSpCards();
 
             switch (antagonist.TotalCount.CompareTo(protagonist.TotalCount))
             {
@@ -236,7 +243,6 @@ public abstract class Player
                 protagonist.OnBoard = new();
                 protagonist.UpdateBoard();
                 antagonist.UpdateBoard();
-                ClearSpCards();
                 ++round;
 
                 var cardList = protagonist.GetRandomCardsFromDeck(
@@ -283,7 +289,7 @@ public abstract class Player
                             row.RemoveChild(node);
                         }
                     }
-                    RemoveTemporalSpCard();
+                    RemoveTemporalSpCardAsync();
 
                     break;
                 }
@@ -295,10 +301,10 @@ public abstract class Player
         Antagonist.Instance.UpdateTotalCount();
     }
 
-    private async void RemoveTemporalSpCard()
+    private async void RemoveTemporalSpCardAsync()
     {
-        int msecDelay = 3000;
-        await Task.Delay(msecDelay);
+        int delayMlsc = 3000;
+        await Task.Delay(delayMlsc);
 
         if (Node.IsInstanceValid(TemporalSpCardContainer))
         {

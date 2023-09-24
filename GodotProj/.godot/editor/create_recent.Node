@@ -1,3 +1,4 @@
+HBoxContainer
 Control
 Label
 RichTextLabel
@@ -7,6 +8,5 @@ ColorRect
 Sprite2D
 MarginContainer
 HTTPRequest
-HBoxContainer
 CheckBox
 CheckButton

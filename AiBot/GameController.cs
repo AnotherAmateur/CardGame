@@ -39,10 +39,12 @@ namespace AiBot
         public int Round { get; private set; }
         public AiPlayer? Winner { get; private set; }
         public List<StatesLog> StatesLog { get; set; }
+        private Random random;
 
 
         public GameController(CardNations pl1Nation, CardNations pl2Nation)
         {
+            random = new();
             Round = 1;
             Winner = null;
             Player = new AiPlayer(pl1Nation);
@@ -267,8 +269,7 @@ namespace AiBot
 
         public AiPlayer RandFirstPlayer()
         {
-            var t = new Random().Next(0, 2) == 0 ? Player : TargetPlayer;
-            return t;
+            return random.Next(0, 2) == 0 ? Player : TargetPlayer;
         }
 
         public void SetTurn(AiPlayer? player)
