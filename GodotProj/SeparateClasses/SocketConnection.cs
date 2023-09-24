@@ -35,7 +35,7 @@ public class SocketConnection : ISocketConn
 		return instance;
 	}
 
-	public async void Connect()
+	public async void ConnectAsync()
 	{
 		try
 		{
@@ -52,7 +52,7 @@ public class SocketConnection : ISocketConn
 		scene.OnHandleError(exMessage);
 	}
 
-	public async void JoinGroup()
+	public async void JoinGroupAsync()
 	{
 		await connection.SendAsync("JoinGroup", States.MasterId.ToString());
 	}
@@ -62,14 +62,14 @@ public class SocketConnection : ISocketConn
 		scene.OnReceiveMessage(action, masterId, message);
 	}
 
-	public async void Disconnect()
+	public async void DisconnectAsync()
 	{
 		await connection.StopAsync();
 		await connection.DisposeAsync();
 		instance = null;
 	}
 
-	public async void Send(ActionTypes action, int masterId, string message)
+	public async void SendAsync(ActionTypes action, int masterId, string message)
 	{
 		try
 		{

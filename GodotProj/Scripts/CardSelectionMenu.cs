@@ -181,7 +181,7 @@ public partial class CardSelectionMenu : Control, ISocketConn
 			else
 			{
 				isReadyHere = true;
-				socketConnection.Send(ActionTypes.Ready, States.MasterId, LeaderCard.ToString());
+				socketConnection.SendAsync(ActionTypes.Ready, States.MasterId, LeaderCard.ToString());
 
 				if (isReadyThere == true)
 				{

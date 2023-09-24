@@ -86,8 +86,8 @@ public abstract class Player
             }
 
             int addStrength = 0;
-            var t = SpecialCardsContainer.GetNode<Control>((this is Protagonist) ? "BottomRow" + i : "TopRow" + i);
-            foreach (MinCardScene spCard in t.GetChildren())
+            var spContainer = SpecialCardsContainer.GetNode<Control>((this is Protagonist) ? "BottomRow" + i : "TopRow" + i);
+            foreach (MinCardScene spCard in spContainer.GetChildren())
             {
                 addStrength += spCard.CardDamage * rowCardCount;
             }
@@ -200,29 +200,28 @@ public abstract class Player
         if (Antagonist.Instance.IsPass == Protagonist.Instance.IsPass)
         {
             antagonist.IsPass = false;
-            protagonist.IsPass = false;
-            CleanSpCards();
+            protagonist.IsPass = false;          
 
+            Player nextTurn = null;
             switch (antagonist.TotalCount.CompareTo(protagonist.TotalCount))
             {
                 case < 0:
                     protagonist.RoundVBoxContainer.GetNode<CheckBox>("CheckBox" + round.ToString())
                         .ButtonPressed = true;
                     ++GameResult;
-                    gameCtrl.SetTurn(protagonist);
+                    nextTurn = protagonist;
                     break;
                 case > 0:
                     antagonist.RoundVBoxContainer.GetNode<CheckBox>("CheckBox" + round.ToString())
                         .ButtonPressed = true;
                     --GameResult;
-                    gameCtrl.SetTurn(antagonist);
+                    nextTurn = antagonist;
                     break;
                 case 0:
                     protagonist.RoundVBoxContainer.GetNode<CheckBox>("CheckBox" + round.ToString())
                         .ButtonPressed = true;
                     antagonist.RoundVBoxContainer.GetNode<CheckBox>("CheckBox" + round.ToString())
-                        .ButtonPressed = true;
-                    gameCtrl.InitFirstTurn();
+                        .ButtonPressed = true;                  
                     break;
             }
 
@@ -236,9 +235,11 @@ public abstract class Player
                 gameCtrl.SetTurn(null);
                 gameCtrl.MatchCompleted(null);
             }
-
-            if (round < 3)
+            else
             {
+                CleanSpCards();
+                RemoveTemporalSpCardNow();
+
                 antagonist.OnBoard = new();
                 protagonist.OnBoard = new();
                 protagonist.UpdateBoard();
@@ -251,6 +252,15 @@ public abstract class Player
                 {
                     protagonist.TakeCardsFromDeck(cardList);
                     gameCtrl.UpdateDeckTextures();
+                }           
+
+                if (nextTurn is null)
+                {
+                    gameCtrl.InitFirstTurn();
+                }
+                else
+                {
+                    gameCtrl.SetTurn(nextTurn);
                 }
             }
         }
@@ -315,7 +325,21 @@ public abstract class Player
                     TemporalSpCardContainer.RemoveChild(node);
                 }
             }
-        }      
+        }
+    }
+
+    private void RemoveTemporalSpCardNow()
+    {
+        if (Node.IsInstanceValid(TemporalSpCardContainer))
+        {
+            foreach (var node in TemporalSpCardContainer.GetChildren())
+            {
+                if (Node.IsInstanceValid(node))
+                {
+                    TemporalSpCardContainer.RemoveChild(node);
+                }
+            }
+        }
     }
 }
 

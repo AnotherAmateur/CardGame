@@ -100,8 +100,8 @@ public partial class RoomList : Control, ISocketConn
 		States.MasterId = int.Parse(button.Name);
 
 		socketConnection = SocketConnection.GetInstance(this);
-		socketConnection.Connect();
-		socketConnection.JoinGroup();
+		socketConnection.ConnectAsync();
+		socketConnection.JoinGroupAsync();
 	}
 
 	private void _on_CloseButton_pressed()

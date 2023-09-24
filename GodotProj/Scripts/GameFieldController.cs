@@ -103,14 +103,13 @@ public partial class GameFieldController : Node2D, ISocketConn
                         if (antagonist.IsPass is false)
                         {
                             SetTurn(antagonist);
-                            (States.PVE ? (Action)GetBotActionAsync : null)();
                         }
 
                         protagonist.PutCardFromHandOnBoard(cardInfo);
 
                         if (States.PVE is false)
                         {
-                            socketConnection.Send(ActionTypes.CardMove, States.MasterId, cardId.ToString());
+                            socketConnection.SendAsync(ActionTypes.CardMove, States.MasterId, cardId.ToString());
                         }
                     }
                     break;
@@ -137,7 +136,7 @@ public partial class GameFieldController : Node2D, ISocketConn
 
         if (States.PVE is false)
         {
-            socketConnection.Send(ActionTypes.Pass, States.MasterId, String.Empty);
+            socketConnection.SendAsync(ActionTypes.Pass, States.MasterId, String.Empty);
         }
     }
 
@@ -190,7 +189,7 @@ public partial class GameFieldController : Node2D, ISocketConn
             declareWinner = "Победа за вами!";
             if (States.MasterId != States.PlayerId && States.PVE is false)
             {
-                socketConnection.Send(ActionTypes.GameOver, States.MasterId, String.Join(";", States.PlayerId, States.PlayerId));
+                socketConnection.SendAsync(ActionTypes.GameOver, States.MasterId, String.Join(";", States.PlayerId, States.PlayerId));
             }
         }
         else if (winner == antagonist)
@@ -198,7 +197,7 @@ public partial class GameFieldController : Node2D, ISocketConn
             declareWinner = "Победа за оппонентом!";
             if (States.MasterId != States.PlayerId && States.PVE is false)
             {
-                socketConnection.Send(ActionTypes.GameOver, States.MasterId, String.Join(";", States.PlayerId, States.MasterId));
+                socketConnection.SendAsync(ActionTypes.GameOver, States.MasterId, String.Join(";", States.PlayerId, States.MasterId));
             }
         }
         else
@@ -206,13 +205,13 @@ public partial class GameFieldController : Node2D, ISocketConn
             declareWinner = "Ничья!";
             if (States.MasterId != States.PlayerId && States.PVE is false)
             {
-                socketConnection.Send(ActionTypes.GameOver, States.MasterId, States.PlayerId.ToString());
+                socketConnection.SendAsync(ActionTypes.GameOver, States.MasterId, States.PlayerId.ToString());
             }
         }
 
         if (States.PVE is false)
         {
-            socketConnection.Disconnect();
+            socketConnection.DisconnectAsync();
         }
 
         var msgBox = MessageBox.Instance;
@@ -291,7 +290,7 @@ public partial class GameFieldController : Node2D, ISocketConn
             GetNode<Label>("DeckBottomImg/DeckSizeBottom").Text = newCount;
             if (States.PVE is false)
             {
-                socketConnection.Send(ActionTypes.DeckSizeUpdated, States.MasterId, newCount);
+                socketConnection.SendAsync(ActionTypes.DeckSizeUpdated, States.MasterId, newCount);
             }
         }
         else
@@ -357,7 +356,7 @@ public partial class GameFieldController : Node2D, ISocketConn
 
             if (States.PVE is false)
             {
-                socketConnection.Send(ActionTypes.FirstPlayer, States.MasterId, firstPlayer.ToString());
+                socketConnection.SendAsync(ActionTypes.FirstPlayer, States.MasterId, firstPlayer.ToString());
             }           
         }
     }

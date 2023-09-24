@@ -9,8 +9,8 @@ public partial class WaiterScene : Control, ISocketConn
 	{
 		States.MasterId = States.PlayerId;
 		socketConnection = SocketConnection.GetInstance(this);
-		socketConnection.Connect();
-		socketConnection.JoinGroup();
+		socketConnection.ConnectAsync();
+		socketConnection.JoinGroupAsync();
 	}
 
 	public void OnHandleError(string exMessage)
@@ -36,7 +36,7 @@ public partial class WaiterScene : Control, ISocketConn
 
 	private void _on_close_button_pressed()
 	{
-		socketConnection.Disconnect();
+		socketConnection.DisconnectAsync();
 		QueueFree();
 	}
 }
