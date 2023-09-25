@@ -9,7 +9,7 @@ namespace AiBot
     {
         public List<int> Deck { get; private set; }
         public List<CardDataBase.CardData> Hand { get; private set; }
-        public Dictionary<CardTypes, int> TotalsByRows { get; private set; }
+        public SortedDictionary<CardTypes, int> TotalsByRows { get; private set; }
         public int Total { get; set; }
         public List<CardDataBase.CardData> OnBoard { get; private set; }
         public List<CardDataBase.CardData> SpOnBoard { get; private set; }

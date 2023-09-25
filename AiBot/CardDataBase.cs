@@ -19,7 +19,6 @@ public static class CardDataBase
 			this.id = id;
 			this.type = type;
 			this.strength = strength;
-			//this.strength = rand.Next(1, 31);
 			this.nation = nation;
 			this.text = text;
 			category = "";

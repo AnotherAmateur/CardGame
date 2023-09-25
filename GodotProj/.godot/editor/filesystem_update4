@@ -1,6 +1,6 @@
 res://LoginForm.cs
 res://Scripts/CardSelectionMenu.cs
-res://Scripts/GameFieldController.cs
+res://Scripts/GFieldController.cs
 res://Scripts/MessageBox.cs
 res://Scripts/MinCardScene.cs
 res://Scripts/RoomList.cs

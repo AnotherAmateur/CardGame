@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://clbem1wntd7r1"]
 
 [ext_resource type="Texture2D" uid="uid://c34ahdeyp6d0l" path="res://Assets/Backgrounds/Scheme.png" id="1"]
-[ext_resource type="Script" path="res://Scripts/GameFieldController.cs" id="1_4rqmr"]
+[ext_resource type="Script" path="res://Scripts/GFieldController.cs" id="1_7j1ha"]
 [ext_resource type="Shader" path="res://Assets/Shaders/GameFieldScreen.gdshader" id="3_0rc4y"]
 [ext_resource type="FontFile" uid="uid://2hvktth0a5ot" path="res://Assets/Fonts/NotoSerifJP-Light.otf" id="4_jdnuf"]
 
@@ -26,7 +26,7 @@ corner_detail = 1
 bg_color = Color(0, 0, 0, 0.356863)
 
 [node name="GameField" type="Node2D"]
-script = ExtResource("1_4rqmr")
+script = ExtResource("1_7j1ha")
 metadata/_edit_horizontal_guides_ = [547.0, 350.0, 867.0, 1025.0, 677.0, 18.0, 540.0, 803.0, 407.0, 415.0, 145.0, 149.0, 276.0, 280.0, 1047.0]
 metadata/_edit_vertical_guides_ = [1622.0, 1879.0, 525.0, 1574.0, 1033.0, 71.0, 190.0, 388.0, 1770.0, 1873.0]
 
@@ -60,6 +60,7 @@ offset_left = 76.0
 offset_top = 47.0
 offset_right = 186.0
 offset_bottom = 196.0
+mouse_filter = 2
 metadata/_edit_lock_ = true
 
 [node name="Label" type="Label" parent="LeaderCardContainerTop"]
@@ -280,7 +281,6 @@ offset_left = 71.0
 offset_top = 201.0
 offset_right = 190.0
 offset_bottom = 865.0
-metadata/_edit_lock_ = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TotalCount"]
 layout_mode = 1
@@ -300,7 +300,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="TotalCount/VBoxContainer"]
-custom_minimum_size = Vector2(0, 180)
+custom_minimum_size = Vector2(0, 135)
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -323,7 +323,7 @@ layout_mode = 2
 disabled = true
 
 [node name="MarginContainer3" type="MarginContainer" parent="TotalCount/VBoxContainer"]
-custom_minimum_size = Vector2(0, 100)
+custom_minimum_size = Vector2(0, 220)
 layout_mode = 2
 
 [node name="Label" type="Label" parent="TotalCount/VBoxContainer/MarginContainer3"]
@@ -354,7 +354,7 @@ layout_mode = 2
 disabled = true
 
 [node name="MarginContainer2" type="MarginContainer" parent="TotalCount/VBoxContainer"]
-custom_minimum_size = Vector2(0, 150)
+custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -495,7 +495,7 @@ offset_bottom = 1080.0
 mouse_filter = 2
 metadata/_edit_lock_ = true
 
-[node name="SpecialCardsContainer" type="Control" parent="."]
+[node name="RowSpCardsContainer" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
 offset_left = 526.0
@@ -504,7 +504,7 @@ offset_right = 628.0
 offset_bottom = 804.0
 metadata/_edit_lock_ = true
 
-[node name="VertColorRect" type="ColorRect" parent="SpecialCardsContainer"]
+[node name="VertColorRect" type="ColorRect" parent="RowSpCardsContainer"]
 z_index = 10
 layout_mode = 1
 anchors_preset = 15
@@ -514,7 +514,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.980392, 0.976471, 0.976471, 0.0470588)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="SpecialCardsContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="RowSpCardsContainer"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -523,42 +523,45 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 4
 
-[node name="TopRow3" type="Control" parent="SpecialCardsContainer/VBoxContainer"]
+[node name="TopRow3" type="Control" parent="RowSpCardsContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="TopRow2" type="Control" parent="SpecialCardsContainer/VBoxContainer"]
+[node name="TopRow2" type="Control" parent="RowSpCardsContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="TopRow1" type="Control" parent="SpecialCardsContainer/VBoxContainer"]
+[node name="TopRow1" type="Control" parent="RowSpCardsContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="SpecialCardsContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="RowSpCardsContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 3)
 layout_mode = 2
 
-[node name="BottomRow1" type="Control" parent="SpecialCardsContainer/VBoxContainer"]
+[node name="BottomRow1" type="Control" parent="RowSpCardsContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="BottomRow2" type="Control" parent="SpecialCardsContainer/VBoxContainer"]
+[node name="BottomRow2" type="Control" parent="RowSpCardsContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="BottomRow3" type="Control" parent="SpecialCardsContainer/VBoxContainer"]
+[node name="BottomRow3" type="Control" parent="RowSpCardsContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="TemporalSpCardContainer" type="Control" parent="."]
+[node name="SpCardsContainer" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 261.0
-offset_top = 444.0
+offset_left = 51.0
+offset_top = 458.0
 offset_right = 389.0
-offset_bottom = 636.0
-metadata/_edit_lock_ = true
+offset_bottom = 615.0
+
+[node name="HBox" type="HBoxContainer" parent="SpCardsContainer"]
+layout_mode = 0
+theme_override_constants/separation = 114
 
 [node name="DeckTopImg" type="Control" parent="."]
 layout_mode = 3

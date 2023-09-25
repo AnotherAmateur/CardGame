@@ -10,19 +10,19 @@ public partial class MinCardScene : Node2D
 
 	public override void _Ready() { }
 
-	public void SetParams(Vector2 rectSize, string texturePath, CardDataBase.CardData card)
+	public void SetParams(Vector2 rectSize, string texturePath, CardDB.CardData card)
 	{
-		Name = card.id.ToString();
-		GetNode<TextureButton>("Card").TooltipText = $"Вес: {card.strength}\nСпецифика: {card.category}\n{card.text}";
+		Name = card.Id.ToString();
+		GetNode<TextureButton>("Card").TooltipText = $"Вес: {card.Strength}\nСпецифика: {card.Category}\n{card.Text}";
 		GetNode<TextureButton>("Card").TextureNormal = (Texture2D)GD.Load(texturePath);
 		float scaleFactorY = rectSize.Y / initRectSize.Y;
 		float scaleFactorX = rectSize.X / initRectSize.X;
 		this.Scale = new Vector2(scaleFactorX, scaleFactorY);
 
-		CardDamage = card.strength;
+		CardDamage = card.Strength;
 		GetNode<Label>("LabelsContainer/VBoxContainer/HBoxContainer/Strength").Text = CardDamage.ToString();
 		GetNode<Label>("LabelsContainer/VBoxContainer/Paragraph").Text = 
-			(card.type == CardTypes.Special) ? card.text : card.category.ToString();
+			(card.Type == CardTypes.Special) ? card.Text : card.Category.ToString();
 	}
 
 	public void SetDamage(int damage)
@@ -67,7 +67,7 @@ public partial class MinCardScene : Node2D
 				cardEvent = CardEvents.RightClick;
 			}
 
-			GameFieldController.Instance.CardSceneEventHandler(cardEvent, int.Parse(Name));
+			GFieldController.Instance.CardSceneEventHandler(cardEvent, int.Parse(Name));
 		}
 	}
 }

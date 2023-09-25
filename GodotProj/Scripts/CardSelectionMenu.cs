@@ -46,7 +46,7 @@ public partial class CardSelectionMenu : Control, ISocketConn
 
 		try
 		{
-			CardDataBase.UpdateCardDataBase();
+			CardDB.UpdateCardDataBase();
 		}
 		catch (System.Exception ex)
 		{
@@ -55,7 +55,7 @@ public partial class CardSelectionMenu : Control, ISocketConn
 			AddChild(msgBox);
 		}
 
-		GetNode<Label>("VBoxContainer/HBoxContainer/TotalCards").Text = CardDataBase.GetAllCards.Count.ToString();
+		GetNode<Label>("VBoxContainer/HBoxContainer/TotalCards").Text = CardDB.GetAllCards.Count.ToString();
 		LoadAllCards();
 		ChangeLeader();
 	}
@@ -64,14 +64,14 @@ public partial class CardSelectionMenu : Control, ISocketConn
 	{
 		int nationCardsCount = 0;
 
-		foreach (var card in CardDataBase.GetAllCards.Where(x =>
-			x.Value.nation == CardDataBase.GetCardInfo(LeaderCard).nation || x.Value.type == CardTypes.Leader))
+		foreach (var card in CardDB.GetAllCards.Where(x =>
+			x.Value.Nation == CardDB.GetCardInfo(LeaderCard).Nation || x.Value.Type == CardTypes.Leader))
 		{
-			if (card.Value.type == CardTypes.Leader)
+			if (card.Value.Type == CardTypes.Leader)
 			{
 				if (LeaderCards.Contains(card.Key) is false)
 				{
-					Nations.Add(card.Value.nation);
+					Nations.Add(card.Value.Nation);
 					LeaderCards.Add(card.Key);
 				}
 			}
@@ -82,11 +82,11 @@ public partial class CardSelectionMenu : Control, ISocketConn
 				{
 					OS.Alert("cardInstance is null");
 				}
-				Control t = new() { Name = card.Key.ToString() };
-				string texturePath = CardDataBase.GetCardTexturePath(card.Key);
-				cardInstance.SetParams(cardSize, texturePath, CardDataBase.GetCardInfo(card.Key));
-				t.AddChild(cardInstance);
-				allCardsGridContainer.AddChild(t);
+				Control cardContainer = new() { Name = card.Key.ToString() };
+				string texturePath = CardDB.GetCardTexturePath(card.Key);
+				cardInstance.SetParams(cardSize, texturePath, CardDB.GetCardInfo(card.Key));
+				cardContainer.AddChild(cardInstance);
+				allCardsGridContainer.AddChild(cardContainer);
 				++nationCardsCount;
 			}
 		}
@@ -136,14 +136,14 @@ public partial class CardSelectionMenu : Control, ISocketConn
 		SlaveCardScene cardInstance = (SlaveCardScene)cardScene.Instantiate();
 		leaderContainer.AddChild(cardInstance);
 		leaderContainer.GetChild<SlaveCardScene>(0).SetParams(cardSize,
-			CardDataBase.GetCardTexturePath(LeaderCard), CardDataBase.GetCardInfo(LeaderCard));
+			CardDB.GetCardTexturePath(LeaderCard), CardDB.GetCardInfo(LeaderCard));
 	}
 
 	public void CardSceneEventHandler(CardEvents cardEvent, int cardId)
 	{
         if (cardEvent is CardEvents.LeftCllick)
 		{
-            if (CardDataBase.GetCardInfo(cardId).type == CardTypes.Leader)
+            if (CardDB.GetCardInfo(cardId).Type == CardTypes.Leader)
 			{
 				ChangeLeader();
 			}
@@ -228,16 +228,16 @@ public partial class CardSelectionMenu : Control, ISocketConn
 			allCardsGridContainer.RemoveChild(node);
 		}
 
-		IEnumerable<KeyValuePair<int, CardDataBase.CardData>> cards;
+		IEnumerable<KeyValuePair<int, CardDB.CardData>> cards;
 		if (cardType == CardTypes.Leader)
 		{
-			cards = CardDataBase.GetAllCards.Where(x =>
-			x.Value.nation == CardDataBase.GetCardInfo(LeaderCard).nation && x.Value.type != cardType);
+			cards = CardDB.GetAllCards.Where(x =>
+			x.Value.Nation == CardDB.GetCardInfo(LeaderCard).Nation && x.Value.Type != cardType);
 		}
 		else
 		{
-			cards = CardDataBase.GetAllCards.Where(x =>
-		x.Value.nation == CardDataBase.GetCardInfo(LeaderCard).nation && x.Value.type == cardType);
+			cards = CardDB.GetAllCards.Where(x =>
+		x.Value.Nation == CardDB.GetCardInfo(LeaderCard).Nation && x.Value.Type == cardType);
 		}
 
 		foreach (var card in cards.Where(x => SelectedCards.Contains(x.Key) is false))
@@ -248,10 +248,10 @@ public partial class CardSelectionMenu : Control, ISocketConn
 			allCardsGridContainer.AddChild(t);
 			allCardsGridContainer.GetNode<Control>(card.Key.ToString()).AddChild(cardInstance);
 
-			string texturePath = CardDataBase.GetCardTexturePath(card.Key);
+			string texturePath = CardDB.GetCardTexturePath(card.Key);
 
 			allCardsGridContainer.GetNode<Control>(card.Key.ToString()).GetChild<SlaveCardScene>(0)
-				.SetParams(cardSize, texturePath, CardDataBase.GetCardInfo(card.Key));
+				.SetParams(cardSize, texturePath, CardDB.GetCardInfo(card.Key));
 		}
 
 		foreach (var card in cards.Where(x => SelectedCards.Contains(x.Key) is true))
@@ -262,10 +262,10 @@ public partial class CardSelectionMenu : Control, ISocketConn
 			selectedCardsGridContainer.AddChild(t);
 			selectedCardsGridContainer.GetNode<Control>(card.Key.ToString()).AddChild(cardInstance);
 
-			string texturePath = CardDataBase.GetCardTexturePath(card.Key);
+			string texturePath = CardDB.GetCardTexturePath(card.Key);
 
 			selectedCardsGridContainer.GetNode<Control>(card.Key.ToString()).GetChild<SlaveCardScene>(0)
-				.SetParams(cardSize, texturePath, CardDataBase.GetCardInfo(card.Key));
+				.SetParams(cardSize, texturePath, CardDB.GetCardInfo(card.Key));
 		}
 
 		for (int i = 0; i < allCardsGridContainer.Columns; i++)

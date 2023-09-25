@@ -1,4 +1,5 @@
 using CardGameProj.Scripts;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace CardGameProj.SeparateClasses
         private Dictionary<int, int> QtoGTranslator;
         private Dictionary<int, int> GtoQTranslator;
         public List<int> Deck { get; private set; }
-        public List<CardDataBase.CardData> Hand { get; private set; }
+        public List<CardDB.CardData> Hand { get; private set; }
         public CardNations Nation { get; private set; }
         public Dictionary<int, double[]> QTable { get; private set; }
         public AiPlayer(CardNations nation)
@@ -21,7 +22,7 @@ namespace CardGameProj.SeparateClasses
             ReadQTableFromFile();
             InitTranslators();
             Hand = new();
-            Deck = CardDataBase.GetAllCards.Where(x => x.Value.nation == Nation && x.Value.type != CardTypes.Leader)
+            Deck = CardDB.GetAllCards.Where(x => x.Value.Nation == Nation && x.Value.Type != CardTypes.Leader)
                 .Select(x => x.Key).ToList();
             NewRound();
         }
@@ -35,7 +36,7 @@ namespace CardGameProj.SeparateClasses
             GtoQTranslator.Add((int)ActionTypes.Pass, 0);
 
             int index = 1;
-            foreach (var card in CardDataBase.GetAllCards.Where(x => x.Value.nation == Nation).ToArray())
+            foreach (var card in CardDB.GetAllCards.Where(x => x.Value.Nation == Nation).ToArray())
             {
                 QtoGTranslator.Add(index, card.Key);
                 GtoQTranslator.Add(card.Key, index);
@@ -93,10 +94,10 @@ namespace CardGameProj.SeparateClasses
             Deck = remainingСards;
             foreach (var item in cards)
             {
-                Hand.Add(CardDataBase.GetCardInfo(item));
+                Hand.Add(CardDB.GetCardInfo(item));
             }
 
-            GameFieldController.Instance.UpdateDeckSize(Deck.Count.ToString());
+            GFieldController.Instance.UpdateDeckSize(Deck.Count.ToString());
         }
 
         private void NewRound()
@@ -115,8 +116,8 @@ namespace CardGameProj.SeparateClasses
             }
             else
             {
-                var cardInfo = CardDataBase.GetCardInfo(action);
-                switch (cardInfo.type)
+                var cardInfo = CardDB.GetCardInfo(action);
+                switch (cardInfo.Type)
                 {
                     case CardTypes.Group1:
                     case CardTypes.Group2:
@@ -171,10 +172,19 @@ namespace CardGameProj.SeparateClasses
 
         private List<int> GetValidActions()
         {
-            var actions = Hand.Select(x => x.id).ToList();
-            actions.Add((int)ActionTypes.Pass);
+            List<int> actions;
 
-            return actions.Select(x => GtoQTranslator[x]).ToList();
+            if (GFieldController.Instance.SpCardsOnBoardCount == GFieldController.MaxSpOnBoardCount)
+            {
+                actions = Hand.Where(x => x.Type != CardTypes.Special).Select(x => GtoQTranslator[x.Id]).ToList();
+            }
+            else
+            {
+                actions = Hand.Select(x => GtoQTranslator[x.Id]).ToList();
+            }
+
+            actions.Add(GtoQTranslator[(int)ActionTypes.Pass]);
+            return actions;
         }
 
         private int GetStateHash(string input)

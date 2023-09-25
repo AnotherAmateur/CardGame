@@ -3,7 +3,7 @@ using Godot;
 
 public partial class Antagonist : Player
 {
-	public static Antagonist Instance { get; protected set; }
+	public static Antagonist Instance { get; private set; }
 
 	public Antagonist(int leaderCard, Control cardRowsContainer, Control leaderCardContainer,
 		Control discardPileContainer, Label totalCount, Control rowsCountContainer,
@@ -15,14 +15,16 @@ public partial class Antagonist : Player
 
 	public void PutCardOnBoard(int cardId)
 	{
-		var cardInfo = CardDataBase.GetCardInfo(cardId);		
-		if (cardInfo.type == CardTypes.Special)
+		var cardInfo = CardDB.GetCardInfo(cardId);
+		DisplaySelectedCard(cardInfo);
+
+        if (cardInfo.Type == CardTypes.Special)
 		{
-			PutSpecialCard(cardInfo);
+            PutSpecialCard(cardInfo);
 		}
 		else
 		{
-			OnBoard.Add(cardInfo.id);
+			OnBoard.Add(cardInfo.Id);
 			UpdateBoard();
 		}
 	}

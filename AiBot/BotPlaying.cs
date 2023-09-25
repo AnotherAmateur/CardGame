@@ -1,4 +1,4 @@
-﻿Bot;
+﻿using AiBot;
 using CardGameProj.Scripts;
 
 public class BotPlaying

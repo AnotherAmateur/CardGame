@@ -15,34 +15,34 @@ public partial class SlaveCardScene : Node2D
 	{
         if (disconnectSignals is false)
 		{
-            if (GameFieldController.Instance is null)
+            if (GFieldController.Instance is null)
 			{
                 CardSelectionMenu.Instantiate.CardSceneEventHandler(CardEvents.LeftCllick,
 					int.Parse(Name));
 			}
 			else
 			{
-                GameFieldController.Instance.CardSceneEventHandler(CardEvents.LeftCllick,
+                GFieldController.Instance.CardSceneEventHandler(CardEvents.LeftCllick,
 					int.Parse(Name));
 			}
 		}
 	}
 
-	public void SetParams(Vector2 rectSize, string texturePath, CardDataBase.CardData card,
+	public void SetParams(Vector2 rectSize, string texturePath, CardDB.CardData card,
 		bool disconnectSignals = false)
 	{
 		this.disconnectSignals = disconnectSignals;
-		Name = card.id.ToString();
-		GetNode<TextureButton>("Card").TooltipText = $"Вес: {card.strength}\nСпецифика: {card.category}\n{card.text}";
+		Name = card.Id.ToString();
+		GetNode<TextureButton>("Card").TooltipText = $"Вес: {card.Strength}\nСпецифика: {card.Category}\n{card.Text}";
 		GetNode<TextureButton>("Card").TextureNormal = (Texture2D)GD.Load(texturePath);
 		float scaleFactorY = rectSize.Y / initRectSize.Y;
 		float scaleFactorX = rectSize.X / initRectSize.X;
 		this.Scale = new Vector2(scaleFactorX, scaleFactorY);
 
-		CardDamage = CardDataBase.GetCardInfo(card.id).strength;
+		CardDamage = CardDB.GetCardInfo(card.Id).Strength;
 		GetNode<Label>("LabelsContainer/VBoxContainer/HBoxContainer/Strength").Text = CardDamage.ToString();
-		GetNode<Label>("LabelsContainer/VBoxContainer/HBoxContainer2/Paragraph").Text = card.category.ToString();
-		GetNode<Label>("LabelsContainer/MainText").Text = card.text;
+		GetNode<Label>("LabelsContainer/VBoxContainer/HBoxContainer2/Paragraph").Text = card.Category.ToString();
+		GetNode<Label>("LabelsContainer/MainText").Text = card.Text;
 	}
 
 	public void SetDamage(int damage)

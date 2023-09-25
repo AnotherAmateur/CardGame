@@ -3,6 +3,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,19 +15,18 @@ public abstract class Player
     protected Control DiscardPileContainer;
     protected Control RowsCountContainer;
     private HBoxContainer RoundVBoxContainer;
-    private VBoxContainer SpecialCardsContainer;
-    private Control TemporalSpCardContainer;
-
+    private VBoxContainer RowSpCardsContainer;
+    private HBoxContainer SpCardsContainer;
     private static int round;
     public const int MaxHandSize = 10;
     protected int DiscardPileFlippedcardId;
     public bool IsPass { get; protected set; }
     public static int GameResult { get; protected set; }
-    public Dictionary<CardTypes, int> TotalsByRows { get; private set; }
+    public SortedDictionary<CardRanges, int> TotalsByRows { get; private set; }
     public List<int> DiscardPile { get; protected set; }
     public List<int> OnBoard { get; protected set; }
-    public int LeaderCard { get; protected set; }
-    public List<CardDataBase.CardData> SpOnBoard { get; private set; }
+    public CardDB.CardData LeaderCard { get; protected set; }   
+    public static List<CardDB.CardData> SpOnBoard { get; private set; }
     public int TotalCount
     {
         get { return int.Parse(TotalCountLabel.Text); }
@@ -39,9 +39,9 @@ public abstract class Player
     {
         DiscardPile = new();
         OnBoard = new();
-        TotalsByRows = new();
+        InitTotalsByRows();
         SpOnBoard = new();
-        LeaderCard = leaderCard;
+        LeaderCard = CardDB.GetCardInfo(leaderCard);
         CardRowsContainer = cardRowsContainer;
         LeaderCardContainer = leaderCardContainer;
         DiscardPileContainer = discardPileContainer;
@@ -49,8 +49,8 @@ public abstract class Player
         RoundVBoxContainer = roundVBoxContainer;
         round = 1;
         GameResult = 0;
-        SpecialCardsContainer = GameFieldController.Instance.SpecialCardsContainer;
-        TemporalSpCardContainer = GameFieldController.Instance.TemporalSpCardContainer;
+        RowSpCardsContainer = GFieldController.Instance.RowSpCardsContainer;
+        SpCardsContainer = GFieldController.Instance.SpCardsContainer;
 
         RowsCountContainer = rowsCountContainer;
 
@@ -73,48 +73,40 @@ public abstract class Player
 
     private void UpdateRowsCount()
     {
-        const int oneSideRowsNumber = 3;
-        for (int i = 1; i <= oneSideRowsNumber; i++)
+        InitTotalsByRows();
+
+        foreach (var card in OnBoard.Select(x => CardDB.GetCardInfo(x)))
         {
-            int sum = 0;
-            int rowCardCount = 0;
-            foreach (MinCardScene card in CardRowsContainer.GetNode<Control>("Row" + i)
-                .GetChildren().Where(it => it.Name != "Label"))
-            {
-                sum += card.CardDamage;
-                ++rowCardCount;
-            }
-
-            int addStrength = 0;
-            var spContainer = SpecialCardsContainer.GetNode<Control>((this is Protagonist) ? "BottomRow" + i : "TopRow" + i);
-            foreach (MinCardScene spCard in spContainer.GetChildren())
-            {
-                addStrength += spCard.CardDamage * rowCardCount;
-            }
-
-            RowsCountContainer.GetNode<Label>("Row" + i).Text = (sum + addStrength).ToString();
-
-            switch (i)
-            {
-                case 1:
-                    TotalsByRows[CardTypes.Group1] = sum + addStrength;
-                    break;
-                case 2:
-                    TotalsByRows[CardTypes.Group2] = sum + addStrength;
-                    break;
-                case 3:
-                    TotalsByRows[CardTypes.Group3] = sum + addStrength;
-                    break;
-            }
+            TotalsByRows[card.Range] += card.Strength;
         }
+
+        foreach (var spCard in SpOnBoard)
+        {
+            TotalsByRows[spCard.Range] = spCard.Strength < 0 ?
+                OnBoard.Where(x => CardDB.GetCardInfo(x).Range == spCard.Range).Count():
+                throw new NotImplementedException();
+        }
+
+        foreach (var range in TotalsByRows)
+        {
+            RowsCountContainer.GetNode<Label>(range.Key.ToString()).Text = range.Value.ToString();
+        }
+    }
+
+    public void InitTotalsByRows()
+    {
+        TotalsByRows = new();
+        TotalsByRows.Add(CardRanges.Row1, 0);
+        TotalsByRows.Add(CardRanges.Row2, 0);
+        TotalsByRows.Add(CardRanges.Row3, 0);
     }
 
     public void SetLeaderCard(int cardId)
     {
-        MinCardScene cardInstance = (MinCardScene)GameFieldController.MinCardScene.Instantiate();
+        MinCardScene cardInstance = (MinCardScene)GFieldController.MinCardScene.Instantiate();
         LeaderCardContainer.AddChild(cardInstance);
         cardInstance.SetParams(LeaderCardContainer.Size,
-            CardDataBase.GetCardTexturePath(cardId), CardDataBase.GetCardInfo(LeaderCard));
+            CardDB.GetCardTexturePath(cardId), LeaderCard);
         cardInstance.Name = cardId.ToString();
     }
 
@@ -136,20 +128,22 @@ public abstract class Player
 
     private void CleanSpCards()
     {
-        foreach (Node row in SpecialCardsContainer.GetChildren())
+        foreach (Node row in SpCardsContainer.GetChildren())
         {
             foreach (MinCardScene node in row.GetChildren())
             {
                 row.RemoveChild(node);
             }
         }
+
+        SpOnBoard = new();
     }
 
     public void UpdateBoard()
     {
         ClearBoard();
 
-        Vector2 rowRectSize = GameFieldController.CardRowSize;
+        Vector2 rowRectSize = GFieldController.CardRowSize;
         int extraSpaceBtwnCards = 5;
         Vector2 cardSize = new(rowRectSize.X / MaxHandSize - extraSpaceBtwnCards, rowRectSize.Y);
 
@@ -157,30 +151,28 @@ public abstract class Player
 
         foreach (int card in OnBoard)
         {
-            var cardinfo = CardDataBase.GetCardInfo(card);
-            if (rangeSortedCards.ContainsKey(cardinfo.type) is false)
+            var cardinfo = CardDB.GetCardInfo(card);
+            if (rangeSortedCards.ContainsKey(cardinfo.Type) is false)
             {
-                rangeSortedCards.Add(cardinfo.type, new());
+                rangeSortedCards.Add(cardinfo.Type, new());
             }
 
-            rangeSortedCards[cardinfo.type].Add(card);
+            rangeSortedCards[cardinfo.Type].Add(card);
         }
 
         int cardMarginRight = 5;
         foreach (var range in rangeSortedCards)
         {
-            string path = (this is Antagonist) ? "Top" : "Bottom";
-
             Control row = CardRowsContainer.GetNode<Control>("Row" + ((int)range.Key + 1));
             float nextXCardPosition = (rowRectSize.X - cardSize.X * range.Value.Count) / 2;
             foreach (int cardId in range.Value)
             {
-                MinCardScene cardInstance = (MinCardScene)GameFieldController.MinCardScene.Instantiate();
+                MinCardScene cardInstance = (MinCardScene)GFieldController.MinCardScene.Instantiate();
                 row.AddChild(cardInstance);
                 cardInstance.Name = cardId.ToString();
 
                 var card = row.GetNode<MinCardScene>(cardId.ToString());
-                card.SetParams(cardSize, CardDataBase.GetCardTexturePath(cardId), CardDataBase.GetCardInfo(cardId));
+                card.SetParams(cardSize, CardDB.GetCardTexturePath(cardId), CardDB.GetCardInfo(cardId));
                 card.Position = new Vector2(nextXCardPosition, 0);
                 nextXCardPosition += cardSize.X + cardMarginRight;
             }
@@ -193,14 +185,14 @@ public abstract class Player
     public void DoPass()
     {
         IsPass = true;
-        var gameCtrl = GameFieldController.Instance;
+        var gameCtrl = GFieldController.Instance;
         var protagonist = Protagonist.Instance;
         var antagonist = Antagonist.Instance;
 
         if (Antagonist.Instance.IsPass == Protagonist.Instance.IsPass)
         {
             antagonist.IsPass = false;
-            protagonist.IsPass = false;          
+            protagonist.IsPass = false;
 
             Player nextTurn = null;
             switch (antagonist.TotalCount.CompareTo(protagonist.TotalCount))
@@ -221,7 +213,7 @@ public abstract class Player
                     protagonist.RoundVBoxContainer.GetNode<CheckBox>("CheckBox" + round.ToString())
                         .ButtonPressed = true;
                     antagonist.RoundVBoxContainer.GetNode<CheckBox>("CheckBox" + round.ToString())
-                        .ButtonPressed = true;                  
+                        .ButtonPressed = true;
                     break;
             }
 
@@ -252,7 +244,7 @@ public abstract class Player
                 {
                     protagonist.TakeCardsFromDeck(cardList);
                     gameCtrl.UpdateDeckTextures();
-                }           
+                }
 
                 if (nextTurn is null)
                 {
@@ -270,39 +262,25 @@ public abstract class Player
         }
     }
 
-    protected void PutSpecialCard(CardDataBase.CardData cardInfo)
+    protected void PutSpecialCard(CardDB.CardData cardInfo)
     {
-        MinCardScene cardInstance = (MinCardScene)GameFieldController.MinCardScene.Instantiate();
-        cardInstance.Name = cardInfo.id.ToString();
-        cardInstance.SetParams(SpecialCardsContainer.GetChild<Control>(0).Size,
-            CardDataBase.GetCardTexturePath(cardInfo.id), cardInfo);
-
-        switch (cardInfo.strength)
+        if (cardInfo.Strength == 0)
         {
-            case < 0:
-                SpecialCardsContainer.GetNode((this is Protagonist) ? "TopRow1" : "BottomRow1").AddChild(cardInstance);
-                break;
-            case > 0:
-                SpecialCardsContainer.GetNode((this is Protagonist) ? "BottomRow2" : "TopRow2").AddChild(cardInstance);
-                break;
-            case 0:
-                {
-                    TemporalSpCardContainer.AddChild(cardInstance);
+            CleanSpCards();
+        }
+        else
+        {
+            MinCardScene cardInstance = (MinCardScene)GFieldController.MinCardScene.Instantiate();
+            cardInstance.Name = cardInfo.Id.ToString();
+            Vector2 cardSize = SpCardsContainer.GetParent<Control>().Size;
+            int extraSpace = 3;
+            cardSize.X = cardSize.X / GFieldController.MaxSpOnBoardCount - extraSpace;
+            cardInstance.SetParams(cardSize, CardDB.GetCardTexturePath(cardInfo.Id), cardInfo);
 
-                    cardInstance.SetParams(TemporalSpCardContainer.Size,
-                        CardDataBase.GetCardTexturePath(cardInfo.id), cardInfo);
-
-                    foreach (Node row in SpecialCardsContainer.GetChildren())
-                    {
-                        foreach (MinCardScene node in row.GetChildren())
-                        {
-                            row.RemoveChild(node);
-                        }
-                    }
-                    RemoveTemporalSpCardAsync();
-
-                    break;
-                }
+            var cardContainer = new Control();
+            cardContainer.AddChild(cardInstance);
+            SpCardsContainer.AddChild(cardContainer);
+            SpOnBoard.Add(cardInfo);
         }
 
         Protagonist.Instance.UpdateRowsCount();
@@ -311,32 +289,48 @@ public abstract class Player
         Antagonist.Instance.UpdateTotalCount();
     }
 
-    private async void RemoveTemporalSpCardAsync()
+    protected void DisplaySelectedCard(CardDB.CardData card)
+    {
+        var gameCtrl = GFieldController.Instance;
+
+        foreach (var childNode in gameCtrl.largeCardContainer.GetChildren())
+        {
+            gameCtrl.largeCardContainer.RemoveChild(childNode);
+        }
+
+        SlaveCardScene cardInstance = (SlaveCardScene)GFieldController.cardScene.Instantiate();
+        gameCtrl.largeCardContainer.AddChild(cardInstance);
+        cardInstance.SetParams(gameCtrl.largeCardContainer.Size, CardDB.GetCardTexturePath(card.Id),
+            card, disconnectSignals: true);
+
+        RemoveTemporalCardAsync(cardInstance);
+    }
+
+    private async void RemoveTemporalCardAsync(SlaveCardScene cardInstance)
     {
         int delayMlsc = 3000;
         await Task.Delay(delayMlsc);
 
-        if (Node.IsInstanceValid(TemporalSpCardContainer))
+        Control cardContainer = GFieldController.Instance.largeCardContainer;
+
+        if (Node.IsInstanceValid(cardContainer))
         {
-            foreach (var node in TemporalSpCardContainer.GetChildren())
+            if (Node.IsInstanceValid(cardInstance))
             {
-                if (Node.IsInstanceValid(node))
-                {
-                    TemporalSpCardContainer.RemoveChild(node);
-                }
+                cardContainer.RemoveChild(cardInstance);
             }
         }
     }
 
     private void RemoveTemporalSpCardNow()
     {
-        if (Node.IsInstanceValid(TemporalSpCardContainer))
+        if (Node.IsInstanceValid(SpCardsContainer))
         {
-            foreach (var node in TemporalSpCardContainer.GetChildren())
+            foreach (var node in SpCardsContainer.GetChildren())
             {
                 if (Node.IsInstanceValid(node))
                 {
-                    TemporalSpCardContainer.RemoveChild(node);
+                    SpCardsContainer.RemoveChild(node);
                 }
             }
         }
