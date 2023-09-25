@@ -1,12 +1,10 @@
 using CardGameProj.Scripts;
-using Godot;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using static System.Net.Mime.MediaTypeNames;
 
 public static class CardDB
 {
@@ -21,13 +19,13 @@ public static class CardDB
         public string Text;
         public string Category;
 
-        public CardData(int id, CardTypes type, int strength, CardNations nation, string text, CardRanges range = 0)
+        public CardData(string name, int id, CardTypes type, int strength, CardNations nation, string text, CardRanges range = 0)
         {
-            this.Id = id;
-            this.Type = type;
-            this.Strength = strength;
-            this.Nation = nation;
-            this.Text = text;
+            Id = id;
+            Type = type;
+            Strength = strength;
+            Nation = nation;
+            Text = text;
 
             switch (strength)
             {

@@ -31,7 +31,7 @@ public partial class Protagonist : Player
 
         if (cardInfo.Type == CardTypes.Special)
         {
-            if (GFieldController.Instance.SpCardsOnBoardCount == GFieldController.MaxSpOnBoardCount &&
+            if (Player.SpOnBoard.Count == GFieldController.MaxSpOnBoardCount &&
                 cardInfo.Strength != 0 ||
                 SpOnBoard.Where(x => x.Range == cardInfo.Range).Count() != 0)
                 return false;

@@ -1,9 +1,2 @@
-res://LoginForm.cs
-res://Scripts/CardSelectionMenu.cs
-res://Scripts/GFieldController.cs
-res://Scripts/MessageBox.cs
-res://Scripts/MinCardScene.cs
-res://Scripts/RoomList.cs
-res://Scripts/RoomMenu.cs
-res://Scripts/SlaveCardScene.cs
-res://Scripts/WaiterScene.cs
+res://GameFieldScreen.tscn
+res://CardSelectionMenu.tscn

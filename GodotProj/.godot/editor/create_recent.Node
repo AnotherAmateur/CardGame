@@ -1,11 +1,11 @@
+Sprite2D
 Control
+VBoxContainer
 HBoxContainer
 Label
 RichTextLabel
-VBoxContainer
 Button
 ColorRect
-Sprite2D
 MarginContainer
 HTTPRequest
 CheckBox

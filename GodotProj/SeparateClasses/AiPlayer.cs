@@ -117,19 +117,14 @@ namespace CardGameProj.SeparateClasses
             else
             {
                 var cardInfo = CardDB.GetCardInfo(action);
-                switch (cardInfo.Type)
+
+                if (cardInfo.Type == CardTypes.Leader)
                 {
-                    case CardTypes.Group1:
-                    case CardTypes.Group2:
-                    case CardTypes.Group3:
-                        Hand.Remove(cardInfo);
-                        break;
-                    case CardTypes.Leader:
-                        break;
-                    case CardTypes.Special:
-                        break;
-                    default:
-                        break;
+                    // todo leader card action
+                }
+                else
+                {
+                    Hand.Remove(cardInfo);
                 }
             }
 
@@ -172,19 +167,21 @@ namespace CardGameProj.SeparateClasses
 
         private List<int> GetValidActions()
         {
-            List<int> actions;
-
-            if (GFieldController.Instance.SpCardsOnBoardCount == GFieldController.MaxSpOnBoardCount)
+            IEnumerable<CardDB.CardData> actions;
+            
+            if (Player.SpOnBoard.Count == GFieldController.MaxSpOnBoardCount)
             {
-                actions = Hand.Where(x => x.Type != CardTypes.Special).Select(x => GtoQTranslator[x.Id]).ToList();
+                actions = Hand.Where(x => x.Type != CardTypes.Special || x.Range == CardRanges.OutOfRange);                   
             }
             else
             {
-                actions = Hand.Select(x => GtoQTranslator[x.Id]).ToList();
+                actions = Hand.Where(x => Player.SpOnBoard.Select(y=>y.Range).Contains(x.Range) is false);
             }
 
-            actions.Add(GtoQTranslator[(int)ActionTypes.Pass]);
-            return actions;
+            var result = actions.Select(x => GtoQTranslator[x.Id]).ToList();
+            result.Add(GtoQTranslator[(int)ActionTypes.Pass]);
+
+            return result;
         }
 
         private int GetStateHash(string input)

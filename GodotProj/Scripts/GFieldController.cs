@@ -18,7 +18,6 @@ public partial class GFieldController : Node2D, ISocketConn
     private Control leaderCardContainerTop;
     public Control largeCardContainer { get; private set; }
 
-    public int SpCardsOnBoardCount { get { return SpCardsContainer.GetChildren().Count; } }
     public const int MaxSpOnBoardCount = 3;
      
     private SocketConnection socketConnection;    

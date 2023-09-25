@@ -1,9 +1,12 @@
-[gd_scene load_steps=9 format=3 uid="uid://clbem1wntd7r1"]
+[gd_scene load_steps=12 format=3 uid="uid://clbem1wntd7r1"]
 
 [ext_resource type="Texture2D" uid="uid://c34ahdeyp6d0l" path="res://Assets/Backgrounds/Scheme.png" id="1"]
 [ext_resource type="Script" path="res://Scripts/GFieldController.cs" id="1_7j1ha"]
 [ext_resource type="Shader" path="res://Assets/Shaders/GameFieldScreen.gdshader" id="3_0rc4y"]
 [ext_resource type="FontFile" uid="uid://2hvktth0a5ot" path="res://Assets/Fonts/NotoSerifJP-Light.otf" id="4_jdnuf"]
+[ext_resource type="Texture2D" uid="uid://dktuo6hd6faai" path="res://Assets/Icons/red_trp.png" id="5_4dxyk"]
+[ext_resource type="Texture2D" uid="uid://b2virx66wkrp8" path="res://Assets/Icons/black_trp.png" id="6_pd3ia"]
+[ext_resource type="Texture2D" uid="uid://b554rg7m1aqul" path="res://Assets/Icons/white_trp.png" id="7_ino47"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bimft"]
 shader = ExtResource("3_0rc4y")
@@ -36,6 +39,10 @@ offset_bottom = 1080.0
 mouse_filter = 2
 color = Color(0.803922, 0.705882, 0.509804, 1)
 metadata/_edit_lock_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+self_modulate = Color(1, 1, 1, 0.466667)
+centered = false
 
 [node name="FieldImg" type="Sprite2D" parent="."]
 visible = false
@@ -78,6 +85,7 @@ theme_override_font_sizes/font_size = 28
 horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
+metadata/_edit_use_anchors_ = true
 
 [node name="LeaderCardContainerBottom" type="Control" parent="."]
 layout_mode = 3
@@ -634,6 +642,59 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 metadata/_edit_lock_ = true
+
+[node name="RowIcons" type="Control" parent="."]
+modulate = Color(0.184314, 0.243137, 0.243137, 0.45098)
+z_index = 20
+layout_mode = 3
+anchors_preset = 0
+offset_left = 526.0
+offset_top = 19.0
+offset_right = 627.0
+offset_bottom = 802.0
+metadata/_edit_lock_ = true
+
+[node name="RedBirdBot" type="Sprite2D" parent="RowIcons"]
+modulate = Color(1, 1, 1, 0.490196)
+position = Vector2(23, 689)
+scale = Vector2(0.11, 0.08)
+texture = ExtResource("5_4dxyk")
+centered = false
+
+[node name="BlackBirdBot" type="Sprite2D" parent="RowIcons"]
+modulate = Color(1, 1, 1, 0.490196)
+position = Vector2(22, 434)
+scale = Vector2(0.158046, 0.076324)
+texture = ExtResource("6_pd3ia")
+centered = false
+
+[node name="RedBirdTop" type="Sprite2D" parent="RowIcons"]
+modulate = Color(1, 1, 1, 0.490196)
+position = Vector2(22, 32)
+scale = Vector2(0.11, 0.08)
+texture = ExtResource("5_4dxyk")
+centered = false
+
+[node name="BlackBirdTop" type="Sprite2D" parent="RowIcons"]
+modulate = Color(1, 1, 1, 0.490196)
+position = Vector2(22, 298)
+scale = Vector2(0.158046, 0.076324)
+texture = ExtResource("6_pd3ia")
+centered = false
+
+[node name="WhiteBirdTop" type="Sprite2D" parent="RowIcons"]
+modulate = Color(1, 1, 1, 0.490196)
+position = Vector2(15, 164)
+scale = Vector2(0.128906, 0.0729167)
+texture = ExtResource("7_ino47")
+centered = false
+
+[node name="WhiteBirdTop2" type="Sprite2D" parent="RowIcons"]
+modulate = Color(1, 1, 1, 0.490196)
+position = Vector2(18, 566)
+scale = Vector2(0.128906, 0.0729167)
+texture = ExtResource("7_ino47")
+centered = false
 
 [connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
 [connection signal="pressed" from="ToPass" to="." method="_on_Pass_pressed"]
