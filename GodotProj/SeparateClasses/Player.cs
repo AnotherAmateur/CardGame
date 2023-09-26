@@ -25,7 +25,7 @@ public abstract class Player
     public SortedDictionary<CardRanges, int> TotalsByRows { get; private set; }
     public List<int> DiscardPile { get; protected set; }
     public List<int> OnBoard { get; protected set; }
-    public CardDB.CardData LeaderCard { get; protected set; }   
+    public CardDB.CardData LeaderCard { get; protected set; }
     public static List<CardDB.CardData> SpOnBoard { get; private set; }
     public int TotalCount
     {
@@ -75,16 +75,29 @@ public abstract class Player
     {
         InitTotalsByRows();
 
-        foreach (var card in OnBoard.Select(x => CardDB.GetCardInfo(x)))
+        foreach (CardRanges range in Enum.GetValues(typeof(CardRanges)))
         {
-            TotalsByRows[card.Range] += card.Strength;
+            List<CardDB.CardData> synergyCardsOnRow = new();
+
+            foreach (var card in OnBoard.Select(x => CardDB.GetCardInfo(x)).Where(x => x.Range == range))
+            {
+                if (card.Synergy)
+                    synergyCardsOnRow.Add(card);
+                TotalsByRows[card.Range] += card.Strength;
+            }
+
+            if (synergyCardsOnRow.Count > 1)
+            {
+                foreach (var card in synergyCardsOnRow)
+                {
+                    TotalsByRows[card.Range] += card.Strength;
+                }
+            }
         }
 
         foreach (var spCard in SpOnBoard)
         {
-            TotalsByRows[spCard.Range] = spCard.Strength < 0 ?
-                OnBoard.Where(x => CardDB.GetCardInfo(x).Range == spCard.Range).Count():
-                throw new NotImplementedException();
+            TotalsByRows[spCard.Range] = OnBoard.Where(x => CardDB.GetCardInfo(x).Range == spCard.Range).Count();
         }
 
         foreach (var range in TotalsByRows)
@@ -142,7 +155,7 @@ public abstract class Player
     public void UpdateBoard()
     {
         ClearBoard();
-
+        
         Vector2 rowRectSize = GFieldController.CardRowSize;
         int extraSpaceBtwnCards = 5;
         Vector2 cardSize = new(rowRectSize.X / MaxHandSize - extraSpaceBtwnCards, rowRectSize.Y);
@@ -165,6 +178,7 @@ public abstract class Player
         {
             Control row = CardRowsContainer.GetNode<Control>("Row" + ((int)range.Key + 1));
             float nextXCardPosition = (rowRectSize.X - cardSize.X * range.Value.Count) / 2;
+
             foreach (int cardId in range.Value)
             {
                 MinCardScene cardInstance = (MinCardScene)GFieldController.MinCardScene.Instantiate();
@@ -172,7 +186,7 @@ public abstract class Player
                 cardInstance.Name = cardId.ToString();
 
                 var card = row.GetNode<MinCardScene>(cardId.ToString());
-                card.SetParams(cardSize, CardDB.GetCardTexturePath(cardId), CardDB.GetCardInfo(cardId));
+                card.SetParams(cardSize, CardDB.GetCardTexturePath(cardId), CardDB.GetCardInfo(cardId), true);
                 card.Position = new Vector2(nextXCardPosition, 0);
                 nextXCardPosition += cardSize.X + cardMarginRight;
             }
@@ -264,7 +278,7 @@ public abstract class Player
 
     protected void PutSpecialCard(CardDB.CardData cardInfo)
     {
-        if (cardInfo.Strength == 0)
+        if (cardInfo.Range == CardRanges.OutOfRange)
         {
             CleanSpCards();
         }
@@ -275,7 +289,7 @@ public abstract class Player
             Vector2 cardSize = SpCardsContainer.GetParent<Control>().Size;
             int extraSpace = 3;
             cardSize.X = cardSize.X / GFieldController.MaxSpOnBoardCount - extraSpace;
-            cardInstance.SetParams(cardSize, CardDB.GetCardTexturePath(cardInfo.Id), cardInfo);
+            cardInstance.SetParams(cardSize, CardDB.GetCardTexturePath(cardInfo.Id), cardInfo, true);
 
             var cardContainer = new Control();
             cardContainer.AddChild(cardInstance);

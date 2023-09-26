@@ -40,7 +40,7 @@ public class BotPlaying
         n2_GtoQTranslator.Add((int)ActionTypes.Pass, 0);
 
         int index = 1;
-        foreach (var card in CardDataBase.GetAllCards.Where(x => x.Value.nation == Nation1).ToArray())
+        foreach (var card in CardDB.GetAllCards.Where(x => x.Value.Nation == Nation1))
         {
             n1_QtoGTranslator.Add(index, card.Key);
             n1_GtoQTranslator.Add(card.Key, index);
@@ -48,7 +48,7 @@ public class BotPlaying
         }
 
         index = 1;
-        foreach (var card in CardDataBase.GetAllCards.Where(x => x.Value.nation == Nation2).ToArray())
+        foreach (var card in CardDB.GetAllCards.Where(x => x.Value.Nation == Nation2))
         {
             n2_QtoGTranslator.Add(index, card.Key);
             n2_GtoQTranslator.Add(card.Key, index);

@@ -1,0 +1,44 @@
+[
+  {
+    "WinState": {
+      "Item1": "WIN",
+      "Item2": 100.0
+    },
+    "LossState": {
+      "Item1": "LOSS",
+      "Item2": -100.0
+    },
+    "MatchState": {
+      "Item1": "MATCH",
+      "Item2": 10.0
+    },
+    "MatchesCount": 4000000,
+    "LearningRate": 0.5,
+    "DiscountFactor": 0.9,
+    "RandInit": false,
+    "InitValue": 0.0,
+    "Nation1": 1,
+    "Nation2": 0
+  },
+  {
+    "WinState": {
+      "Item1": "WIN",
+      "Item2": 100.0
+    },
+    "LossState": {
+      "Item1": "LOSS",
+      "Item2": -100.0
+    },
+    "MatchState": {
+      "Item1": "MATCH",
+      "Item2": 10.0
+    },
+    "MatchesCount": 4000000,
+    "LearningRate": 0.5,
+    "DiscountFactor": 0.9,
+    "RandInit": false,
+    "InitValue": 0.0,
+    "Nation1": 1,
+    "Nation2": 0
+  }
+]

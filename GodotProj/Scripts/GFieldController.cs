@@ -103,7 +103,7 @@ public partial class GFieldController : Node2D, ISocketConn
                 case CardTypes.Leader:
                     if (cardInfo.Nation == protagonist.LeaderCard.Nation)
                     {
-                        // todo leader card reaction
+                        // todo leader card action
                     }
                     break;
                 default:
@@ -412,7 +412,8 @@ public partial class GFieldController : Node2D, ISocketConn
         string handWeight = (aiPlayer.Hand.Select(x => x.Strength).Sum() / 5).ToString();
         curState.Add(handWeight);
 
-        // todo add pass state
+        string plPassed = protagonist.IsPass.ToString();
+        curState.Add(plPassed);
 
         return string.Join('_', curState);
     }

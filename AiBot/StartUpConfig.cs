@@ -1,20 +1,15 @@
 ﻿using CardGameProj.Scripts;
-using System.Net;
-using System.Threading.Channels;
 using Newtonsoft.Json;
+using System;
+using System.Collections.ObjectModel;
+using System.Reflection;
 
 namespace AiBot
 {
     public class StartUpConfig
     {
-
         public static void Main()
         {
-            string fileName = "Cards.json";
-            CardDataBase.UpdateCardDataBase();
-            string json = JsonConvert.SerializeObject(CardDataBase.GetAllCards, Formatting.Indented);
-            File.WriteAllText(fileName, json);
-
             while (true)
             {
                 string? input = Console.ReadLine();
@@ -27,8 +22,6 @@ namespace AiBot
                     case "learn":
                         DoLearning();
                         break;
-                    case "q":
-                        return;
                     default:
                         Console.WriteLine("ooops");
                         break;
@@ -36,86 +29,78 @@ namespace AiBot
             }
         }
 
-
         private static void DoLearning()
         {
-            CardDataBase.UpdateCardDataBase();
-            List<BotLearning> botLearnings = new();
+            CardDB.UpdateCardDataBase();
 
-            botLearnings.Add(new BotLearning());
-            botLearnings.Last().WinState = ("WIN", 100);
-            botLearnings.Last().LossState = ("LOSS", -100);
-            botLearnings.Last().MatchState = ("MATCH", 10);
-            botLearnings.Last().DiscountFactor = 0.9;
-            botLearnings.Last().LearningRate = 0.5;
-            botLearnings.Last().EachStepReward = false;
-            botLearnings.Last().InitValue = 0;
-            botLearnings.Last().RandInit = false;
-            botLearnings.Last().MatchesCount = (int)4e1;
-            botLearnings.Last().Nation1 = CardNations.Confucius;
-            botLearnings.Last().Nation2 = CardNations.AI;
+            string confiFilePath = "BotConfigs.json";
+            string jsonData = File.ReadAllText(confiFilePath);
+            if (jsonData is null)
+                throw new Exception($"Reading {confiFilePath} failed");
 
-            botLearnings.Add(new BotLearning());
-            botLearnings.Last().WinState = ("WIN", 100);
-            botLearnings.Last().LossState = ("LOSS", -100);
-            botLearnings.Last().MatchState = ("MATCH", 10);
-            botLearnings.Last().DiscountFactor = 0.9;
-            botLearnings.Last().LearningRate = 0.5;
-            botLearnings.Last().EachStepReward = false;
-            botLearnings.Last().InitValue = 0.7;
-            botLearnings.Last().RandInit = false;
-            botLearnings.Last().MatchesCount = (int)4e1;
-            botLearnings.Last().Nation1 = CardNations.Confucius;
-            botLearnings.Last().Nation2 = CardNations.AI;
+            var botConfigs = JsonConvert.DeserializeObject<List<ConfStruct>>(jsonData);
+            foreach (var config in botConfigs)
+            {
+                var botLearning = new BotLearning();
+                botLearning.WinState = config.WinState;
+                botLearning.LossState = config.LossState;
+                botLearning.MatchState = config.MatchState;
+                botLearning.DiscountFactor = config.DiscountFactor;
+                botLearning.LearningRate = config.LearningRate;
+                botLearning.InitValue = config.InitValue;
+                botLearning.RandInit = config.RandInit;
+                botLearning.MatchesCount = config.MatchesCount;
+                botLearning.Nation1 = config.Nation1;
+                botLearning.Nation2 = config.Nation2;
 
-            botLearnings.Add(new BotLearning());
-            botLearnings.Last().WinState = ("WIN", 100);
-            botLearnings.Last().LossState = ("LOSS", -100);
-            botLearnings.Last().MatchState = ("MATCH", 10);
-            botLearnings.Last().DiscountFactor = 0.9;
-            botLearnings.Last().LearningRate = 0.5;
-            botLearnings.Last().EachStepReward = false;
-            botLearnings.Last().InitValue = 0.3;
-            botLearnings.Last().RandInit = false;
-            botLearnings.Last().MatchesCount = (int)4e1;
-            botLearnings.Last().Nation1 = CardNations.Confucius;
-            botLearnings.Last().Nation2 = CardNations.AI;
+                botLearning.Start();
+                Console.WriteLine("++");
+            }
 
-            botLearnings.Add(new BotLearning());
-            botLearnings.Last().WinState = ("WIN", 100);
-            botLearnings.Last().LossState = ("LOSS", -100);
-            botLearnings.Last().MatchState = ("MATCH", 10);
-            botLearnings.Last().DiscountFactor = 0.9;
-            botLearnings.Last().LearningRate = 0.5;
-            botLearnings.Last().EachStepReward = false;
-            botLearnings.Last().InitValue = 0;
-            botLearnings.Last().RandInit = true;
-            botLearnings.Last().MatchesCount = (int)4e1;
-            botLearnings.Last().Nation1 = CardNations.Confucius;
-            botLearnings.Last().Nation2 = CardNations.AI;
-
-            botLearnings.Add(new BotLearning());
-            botLearnings.Last().WinState = ("WIN", 1);
-            botLearnings.Last().LossState = ("LOSS", -1);
-            botLearnings.Last().MatchState = ("MATCH", 0.1);
-            botLearnings.Last().DiscountFactor = 0.9;
-            botLearnings.Last().LearningRate = 0.5;
-            botLearnings.Last().EachStepReward = false;
-            botLearnings.Last().InitValue = 0;
-            botLearnings.Last().RandInit = false;
-            botLearnings.Last().MatchesCount = (int)4e1;
-            botLearnings.Last().Nation1 = CardNations.Confucius;
-            botLearnings.Last().Nation2 = CardNations.AI;
-
-
-            Parallel.ForEach(botLearnings, (botLearn) => botLearn.Start());
+            //Parallel.ForEach(botLearnings, (botLearn) => botLearn.Start());
 
             Console.WriteLine("Done");
         }
 
         private static void DoPlaying()
         {
+            int tablesCount = 6;
 
+            for (int i = 0; i < tablesCount; i++)
+            {
+                for (int j = 0; j < tablesCount; j++)
+                {
+                    Console.WriteLine($"i: {i}, j: {j}");
+
+                    string qTableBot1 = $"i/{CardNations.Confucius}_QTable0.txt";
+                    string qTableBot2 = $"j/{CardNations.AI}_QTable0.txt";
+
+                    var botPlaying = new BotPlaying(qTableBot1, qTableBot2);
+                    botPlaying.Nation1 = CardNations.Confucius;
+                    botPlaying.Nation2 = CardNations.AI;
+                    botPlaying.MatchesCount = 10000;
+
+                    botPlaying.Start();
+
+                    Console.WriteLine($"Bot {botPlaying.Nation1} wins: {botPlaying.Bot1Wins}");
+                    Console.WriteLine($"Bot {botPlaying.Nation2} wins: {botPlaying.Bot2Wins}");
+                }
+            }
+        }
+
+        private class ConfStruct
+        {
+            public (string, double) WinState;
+            public (string, double) LossState;
+            public (string, double) MatchState;
+
+            public int MatchesCount;
+            public double LearningRate;
+            public double DiscountFactor;
+            public bool RandInit;
+            public double InitValue;
+            public CardNations Nation1;
+            public CardNations Nation2;
         }
     }
 }

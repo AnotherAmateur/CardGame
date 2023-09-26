@@ -8,37 +8,35 @@ namespace AiBot
     public class AiPlayer
     {
         public List<int> Deck { get; private set; }
-        public List<CardDataBase.CardData> Hand { get; private set; }
-        public SortedDictionary<CardTypes, int> TotalsByRows { get; private set; }
+        public List<CardDB.CardData> Hand { get; private set; }
+        public SortedDictionary<CardRanges, int> TotalsByRows { get; private set; }
         public int Total { get; set; }
-        public List<CardDataBase.CardData> OnBoard { get; private set; }
-        public List<CardDataBase.CardData> SpOnBoard { get; private set; }
-        public bool IsPassed { get; set; }
+        public List<CardDB.CardData> OnBoard { get; private set; }       
+        public bool IsPass { get; set; }
         public CardNations Nation { get; private set; }
+        private GameController gControl;
 
-        public AiPlayer(CardNations nation)
+        public AiPlayer(CardNations nation, GameController gControl)
         {
+            this.gControl = gControl;
             Hand = new();            
-            OnBoard = new();
-            SpOnBoard = new();
+            OnBoard = new();           
             Nation = nation;
-            Deck = CardDataBase.GetAllCards.Where(x => x.Value.nation == Nation && x.Value.type != CardTypes.Leader)
+            Deck = CardDB.GetAllCards.Where(x => x.Value.Nation == Nation && x.Value.Type != CardTypes.Leader)
                 .Select(x => x.Key).ToList();
-            var cardList = GetRandomCardsFromDeck();
-            TakeCardsFromDeck(cardList);
-            InitTotalsByRows();
+            NewRound();
         }
 
-        public void PutCard(CardDataBase.CardData card)
+        public void PutCard(CardDB.CardData card)
         {
             if (Hand.Contains(card) is false)
             {
                 throw new Exception();
             }
 
-            if (card.type == CardTypes.Special)
+            if (card.Type == CardTypes.Special)
             {
-                SpOnBoard.Add(card);
+                gControl.SpOnBoard.Add(card);
             }
             else
             {
@@ -100,27 +98,59 @@ namespace AiBot
             Deck = remainingСards;
             foreach (var item in cards)
             {
-                Hand.Add(CardDataBase.GetCardInfo(item));
+                Hand.Add(CardDB.GetCardInfo(item));
             }
         }
 
         public void InitTotalsByRows()
         {
             TotalsByRows = new();
-            TotalsByRows.Add(CardTypes.Group1, 0);
-            TotalsByRows.Add(CardTypes.Group2, 0);
-            TotalsByRows.Add(CardTypes.Group3, 0);
+            TotalsByRows.Add(CardRanges.Row1, 0);
+            TotalsByRows.Add(CardRanges.Row2, 0);
+            TotalsByRows.Add(CardRanges.Row3, 0);
         }
 
         public void NewRound()
         {
             InitTotalsByRows();
             OnBoard.Clear();
-            SpOnBoard.Clear();
+            gControl.SpOnBoard.Clear();
             Total = 0;
 
             var cardList = GetRandomCardsFromDeck();
             TakeCardsFromDeck(cardList);
+        }
+
+        public void UpdateTotals()
+        {
+            InitTotalsByRows();
+
+            foreach (CardRanges range in Enum.GetValues(typeof(CardRanges)))
+            {
+                List<CardDB.CardData> synergyCardsOnRow = new();
+
+                foreach (var card in OnBoard.Where(x => x.Range == range))
+                {
+                    if (card.Synergy)
+                        synergyCardsOnRow.Add(card);
+                    TotalsByRows[card.Range] += card.Strength;
+                }
+
+                if (synergyCardsOnRow.Count > 1)
+                {
+                    foreach (var card in synergyCardsOnRow)
+                    {
+                        TotalsByRows[card.Range] += card.Strength;
+                    }
+                }
+            }
+
+            foreach (var spCard in gControl.SpOnBoard)
+            {
+                TotalsByRows[spCard.Range] = OnBoard.Where(x => x.Range == spCard.Range).Count();
+            }
+
+            Total = TotalsByRows.Values.Sum();
         }
     }
 }

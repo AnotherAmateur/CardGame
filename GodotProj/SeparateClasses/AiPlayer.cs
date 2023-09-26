@@ -168,14 +168,14 @@ namespace CardGameProj.SeparateClasses
         private List<int> GetValidActions()
         {
             IEnumerable<CardDB.CardData> actions;
-            
+
             if (Player.SpOnBoard.Count == GFieldController.MaxSpOnBoardCount)
             {
-                actions = Hand.Where(x => x.Type != CardTypes.Special || x.Range == CardRanges.OutOfRange);                   
+                actions = Hand.Where(x => x.Type != CardTypes.Special || x.Range == CardRanges.OutOfRange);
             }
             else
             {
-                actions = Hand.Where(x => Player.SpOnBoard.Select(y=>y.Range).Contains(x.Range) is false);
+                actions = Hand.Where(x => Player.SpOnBoard.Select(y => y.Range).Contains(x.Range) is false);
             }
 
             var result = actions.Select(x => GtoQTranslator[x.Id]).ToList();

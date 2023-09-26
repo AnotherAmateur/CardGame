@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 
 public static class CardDB
@@ -18,64 +17,7 @@ public static class CardDB
         public CardRanks Rank;
         public string Text;
         public string Category;
-
-        public CardData(string name, int id, CardTypes type, int strength, CardNations nation, string text, CardRanges range = 0)
-        {
-            Id = id;
-            Type = type;
-            Strength = strength;
-            Nation = nation;
-            Text = text;
-
-            switch (strength)
-            {
-                case < 10:
-                    this.Rank = CardRanks.Common;
-                    break;
-                case < 20:
-                    this.Rank = CardRanks.Rare;
-                    break;
-                default:
-                    this.Rank = CardRanks.Legendary;
-                    break;
-            }
-
-            switch (type)
-            {
-                case CardTypes.Group1:
-                    Category = "Мудрость и философия";
-                    Range = CardRanges.Row1;
-                    break;
-                case CardTypes.Group2:
-                    Category = "Личностное развитие и мотивация";
-                    Range = CardRanges.Row2;
-                    break;
-                case CardTypes.Group3:
-                    Category = "Социальная справедливость и этика";
-                    Range = CardRanges.Row3;
-                    break;
-                case CardTypes.Leader:
-                    Category = nation + ", мудрец";
-                    Range = CardRanges.OutOfRange;
-                    strength = 0;
-                    break;
-                case CardTypes.Special:
-                    Category = "Специальная карта";
-                    switch (Strength)
-                    {
-                        case < 0:
-                            Range = CardRanges.Row1;
-                            break;
-                        case > 0:
-                            Range = CardRanges.Row2;
-                            break;
-                        default:
-                            Range = CardRanges.OutOfRange;
-                            break;
-                    }
-                    break;
-            }
-        }
+        public bool Synergy;
     }
 
     private static ReadOnlyDictionary<int, CardData> cards;

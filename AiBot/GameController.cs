@@ -1,12 +1,4 @@
 using CardGameProj.Scripts;
-using CardGameProj.SeparateClasses;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.Dynamic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
 
 namespace AiBot
 {
@@ -38,74 +30,24 @@ namespace AiBot
         public int Pl1GamesMargin { get; private set; }
         public int Round { get; private set; }
         public AiPlayer? Winner { get; private set; }
+        public List<CardDB.CardData> SpOnBoard { get; private set; }
+        public GameController Instance { get; private set; }         
         public List<StatesLog> StatesLog { get; set; }
         private Random random;
-
+        public const int MaxSpOnBoardCount = 3;
 
         public GameController(CardNations pl1Nation, CardNations pl2Nation)
         {
+            Instance = this;
+            SpOnBoard = new();
             random = new();
             Round = 1;
             Winner = null;
-            Player = new AiPlayer(pl1Nation);
-            TargetPlayer = new AiPlayer(pl2Nation);
+            Player = new AiPlayer(pl1Nation, this);
+            TargetPlayer = new AiPlayer(pl2Nation, this);
             StatesLog = new(100);
 
             SetTurn(RandFirstPlayer());
-        }
-
-
-        private void UpdateTotals()
-        {
-            Player.InitTotalsByRows();
-            TargetPlayer.InitTotalsByRows();
-
-            foreach (var card in Player.OnBoard)
-            {
-                Player.TotalsByRows[card.type] += card.strength;
-            }
-
-            foreach (var card in TargetPlayer.OnBoard)
-            {
-                TargetPlayer.TotalsByRows[card.type] += card.strength;
-            }
-
-            foreach (var spCard in Player.SpOnBoard)
-            {
-                switch (spCard.strength)
-                {
-                    case < 0:
-                        TargetPlayer.TotalsByRows[CardTypes.Group1] += spCard.strength *
-                            TargetPlayer.OnBoard.Where(x => x.type == CardTypes.Group1).Count();
-                        break;
-                    case > 0:
-                        Player.TotalsByRows[CardTypes.Group2] += spCard.strength *
-                             Player.OnBoard.Where(x => x.type == CardTypes.Group2).Count();
-                        break;
-                    case 0:
-                        throw new Exception();
-                }
-            }
-
-            foreach (var spCard in TargetPlayer.SpOnBoard)
-            {
-                switch (spCard.strength)
-                {
-                    case < 0:
-                        Player.TotalsByRows[CardTypes.Group1] += spCard.strength *
-                            Player.OnBoard.Where(x => x.type == CardTypes.Group1).Count();
-                        break;
-                    case > 0:
-                        TargetPlayer.TotalsByRows[CardTypes.Group2] += spCard.strength *
-                             TargetPlayer.OnBoard.Where(x => x.type == CardTypes.Group2).Count();
-                        break;
-                    case 0:
-                        throw new Exception();
-                }
-            }
-
-            Player.Total = Player.TotalsByRows.Values.Sum();
-            TargetPlayer.Total = TargetPlayer.TotalsByRows.Values.Sum();
         }
 
         private AiPlayer GetEnemy(AiPlayer aiPlayer)
@@ -119,21 +61,20 @@ namespace AiBot
 
             if (action == (int)ActionTypes.Pass)
             {
-                if (CurrentPlayer.IsPassed)
+                if (CurrentPlayer.IsPass)
                 {
-                    throw new Exception();
+                    throw new Exception("Double pass");
                 }
 
                 DoPass();
             }
             else
             {
-                var card = CardDataBase.GetCardInfo(action);
+                var card = CardDB.GetCardInfo(action);
 
-                if (card.type == CardTypes.Special && card.strength == 0)
+                if (card.Type == CardTypes.Special && card.Range == CardRanges.OutOfRange)
                 {
-                    Player.SpOnBoard.Clear();
-                    TargetPlayer.SpOnBoard.Clear();
+                   SpOnBoard.Clear();
                 }
                 else
                 {
@@ -141,9 +82,127 @@ namespace AiBot
                 }
 
                 var enemy = GetEnemy(CurrentPlayer);
-                CurrentPlayer = enemy.IsPassed ? CurrentPlayer : enemy;
+                CurrentPlayer = enemy.IsPass ? CurrentPlayer : enemy;
             }
         }
+
+        public void DoPass()
+        {
+            CurrentPlayer.IsPass = true;
+
+            if (Player.IsPass && TargetPlayer.IsPass)
+            {
+                Player.IsPass = false;
+                TargetPlayer.IsPass = false;
+
+                switch (TargetPlayer.Total.CompareTo(Player.Total))
+                {
+                    case < 0:
+                        ++Pl1GamesMargin;
+                        SetTurn(Player);
+                        break;
+                    case > 0:
+                        --Pl1GamesMargin;
+                        SetTurn(TargetPlayer);
+                        break;
+                    case 0:
+                        SetTurn(RandFirstPlayer());
+                        break;
+                }
+
+                if (Math.Abs(Pl1GamesMargin) == 2 || Pl1GamesMargin != 0 && Round == 3)
+                {
+                    SetTurn(null);
+                    Winner = (Pl1GamesMargin > 0) ? Player : TargetPlayer;
+                    return;
+                }
+                else if (Pl1GamesMargin == 0 && Round == 3)
+                {
+                    SetTurn(null);
+                    return;
+                }
+
+                if (Round < 3)
+                {
+                    Player.NewRound();
+                    TargetPlayer.NewRound();
+                    ++Round;
+                }
+            }
+            else
+            {
+                SetTurn(Player.IsPass ? TargetPlayer : Player);
+            }
+        }
+
+        public string GetCurState()
+        {
+            Player.UpdateTotals();
+            TargetPlayer.UpdateTotals();
+
+            List<string> curState = new();
+
+            string pl1DeckSize = (Player.Deck.Count / 3).ToString();
+            curState.Add(pl1DeckSize);
+
+            string targetPlayerDeckSize = (TargetPlayer.Deck.Count / 3).ToString();
+            curState.Add(targetPlayerDeckSize);
+
+            string gamesResults = Pl1GamesMargin.ToString();
+            curState.Add(gamesResults);
+
+            string rowsTotalsPl1 = string.Join("", (Player.TotalsByRows.Values).Select(x => x / 3));
+            curState.Add(rowsTotalsPl1);
+
+            string rowsTotalsTargetPl = string.Join("", (TargetPlayer.TotalsByRows.Values).Select(x => x / 3));
+            curState.Add(rowsTotalsTargetPl);
+
+            string spCardsOnBoard = string.Join("", SpOnBoard.OrderBy(x => x.Id).Select(x => x.Id));
+            curState.Add(spCardsOnBoard);
+
+            string handSize = CurrentPlayer.Hand.Count.ToString();
+            curState.Add(handSize);
+
+            string handWeight = (CurrentPlayer.Hand.Select(x => x.Strength).Sum() / 5).ToString();
+            curState.Add(handWeight);
+
+            string plPassed = GetEnemy(CurrentPlayer).IsPass.ToString();
+            curState.Add(plPassed);
+
+            return string.Join('_', curState);
+        }
+
+        public AiPlayer RandFirstPlayer()
+        {
+            return random.Next(0, 2) == 0 ? Player : TargetPlayer;
+        }
+
+        public void SetTurn(AiPlayer? player)
+        {
+            CurrentPlayer = player;
+        }
+
+        public List<int> GetValidActions()
+        {
+            IEnumerable<CardDB.CardData> actions;
+
+            if (SpOnBoard.Count == MaxSpOnBoardCount)
+            {
+                actions = CurrentPlayer.Hand.Where(x =>
+                    x.Type != CardTypes.Special || x.Range == CardRanges.OutOfRange);
+            }
+            else
+            {
+                actions = CurrentPlayer.Hand.Where(x =>
+                    SpOnBoard.Select(y => y.Range).Contains(x.Range) is false);
+            }
+
+            var result = actions.Select(x => x.Id).ToList();
+            result.Add((int)ActionTypes.Pass);
+
+            return result;
+        }
+
 
         //public double LastMoveGetReward()
         //{
@@ -182,107 +241,5 @@ namespace AiBot
         //    return 0;
 
         //}
-
-
-        public void DoPass()
-        {
-            CurrentPlayer.IsPassed = true;
-
-            if (Player.IsPassed && TargetPlayer.IsPassed)
-            {
-                Player.IsPassed = false;
-                TargetPlayer.IsPassed = false;
-
-                switch (TargetPlayer.Total.CompareTo(Player.Total))
-                {
-                    case < 0:
-                        ++Pl1GamesMargin;
-                        SetTurn(Player);
-                        break;
-                    case > 0:
-                        --Pl1GamesMargin;
-                        SetTurn(TargetPlayer);
-                        break;
-                    case 0:
-                        SetTurn(RandFirstPlayer());
-                        break;
-                }
-
-                if (Math.Abs(Pl1GamesMargin) == 2 || Pl1GamesMargin != 0 && Round == 3)
-                {
-                    SetTurn(null);
-                    Winner = (Pl1GamesMargin > 0) ? Player : TargetPlayer;
-                    return;
-                }
-                else if (Pl1GamesMargin == 0 && Round == 3)
-                {
-                    SetTurn(null);
-                    return;
-                }
-
-                if (Round < 3)
-                {
-                    Player.NewRound();
-                    TargetPlayer.NewRound();
-                    ++Round;
-                }
-            }
-            else
-            {
-                SetTurn(Player.IsPassed ? TargetPlayer : Player);
-            }
-        }
-
-        public string GetCurState()
-        {
-            UpdateTotals();
-
-            List<string> curState = new();
-
-            string pl1DeckSize = (Player.Deck.Count / 3).ToString();
-            curState.Add(pl1DeckSize);
-
-            string targetPlayerDeckSize = (TargetPlayer.Deck.Count / 3).ToString();
-            curState.Add(targetPlayerDeckSize);
-
-            string gamesResults = Pl1GamesMargin.ToString();
-            curState.Add(gamesResults);
-
-            string rowsTotalsPl1 = string.Join("", (Player.TotalsByRows.Values).Select(x => x / 3));
-            curState.Add(rowsTotalsPl1);
-
-            string rowsTotalsTargetPl = string.Join("", (TargetPlayer.TotalsByRows.Values).Select(x => x / 3));
-            curState.Add(rowsTotalsTargetPl);
-
-            string spCardsOnBoard = string.Join("", Player.SpOnBoard.Union(TargetPlayer.SpOnBoard)
-                .OrderBy(x => x.id).Select(x => x.id));
-            curState.Add(spCardsOnBoard);
-
-            string handSize = CurrentPlayer.Hand.Count.ToString();
-            curState.Add(handSize);
-
-            string handWeight = (CurrentPlayer.Hand.Select(x => x.strength).Sum() / 5).ToString();
-            curState.Add(handWeight);
-
-            return string.Join('_', curState);
-        }
-
-        public AiPlayer RandFirstPlayer()
-        {
-            return random.Next(0, 2) == 0 ? Player : TargetPlayer;
-        }
-
-        public void SetTurn(AiPlayer? player)
-        {
-            CurrentPlayer = player;
-        }
-
-        public List<int> GetValidActions()
-        {
-            var actions = CurrentPlayer.Hand.Select(x => x.id).ToList();
-            actions.Add((int)ActionTypes.Pass);
-
-            return actions;
-        }
     }
 }

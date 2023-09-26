@@ -11,7 +11,6 @@ public class BotLearning
     public int MatchesCount { get; set; } = (int)4e2;
     public double LearningRate { get; set; } = 0.9;
     public double DiscountFactor { get; set; } = 0.75;
-    public bool EachStepReward { get; set; }
     public bool RandInit { get; set; }
     public double InitValue { get; set; }
     public CardNations Nation1 { get; set; }
@@ -29,7 +28,6 @@ public class BotLearning
         this.n2_QtoGTranslator = new();
     }
 
-
     public void Start()
     {
         n1_QtoGTranslator.Add(0, (int)ActionTypes.Pass);
@@ -41,7 +39,7 @@ public class BotLearning
         n2_GtoQTranslator.Add((int)ActionTypes.Pass, 0);
        
         int index = 1;
-        foreach (var card in CardDataBase.GetAllCards.Where(x => x.Value.nation == Nation1).ToArray())
+        foreach (var card in CardDB.GetAllCards.Where(x => x.Value.Nation == Nation1))
         {
             n1_QtoGTranslator.Add(index, card.Key);
             n1_GtoQTranslator.Add(card.Key, index);
@@ -49,7 +47,7 @@ public class BotLearning
         }
 
         index = 1;
-        foreach (var card in CardDataBase.GetAllCards.Where(x => x.Value.nation == Nation2).ToArray())
+        foreach (var card in CardDB.GetAllCards.Where(x => x.Value.Nation == Nation2))
         {
             n2_QtoGTranslator.Add(index, card.Key);
             n2_GtoQTranslator.Add(card.Key, index);
@@ -152,9 +150,11 @@ public class BotLearning
     }
 
     void WriteToFile(int index)
-    {
+    {       
         string directory = $"logs_{DateTime.Now.Ticks}";
         System.IO.Directory.CreateDirectory(directory);
+
+        Console.WriteLine($"Writing to directory {directory}...");
 
         string nation_1_TablePath = $"{directory}/{Nation1}_QTable{index}.txt";        
         string nation_2_TablePath = $"{directory}/{Nation2}_QTable{index}.txt";
@@ -192,6 +192,8 @@ public class BotLearning
                 sw.WriteLine($"{propertyName}:{propertyValue}");
             }
         }
+
+        Console.WriteLine($"Writing to directory {directory} done");
     }
 
     int GetStateHash(string input)

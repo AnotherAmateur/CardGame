@@ -43,7 +43,10 @@ public partial class SlaveCardScene : Node2D
 		GetNode<Label>("LabelsContainer/VBoxContainer/HBoxContainer/Strength").Text = CardDamage.ToString();
 		GetNode<Label>("LabelsContainer/VBoxContainer/HBoxContainer2/Paragraph").Text = card.Category.ToString();
 		GetNode<Label>("LabelsContainer/MainText").Text = card.Text;
-	}
+
+        if (card.Synergy is false)
+            GetNode<Sprite2D>("SynergyIcon").Visible = false;
+    }
 
 	public void SetDamage(int damage)
 	{
