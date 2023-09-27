@@ -14,7 +14,8 @@ namespace CardGameProj.SeparateClasses
         public List<int> Deck { get; private set; }
         public List<CardDB.CardData> Hand { get; private set; }
         public CardNations Nation { get; private set; }
-        public Dictionary<int, double[]> QTable { get; private set; }
+        public Dictionary<int, int[]> QTable { get; private set; }
+
         public AiPlayer(CardNations nation)
         {
             random = new();
@@ -198,14 +199,15 @@ namespace CardGameProj.SeparateClasses
         private void ReadQTableFromFile()
         {
             QTable = new();
-            string path = $"res://Data/QTableData/{Nation.ToString().ToLower()}_QTable.txt";
+            string path = $"res://Data/QTableData/{Nation.ToString()}_QTable.txt";
             string data = Godot.FileAccess.Open(path, Godot.FileAccess.ModeFlags.Read).GetAsText();
 
             foreach (string line in data.Split('\n', StringSplitOptions.RemoveEmptyEntries))
             {
                 string[] temp = line.Split(':', StringSplitOptions.RemoveEmptyEntries);
                 int state = int.Parse(temp[0]);
-                double[] rewards = temp[1].Split('/', StringSplitOptions.RemoveEmptyEntries).Select(x => double.Parse(x)).ToArray();
+                int[] rewards = (temp.Length == 1) ? new int[] { 0 } :
+                    rewards = temp[1].Split('/').Select(x => (x != "") ? int.Parse(x) : 0).ToArray();
                 QTable.Add(state, rewards);
             }
         }

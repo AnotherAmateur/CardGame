@@ -12,7 +12,7 @@
       "Item1": "MATCH",
       "Item2": 10.0
     },
-    "MatchesCount": 4000000,
+    "MatchesCount": 40,
     "LearningRate": 0.5,
     "DiscountFactor": 0.9,
     "RandInit": false,

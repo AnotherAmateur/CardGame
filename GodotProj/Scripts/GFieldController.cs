@@ -42,7 +42,8 @@ public partial class GFieldController : Node2D, ISocketConn
         if (States.PVE)
         {
             int randNation = random.Next(CardDB.Nations.Count);
-            aiPlayer = new AiPlayer(CardDB.Nations[randNation]);
+            //aiPlayer = new AiPlayer(CardDB.Nations[randNation]);
+            aiPlayer = new AiPlayer(CardDB.Nations[0]);
             States.AntagonistLeaderCardId = CardDB.GetAllCards.Where(x =>
                 x.Value.Nation == aiPlayer.Nation && x.Value.Type == CardTypes.Leader).First().Key;
         }
@@ -230,7 +231,7 @@ public partial class GFieldController : Node2D, ISocketConn
 
     private void InitializeColorRects()
     {
-        var color = new Godot.Color("#988153");
+        var color = new Godot.Color("#98815359");
 
         var controls = new List<Control>();
         controls.Add(leaderCardContainerTop);
@@ -397,10 +398,10 @@ public partial class GFieldController : Node2D, ISocketConn
         string gamesResults = Player.GameResult.ToString();
         curState.Add(gamesResults);
 
-        string rowsTotalsPl1 = string.Join("", (protagonist.TotalsByRows.Values).Select(x => x / 3));
+        string rowsTotalsPl1 = string.Join("", (protagonist.TotalsByRows.Values).Select(x => x / 5));
         curState.Add(rowsTotalsPl1);
 
-        string rowsTotalsBot = string.Join("", (antagonist.TotalsByRows.Values).Select(x => x / 3));
+        string rowsTotalsBot = string.Join("", (antagonist.TotalsByRows.Values).Select(x => x / 5));
         curState.Add(rowsTotalsBot);
 
         string spCardsOnBoard = string.Join("", Player.SpOnBoard.OrderBy(x => x.Id).Select(x => x.Id));

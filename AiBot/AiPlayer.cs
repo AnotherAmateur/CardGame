@@ -15,6 +15,7 @@ namespace AiBot
         public bool IsPass { get; set; }
         public CardNations Nation { get; private set; }
         private GameController gControl;
+        public int PlGamesMargin { get; set; }
 
         public AiPlayer(CardNations nation, GameController gControl)
         {

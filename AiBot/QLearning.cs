@@ -34,6 +34,7 @@
             this.actionsCount = actionsCount;
             QtoGTranslator = qtoGTranslator;
             GtoQTranslator = gtoQTranslator;
+            random = new Random();
         }
 
         public int ChooseAction(int state, double eps, List<int> validActions)
@@ -102,11 +103,6 @@
             }
 
             return maxQValue;
-        }
-
-        public void SetQTable(Dictionary<int, double[]> qTable)
-        {
-            QTable = qTable;
         }
 
         private double[] InitActRewards()

@@ -1,5 +1,6 @@
 ﻿using AiBot;
 using CardGameProj.Scripts;
+using System.Reflection.Metadata;
 
 public class BotPlaying
 {
@@ -40,7 +41,7 @@ public class BotPlaying
         n2_GtoQTranslator.Add((int)ActionTypes.Pass, 0);
 
         int index = 1;
-        foreach (var card in CardDB.GetAllCards.Where(x => x.Value.Nation == Nation1))
+        foreach (var card in CardDB.GetAllCards.Where(x => x.Value.Nation == Nation1 && x.Value.Type != CardTypes.Leader))
         {
             n1_QtoGTranslator.Add(index, card.Key);
             n1_GtoQTranslator.Add(card.Key, index);
@@ -48,28 +49,29 @@ public class BotPlaying
         }
 
         index = 1;
-        foreach (var card in CardDB.GetAllCards.Where(x => x.Value.Nation == Nation2))
+        foreach (var card in CardDB.GetAllCards.Where(x => x.Value.Nation == Nation2 && x.Value.Type != CardTypes.Leader))
         {
             n2_QtoGTranslator.Add(index, card.Key);
             n2_GtoQTranslator.Add(card.Key, index);
             index++;
         }
 
-        bot1 = new(ReadQTableFromFile(qTablePath1), n1_QtoGTranslator.Count, n1_QtoGTranslator, n1_GtoQTranslator);
+        var task = Task.Factory.StartNew(() => 
+        bot1 = new(ReadQTableFromFile(qTablePath1), n1_QtoGTranslator.Count, n1_QtoGTranslator, n1_GtoQTranslator));
         bot2 = new(ReadQTableFromFile(qTablePath2), n2_QtoGTranslator.Count, n2_QtoGTranslator, n2_GtoQTranslator);
-
+        task.Wait();
 
         for (int i = 0; i < MatchesCount; i++)
         {
             GameController gameController = new(Nation1, Nation2);
 
             Dictionary<QLearning, AiPlayer> botPlayerRel = new()
-                { { bot1, gameController.Player },
-                  { bot2, gameController.TargetPlayer } };
+                { { bot1, gameController.FirstPl },
+                  { bot2, gameController.SecondPl } };
 
             do
             {
-                var curState = GetStateHash(gameController.GetCurState());
+                var curState = GetStateHash(gameController.GetCurStateString());
                 var currentBot = botPlayerRel.Where(x => x.Value == gameController.CurrentPlayer).Select(x => x.Key).First();
                 var action = currentBot.ChooseAction(curState, Eps, gameController.GetValidActions());
                 gameController.MakeMove(action);
@@ -93,12 +95,12 @@ public class BotPlaying
 
         using (var sr = new StreamReader(path))
         {
-            string? line;
-            while ((line = sr.ReadLine()) != null)
+            foreach (string line in sr.ReadToEnd().Split('\n', StringSplitOptions.RemoveEmptyEntries))
             {
                 string[] temp = line.Split(':', StringSplitOptions.RemoveEmptyEntries);
                 int state = int.Parse(temp[0]);
-                double[] rewards = temp[1].Split('/', StringSplitOptions.RemoveEmptyEntries).Select(x => double.Parse(x)).ToArray();
+                double[] rewards = (temp.Length == 1) ? new double[] { 0 } :
+                    rewards = temp[1].Split('/').Select(x => (x != "") ? double.Parse(x) : 0).ToArray();
                 qTable.Add(state, rewards);
             }
         }

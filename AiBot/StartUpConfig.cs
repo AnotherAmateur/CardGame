@@ -10,6 +10,8 @@ namespace AiBot
     {
         public static void Main()
         {
+            CardDB.UpdateCardDataBase();
+
             while (true)
             {
                 string? input = Console.ReadLine();
@@ -17,10 +19,13 @@ namespace AiBot
                 switch (input)
                 {
                     case "play":
-                        DoPlaying();
+                        int[] tablesMatches = Console.ReadLine().Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                            .Select(x => int.Parse(x)).ToArray();
+                        DoPlaying(tablesMatches[0], tablesMatches[1]);
                         break;
                     case "learn":
-                        DoLearning();
+                        int procCount = int.Parse(Console.ReadLine());
+                        DoLearning(procCount);
                         break;
                     default:
                         Console.WriteLine("ooops");
@@ -29,16 +34,15 @@ namespace AiBot
             }
         }
 
-        private static void DoLearning()
+        private static void DoLearning(int procCount)
         {
-            CardDB.UpdateCardDataBase();
-
             string confiFilePath = "BotConfigs.json";
             string jsonData = File.ReadAllText(confiFilePath);
             if (jsonData is null)
                 throw new Exception($"Reading {confiFilePath} failed");
 
             var botConfigs = JsonConvert.DeserializeObject<List<ConfStruct>>(jsonData);
+            List<BotLearning> botLearnings = new();
             foreach (var config in botConfigs)
             {
                 var botLearning = new BotLearning();
@@ -50,35 +54,41 @@ namespace AiBot
                 botLearning.InitValue = config.InitValue;
                 botLearning.RandInit = config.RandInit;
                 botLearning.MatchesCount = config.MatchesCount;
-                botLearning.Nation1 = config.Nation1;
-                botLearning.Nation2 = config.Nation2;
+                botLearning.firstBotNation = config.Nation1;
+                botLearning.secondBotNation = config.Nation2;
+                botLearning.StepRewards = config.StepRewards;
 
-                botLearning.Start();
-                Console.WriteLine("++");
+                botLearnings.Add(botLearning);
             }
 
-            //Parallel.ForEach(botLearnings, (botLearn) => botLearn.Start());
+            System.Threading.Tasks.ParallelOptions opt = new System.Threading.Tasks.ParallelOptions();
+            opt.MaxDegreeOfParallelism = procCount;
+            Parallel.ForEach(botLearnings, opt, (botLearn) =>
+            {
+                botLearn.Start();
+                Console.WriteLine("++");
+
+            });
 
             Console.WriteLine("Done");
+            Console.Beep(5000, 2000);
         }
 
-        private static void DoPlaying()
+        private static void DoPlaying(int tablesCount, int mathesCount)
         {
-            int tablesCount = 6;
-
             for (int i = 0; i < tablesCount; i++)
             {
                 for (int j = 0; j < tablesCount; j++)
                 {
                     Console.WriteLine($"i: {i}, j: {j}");
 
-                    string qTableBot1 = $"i/{CardNations.Confucius}_QTable0.txt";
-                    string qTableBot2 = $"j/{CardNations.AI}_QTable0.txt";
+                    string qTableBot1 = $"{i}/{CardNations.Confucius}_QTable.txt";
+                    string qTableBot2 = $"{j}/{CardNations.AI}_QTable.txt";
 
                     var botPlaying = new BotPlaying(qTableBot1, qTableBot2);
                     botPlaying.Nation1 = CardNations.Confucius;
                     botPlaying.Nation2 = CardNations.AI;
-                    botPlaying.MatchesCount = 10000;
+                    botPlaying.MatchesCount = mathesCount;
 
                     botPlaying.Start();
 
@@ -86,6 +96,9 @@ namespace AiBot
                     Console.WriteLine($"Bot {botPlaying.Nation2} wins: {botPlaying.Bot2Wins}");
                 }
             }
+
+            Console.WriteLine("Done");
+            Console.Beep(5000, 2000);
         }
 
         private class ConfStruct
@@ -101,6 +114,7 @@ namespace AiBot
             public double InitValue;
             public CardNations Nation1;
             public CardNations Nation2;
+            public bool StepRewards;
         }
     }
 }

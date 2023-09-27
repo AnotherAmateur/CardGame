@@ -31,7 +31,7 @@ public partial class MinCardScene : Node2D
         {
             GetNode<Label>("LabelsContainer/VBoxContainer/Paragraph").Visible = false;
             GetNode<Label>("LabelsContainer/VBoxContainer/SpecLabel").Visible = false;
-            GetNode<Label>("LabelsContainer/VBoxContainer/StrengthLabel").Visible = false;
+            GetNode<Label>("LabelsContainer/VBoxContainer/HBoxContainer/StrengthLabel").Visible = false;
         }
     }
 

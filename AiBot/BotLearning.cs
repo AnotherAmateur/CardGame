@@ -1,26 +1,28 @@
 ﻿using AiBot;
 using CardGameProj.Scripts;
+using System.Runtime.ConstrainedExecution;
 
 public class BotLearning
 {
     private const double InitMaxEps = 1;
-    public (string, double) WinState { get; set; } = ("WIN", 100);
-    public (string, double) LossState { get; set; } = ("LOSS", -100);
-    public (string, double) MatchState { get; set; } = ("MATCH", 10);
+    public (string, double) WinState { get; set; }
+    public (string, double) LossState { get; set; }
+    public (string, double) MatchState { get; set; }
 
-    public int MatchesCount { get; set; } = (int)4e2;
-    public double LearningRate { get; set; } = 0.9;
-    public double DiscountFactor { get; set; } = 0.75;
+    public int MatchesCount { get; set; }
+    public double LearningRate { get; set; }
+    public double DiscountFactor { get; set; }
     public bool RandInit { get; set; }
     public double InitValue { get; set; }
-    public CardNations Nation1 { get; set; }
-    public CardNations Nation2 { get; set; }
+    public bool StepRewards { get; set; }
+    public CardNations firstBotNation { get; set; }
+    public CardNations secondBotNation { get; set; }
 
     private Dictionary<int, int> n1_QtoGTranslator;
     private Dictionary<int, int> n2_QtoGTranslator;
 
-    QLearning bot1;
-    QLearning botTarget;
+    QLearning? firstBot;
+    QLearning? secondBot;
 
     public BotLearning()
     {
@@ -37,9 +39,9 @@ public class BotLearning
         Dictionary<int, int> n2_GtoQTranslator = new();
         n1_GtoQTranslator.Add((int)ActionTypes.Pass, 0);
         n2_GtoQTranslator.Add((int)ActionTypes.Pass, 0);
-       
+
         int index = 1;
-        foreach (var card in CardDB.GetAllCards.Where(x => x.Value.Nation == Nation1))
+        foreach (var card in CardDB.GetAllCards.Where(x => x.Value.Nation == firstBotNation && x.Value.Type != CardTypes.Leader))
         {
             n1_QtoGTranslator.Add(index, card.Key);
             n1_GtoQTranslator.Add(card.Key, index);
@@ -47,83 +49,90 @@ public class BotLearning
         }
 
         index = 1;
-        foreach (var card in CardDB.GetAllCards.Where(x => x.Value.Nation == Nation2))
+        foreach (var card in CardDB.GetAllCards.Where(x => x.Value.Nation == secondBotNation))
         {
             n2_QtoGTranslator.Add(index, card.Key);
             n2_GtoQTranslator.Add(card.Key, index);
             index++;
         }
 
-        bot1 = new(n1_QtoGTranslator.Count, LearningRate, DiscountFactor, n1_QtoGTranslator, n1_GtoQTranslator, RandInit, InitValue);
-        botTarget = new(n2_QtoGTranslator.Count, LearningRate, DiscountFactor, n2_QtoGTranslator, n2_GtoQTranslator, RandInit, InitValue);
+        firstBot = new(n1_QtoGTranslator.Count, LearningRate, DiscountFactor, n1_QtoGTranslator, n1_GtoQTranslator, RandInit, InitValue);
+        secondBot = new(n2_QtoGTranslator.Count, LearningRate, DiscountFactor, n2_QtoGTranslator, n2_GtoQTranslator, RandInit, InitValue);
 
 
         for (int i = 0; i < MatchesCount; i++)
         {
-            GameController gameController = new(Nation1, Nation2);
+            GameController gameController = new(firstBotNation, secondBotNation);
             List<MovesLog> movesLog = new();
 
-            Dictionary<QLearning, AiPlayer> botPlayerRel = new() 
-                { { bot1, gameController.Player },
-                  { botTarget, gameController.TargetPlayer } };
+            Dictionary<QLearning, AiPlayer> botPlayerRel = new()
+                { { firstBot, gameController.FirstPl },
+                  { secondBot, gameController.SecondPl } };
 
             double curEps = Math.Max(InitMaxEps - (i / MatchesCount), 0.1);
 
             do
             {
-                var curState = GetStateHash(gameController.GetCurState());
-                var currentBot = botPlayerRel.Where(x => x.Value == gameController.CurrentPlayer).Select(x => x.Key).First();
-                var action = currentBot.ChooseAction(curState, curEps, gameController.GetValidActions());
+                AiPlayer curPlayer = gameController.CurrentPlayer;
+                StatesLog stateBefore = gameController.GetCurState(curPlayer);
+                int curState = GetStateHash(gameController.GetCurStateString());
+
+                QLearning currentBot = botPlayerRel.Where(x => x.Value == curPlayer).Select(x => x.Key).First();
+                int action = currentBot.ChooseAction(curState, curEps, gameController.GetValidActions());
                 gameController.MakeMove(action);
 
-                movesLog.Add(new(curState, action, currentBot));
+                StatesLog stateAfter = gameController.GetCurState(curPlayer);
+                movesLog.Add(new(curState, action, currentBot, GetStepReward(stateBefore, stateAfter)));
 
             } while (gameController.CurrentPlayer != null);
 
             QLearning? winner = null;
 
-            if (gameController.Winner == botPlayerRel[bot1])
+            if (gameController.Winner == botPlayerRel[firstBot])
             {
-                winner = bot1;
+                winner = firstBot;
             }
-            else if (gameController.Winner == botPlayerRel[botTarget])
+            else if (gameController.Winner == botPlayerRel[secondBot])
             {
-                winner = botTarget;
+                winner = secondBot;
             }
 
-            UpdateQValuesOffline(gameController.StatesLog, movesLog, winner);
+            UpdateQValuesOffline(movesLog, winner);
         }
 
         WriteToFile(0);
+
+        firstBot = null;
+        secondBot = null;
     }
 
-    void UpdateQValuesOffline(List<StatesLog> gameStatesLog, List<MovesLog> botMovesLog, QLearning? winner)
+    void UpdateQValuesOffline(List<MovesLog> botMovesLog, QLearning? winner)
     {
         int nextStateBot1;
         int nextStateBot2;
 
-        double bot1Reward;
-        double bot2Reward;
+        double bot1FinalRew;
+        double bot2FinalRew;
 
         switch (winner)
         {
-            case var value when value == bot1:
+            case var value when value == firstBot:
                 nextStateBot1 = GetStateHash(WinState.Item1);
                 nextStateBot2 = GetStateHash(LossState.Item1);
-                bot1Reward = WinState.Item2;
-                bot2Reward = LossState.Item2;
+                bot1FinalRew = WinState.Item2;
+                bot2FinalRew = LossState.Item2;
                 break;
-            case var value when value == botTarget:
+            case var value when value == secondBot:
                 nextStateBot2 = GetStateHash(WinState.Item1);
                 nextStateBot1 = GetStateHash(LossState.Item1);
-                bot2Reward = WinState.Item2;
-                bot1Reward = LossState.Item2;
+                bot2FinalRew = WinState.Item2;
+                bot1FinalRew = LossState.Item2;
                 break;
             case var value when value == null:
                 nextStateBot1 = GetStateHash(MatchState.Item1);
                 nextStateBot2 = GetStateHash(MatchState.Item1);
-                bot1Reward = MatchState.Item2;
-                bot2Reward = MatchState.Item2;
+                bot1FinalRew = MatchState.Item2;
+                bot2FinalRew = MatchState.Item2;
                 break;
             default:
                 throw new Exception();
@@ -133,14 +142,14 @@ public class BotLearning
         {
             switch (botMovesLog[i].Bot)
             {
-                case var value when value == bot1:
-                    bot1.UpdateQValue(botMovesLog[i].State, botMovesLog[i].Action, nextStateBot1, bot1Reward);
-                    bot1Reward = 0;
+                case var value when value == firstBot:
+                    firstBot.UpdateQValue(botMovesLog[i].State, botMovesLog[i].Action, nextStateBot1, bot1FinalRew + botMovesLog[i].StepReward);
+                    bot1FinalRew = 0;
                     nextStateBot1 = botMovesLog[i].State;
                     break;
-                case var value when value == botTarget:
-                    botTarget.UpdateQValue(botMovesLog[i].State, botMovesLog[i].Action, nextStateBot2, bot2Reward);
-                    bot2Reward = 0;
+                case var value when value == secondBot:
+                    secondBot.UpdateQValue(botMovesLog[i].State, botMovesLog[i].Action, nextStateBot2, bot2FinalRew + botMovesLog[i].StepReward);
+                    bot2FinalRew = 0;
                     nextStateBot2 = botMovesLog[i].State;
                     break;
                 default:
@@ -149,34 +158,62 @@ public class BotLearning
         }
     }
 
+    double GetStepReward(StatesLog stateBefore, StatesLog stateAfter)
+    {
+        if (StepRewards)
+        {
+            double totalDifRew = (stateAfter.SelfTotal - stateAfter.EnemyTotal) >
+                        (stateBefore.SelfTotal - stateBefore.EnemyTotal) ? 1 : -1;
+            double roundRew = stateAfter.Round;
+            double winsRew = stateAfter.SelfGamesRslt * 2;
+
+            if (stateAfter.SelfGamesRslt - stateBefore.SelfGamesRslt > 0)
+                return totalDifRew * roundRew * winsRew + 5;
+
+            return totalDifRew * roundRew * winsRew;
+        }
+
+        return 0;
+    }
+
     void WriteToFile(int index)
-    {       
+    {
         string directory = $"logs_{DateTime.Now.Ticks}";
         System.IO.Directory.CreateDirectory(directory);
 
         Console.WriteLine($"Writing to directory {directory}...");
 
-        string nation_1_TablePath = $"{directory}/{Nation1}_QTable{index}.txt";        
-        string nation_2_TablePath = $"{directory}/{Nation2}_QTable{index}.txt";
-        string paramsPath = $"{directory}/Params{index}.txt";
+        string firstBot_TablePath = $"{directory}/{firstBotNation}_QTable.txt";
+        string secondBot_TablePath = $"{directory}/{secondBotNation}_QTable.txt";
+        string paramsPath = $"{directory}/Params.txt";
 
-        Task task = new Task(() =>
+        using (var sw = new StreamWriter(firstBot_TablePath))
         {
-            using (var sw = new StreamWriter(nation_1_TablePath))
+            foreach (var row in firstBot.QTable)
             {
-                foreach (var row in botTarget.QTable)
-                {
-                    sw.WriteLine($"{row.Key}:{string.Join('/', row.Value)}");
-                }
+                if (row.Value.Where(x => x > 0).Count() == 0)
+                    continue;
+
+                var uniqueValues = row.Value.Distinct().OrderBy(x => x).ToList();
+                var valueToIntegerMapping = uniqueValues.Select((value, index) => new { dValue = value, Integer = index }).ToDictionary(x => x.dValue, x => x.Integer);
+                int[] transformedRews = row.Value.Select(value => valueToIntegerMapping[value]).ToArray();
+
+                sw.Write($"{row.Key}:{string.Join('/', transformedRews.Select(x => (x != 0) ? x.ToString() : "")) + '\n'}");
             }
-        });
-        task.Start();
+        }
 
-        using (var sw = new StreamWriter(nation_2_TablePath))
+        using (var sw = new StreamWriter(secondBot_TablePath))
         {
-            foreach (var row in bot1.QTable)
+            foreach (var row in secondBot.QTable)
             {
-                sw.WriteLine($"{row.Key}:{string.Join('/', row.Value)}");
+                if (row.Value.Where(x => x > 0).Count() == 0)
+                    continue;
+
+                var uniqueValues = row.Value.Distinct().OrderBy(x => x).ToList();
+                var valueToIntegerMapping = uniqueValues.Select((value, index) => new { dValue = value, Integer = index }).ToDictionary(x => x.dValue, x => x.Integer);
+                int[] transformedRews = row.Value.Select(value => valueToIntegerMapping[value]).ToArray();
+
+                sw.Write($"{row.Key}:{string.Join('/', transformedRews.Select(x => (x != 0) ? x.ToString() : "")) + '\n'}");
             }
         }
 
@@ -212,11 +249,13 @@ public class BotLearning
         public int State { get; set; }
         public int Action { get; set; }
         public QLearning Bot { get; set; }
+        public double StepReward { get; set; }
 
-        public MovesLog(int state, int action, QLearning bot)
+        public MovesLog(int state, int action, QLearning bot, double stepReward)
         {
             State = state;
             Action = action;
+            StepReward = stepReward;
             Bot = bot ?? throw new ArgumentNullException(nameof(bot));
         }
     }
