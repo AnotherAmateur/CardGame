@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "35dtIYwYfU96aJJN9XVriEtTJZr/Ps+SD24ZqzdaflHTkh/3pz4otH4YiR7JeB5BD7PNt3diTGxEVe2V/dT7yA==",
+  "dgSpecHash": "BQPSjRsHmIBy3oD11cZJBN46/gnrIdMVZPzNj/tC4a0OKqzx0fYPPu8sivtPlQ6iR+gDFRoTgK9oPcONmrsd3A==",
   "success": true,
-  "projectFilePath": "D:\\Uni\\Курсовая 3 курс\\CardGameGitHub\\CardGame\\AiBot\\AiBot.csproj",
+  "projectFilePath": "C:\\Users\\ros_n\\OneDrive\\Рабочий стол\\ddn\\GitHub\\AiBot\\AiBot.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\dmitr\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+    "C:\\Users\\ros_n\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
   ],
   "logs": []
 }

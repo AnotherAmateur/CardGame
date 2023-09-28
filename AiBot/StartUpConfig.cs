@@ -45,8 +45,8 @@ namespace AiBot
                 throw new Exception($"Reading {confiFilePath} failed");
 
             var botConfigs = JsonConvert.DeserializeObject<List<ConfStruct>>(jsonData);
-            List<BotLearning> botLearnings = new();
-            foreach (var config in botConfigs)
+
+            Parallel.ForEach(botConfigs, new ParallelOptions { MaxDegreeOfParallelism = procCount }, (config) =>
             {
                 var botLearning = new BotLearning();
                 botLearning.WinState = config.WinState;
@@ -61,20 +61,12 @@ namespace AiBot
                 botLearning.secondBotNation = config.Nation2;
                 botLearning.StepRewards = config.StepRewards;
 
-                botLearnings.Add(botLearning);
-            }
-
-            System.Threading.Tasks.ParallelOptions opt = new System.Threading.Tasks.ParallelOptions();
-            opt.MaxDegreeOfParallelism = procCount;
-            Parallel.ForEach(botLearnings, opt, (botLearn) =>
-            {
-                botLearn.Start();
+                botLearning.Start();
                 Console.WriteLine("++");
-
             });
 
             Console.WriteLine("Done");
-            Console.Beep(5000, 2000);
+            Console.Beep(10000, 1500);
         }
 
         private static void DoPlaying(int tablesCount, int mathesCount, int processors)

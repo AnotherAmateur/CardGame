@@ -31,3 +31,35 @@ D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono
 D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\obj\ExportRelease\refint\CardGameProj.dll
 D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\obj\ExportRelease\CardGameProj.pdb
 D:\Uni\Курсовая 3 курс\CardGameGitHub\CardGame\GodotProj\.godot\mono\temp\obj\ExportRelease\ref\CardGameProj.dll
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\bin\ExportRelease\CardGameProj.deps.json
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\bin\ExportRelease\CardGameProj.dll
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\bin\ExportRelease\CardGameProj.pdb
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\bin\ExportRelease\GodotSharp.dll
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\bin\ExportRelease\Microsoft.AspNetCore.Connections.Abstractions.dll
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\bin\ExportRelease\Microsoft.AspNetCore.Http.Connections.Client.dll
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\bin\ExportRelease\Microsoft.AspNetCore.Http.Connections.Common.dll
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\bin\ExportRelease\Microsoft.AspNetCore.SignalR.Client.dll
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\bin\ExportRelease\Microsoft.AspNetCore.SignalR.Client.Core.dll
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\bin\ExportRelease\Microsoft.AspNetCore.SignalR.Common.dll
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\bin\ExportRelease\Microsoft.AspNetCore.SignalR.Protocols.Json.dll
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\bin\ExportRelease\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\bin\ExportRelease\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\bin\ExportRelease\Microsoft.Extensions.Features.dll
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\bin\ExportRelease\Microsoft.Extensions.Logging.dll
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\bin\ExportRelease\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\bin\ExportRelease\Microsoft.Extensions.Options.dll
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\bin\ExportRelease\Microsoft.Extensions.Primitives.dll
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\bin\ExportRelease\Newtonsoft.Json.dll
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\bin\ExportRelease\System.IO.Pipelines.dll
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\obj\ExportRelease\CardGameProj.csproj.AssemblyReference.cache
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\obj\ExportRelease\CardGameProj.Properties.Resources.resources
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\obj\ExportRelease\CardGameProj.csproj.GenerateResource.cache
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\obj\ExportRelease\CardGameProj.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\obj\ExportRelease\CardGameProj.AssemblyInfoInputs.cache
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\obj\ExportRelease\CardGameProj.AssemblyInfo.cs
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\obj\ExportRelease\CardGameProj.csproj.CoreCompileInputs.cache
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\obj\ExportRelease\CardGameProj.csproj.CopyComplete
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\obj\ExportRelease\CardGameProj.dll
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\obj\ExportRelease\refint\CardGameProj.dll
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\obj\ExportRelease\CardGameProj.pdb
+C:\Users\ros_n\OneDrive\Рабочий стол\ddn\GitHub\GodotProj\.godot\mono\temp\obj\ExportRelease\ref\CardGameProj.dll

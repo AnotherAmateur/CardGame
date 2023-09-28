@@ -82,7 +82,7 @@ public class BotLearning
                 gameController.MakeMove(action);
 
                 StatesLog stateAfter = gameController.GetCurState(curPlayer);
-                movesLog.Add(new(curState, action, currentBot, GetStepReward(stateBefore, stateAfter)));
+                movesLog.Add(new(curState, action, currentBot, GetStepReward(stateBefore, stateAfter, action)));
 
             } while (gameController.CurrentPlayer != null);
 
@@ -158,17 +158,27 @@ public class BotLearning
         }
     }
 
-    double GetStepReward(StatesLog stateBefore, StatesLog stateAfter)
+    double GetStepReward(StatesLog stateBefore, StatesLog stateAfter, int action)
     {
         if (StepRewards)
         {
+            if ((stateBefore.Round == 3 || stateBefore.SelfGamesRslt < 0) 
+                && stateAfter.SelfTotal < stateAfter.EnemyTotal
+                && stateBefore.EnemePassed is false)
+            {
+                if (action == (int)ActionTypes.Pass && stateBefore.HandCount > 0)
+                {
+                    return -100;
+                }
+            }
+
             double totalDifRew = (stateAfter.SelfTotal - stateAfter.EnemyTotal) >
-                        (stateBefore.SelfTotal - stateBefore.EnemyTotal) ? 1 : -1;
-            double roundRew = stateAfter.Round;
-            double winsRew = stateAfter.SelfGamesRslt * 2;
+                        (stateBefore.SelfTotal - stateBefore.EnemyTotal) ? 10 : -10;
+            double roundRew = stateAfter.Round * 10;
+            double winsRew = stateAfter.SelfGamesRslt * 10;
 
             if (stateAfter.SelfGamesRslt - stateBefore.SelfGamesRslt > 0)
-                return totalDifRew * roundRew * winsRew + 5;
+                return totalDifRew * roundRew * winsRew + 50;
 
             return totalDifRew * roundRew * winsRew;
         }

@@ -8,13 +8,17 @@ namespace AiBot
         public int SelfTotal { get; private set; }
         public int SelfGamesRslt { get; private set; }
         public int Round { get; private set; }
+        public int HandCount { get; private set; }
+        public bool EnemePassed { get; private set; }
 
-        public StatesLog(int enemyTotal, int selfTotal, int selfGamesRslt, int round)
+        public StatesLog(int enemyTotal, int selfTotal, int selfGamesRslt, int round, int handCount, bool enemePassed)
         {
             EnemyTotal = enemyTotal;
             SelfTotal = selfTotal;
             SelfGamesRslt = selfGamesRslt;
             Round = round;
+            HandCount = handCount;
+            EnemePassed = enemePassed;
         }
     }
 
@@ -203,7 +207,8 @@ namespace AiBot
 
         public StatesLog GetCurState(AiPlayer pl)
         {
-            return new(GetEnemy(pl).Total, pl.Total, pl.PlGamesMargin, Round);
+            var enemy = GetEnemy(pl);
+            return new(enemy.Total, pl.Total, pl.PlGamesMargin, Round, pl.Hand.Count, enemy.IsPass);
         }
     }
 }

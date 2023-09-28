@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Uni\\Курсовая 3 курс\\CardGameGitHub\\CardGame\\GodotProj\\CardGameProj.csproj": {}
+    "C:\\Users\\ros_n\\OneDrive\\Рабочий стол\\ddn\\GitHub\\GodotProj\\CardGameProj.csproj": {}
   },
   "projects": {
-    "D:\\Uni\\Курсовая 3 курс\\CardGameGitHub\\CardGame\\GodotProj\\CardGameProj.csproj": {
+    "C:\\Users\\ros_n\\OneDrive\\Рабочий стол\\ddn\\GitHub\\GodotProj\\CardGameProj.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Uni\\Курсовая 3 курс\\CardGameGitHub\\CardGame\\GodotProj\\CardGameProj.csproj",
+        "projectUniqueName": "C:\\Users\\ros_n\\OneDrive\\Рабочий стол\\ddn\\GitHub\\GodotProj\\CardGameProj.csproj",
         "projectName": "CardGameProj",
-        "projectPath": "D:\\Uni\\Курсовая 3 курс\\CardGameGitHub\\CardGame\\GodotProj\\CardGameProj.csproj",
-        "packagesPath": "C:\\Users\\dmitr\\.nuget\\packages\\",
-        "outputPath": "D:\\Uni\\Курсовая 3 курс\\CardGameGitHub\\CardGame\\GodotProj\\.godot\\mono\\temp\\obj\\",
+        "projectPath": "C:\\Users\\ros_n\\OneDrive\\Рабочий стол\\ddn\\GitHub\\GodotProj\\CardGameProj.csproj",
+        "packagesPath": "C:\\Users\\ros_n\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ros_n\\OneDrive\\Рабочий стол\\ddn\\GitHub\\GodotProj\\.godot\\mono\\temp\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Users\\dmitr\\AppData\\Roaming\\Godot\\mono\\GodotNuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\dmitr\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Users\\dmitr\\AppData\\Roaming\\NuGet\\config\\Godot.Offline.Config",
+          "C:\\Users\\ros_n\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -52,10 +48,6 @@
               "target": "Package",
               "version": "[4.1.1, )"
             },
-            "GodotSharpEditor": {
-              "target": "Package",
-              "version": "[4.1.1, )"
-            },
             "Microsoft.AspNetCore.SignalR.Client": {
               "target": "Package",
               "version": "[6.0.16, )"
@@ -81,7 +73,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
         }
       }
     }
