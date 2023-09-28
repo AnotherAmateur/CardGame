@@ -38,20 +38,7 @@ public partial class GFieldController : Node2D, ISocketConn
     {
         Instance = this;
         random = new();
-
-        if (States.PVE)
-        {
-            int randNation = random.Next(CardDB.Nations.Count);
-            //aiPlayer = new AiPlayer(CardDB.Nations[randNation]);
-            aiPlayer = new AiPlayer(CardDB.Nations[0]);
-            States.AntagonistLeaderCardId = CardDB.GetAllCards.Where(x =>
-                x.Value.Nation == aiPlayer.Nation && x.Value.Type == CardTypes.Leader).First().Key;
-        }
-        else
-        {
-            socketConnection = SocketConnection.GetInstance(this);
-        }
-
+       
         passBtn = GetNode<Button>("ToPass");
 
         Control cardsHandContainer = GetNode<Control>("Cards");
@@ -76,17 +63,32 @@ public partial class GFieldController : Node2D, ISocketConn
 
         var roundVBoxTop = GetNode<HBoxContainer>("TotalCount/VBoxContainer/TopRoundCount");
         var roundVBoxBottom = GetNode<HBoxContainer>("TotalCount/VBoxContainer/BottomRoundCount");
-
-        antagonist = new(States.AntagonistLeaderCardId, cardRowsContainerTop, leaderCardContainerTop,
-            discardPileContainerTop, totalCountTop, RowsCountTopContainer, roundVBoxTop);
-
+       
         protagonist = new(States.ProtagonistLeaderCardId, CardSelectionMenu.SelectedCards,
             cardRowsContainerBottom, cardsHandContainer, leaderCardContainerBottom,
             discardPileContainerBottom, totalCountBottom, RowsCountBottomContainer, roundVBoxBottom);
 
+        if (States.PVE)
+        {
+            // todo random bot nation
+            //int randNation = random.Next(CardDB.Nations.Count);
+            //aiPlayer = new AiPlayer(CardDB.Nations[randNation]);
+
+            aiPlayer = new AiPlayer(CardDB.Nations.Where(x => x != protagonist.LeaderCard.Nation).First());
+            States.AntagonistLeaderCardId = CardDB.GetAllCards.Where(x =>
+                x.Value.Nation == aiPlayer.Nation && x.Value.Type == CardTypes.Leader).First().Key;
+        }
+        else
+        {
+            socketConnection = SocketConnection.GetInstance(this);
+        }
+
+        antagonist = new(States.AntagonistLeaderCardId, cardRowsContainerTop, leaderCardContainerTop,
+           discardPileContainerTop, totalCountTop, RowsCountTopContainer, roundVBoxTop);
+
         protagonist.TakeCardsFromDeck(protagonist.GetRandomCardsFromDeck(
             Math.Min(Player.MaxHandSize, CardSelectionMenu.SelectedCards.Count)));
-
+      
         UpdateDeckTextures();
         UpdateDeckSize();
         InitializeColorRects();

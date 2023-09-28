@@ -1,8 +1,10 @@
 using CardGameProj.Scripts;
+using Godot;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CardGameProj.SeparateClasses
 {
@@ -139,6 +141,7 @@ namespace CardGameProj.SeparateClasses
 
             if (QTable.ContainsKey(state) is false)
             {
+                OS.Alert("rand");
                 int randAction = validActions[random.Next(validActions.Count)];
                 return QtoGTranslator[randAction];
             }
@@ -202,14 +205,17 @@ namespace CardGameProj.SeparateClasses
             string path = $"res://Data/QTableData/{Nation.ToString()}_QTable.txt";
             string data = Godot.FileAccess.Open(path, Godot.FileAccess.ModeFlags.Read).GetAsText();
 
-            foreach (string line in data.Split('\n', StringSplitOptions.RemoveEmptyEntries))
+            Parallel.ForEach(data.Split('\n', StringSplitOptions.RemoveEmptyEntries), (line) =>
             {
                 string[] temp = line.Split(':', StringSplitOptions.RemoveEmptyEntries);
                 int state = int.Parse(temp[0]);
                 int[] rewards = (temp.Length == 1) ? new int[] { 0 } :
                     rewards = temp[1].Split('/').Select(x => (x != "") ? int.Parse(x) : 0).ToArray();
-                QTable.Add(state, rewards);
-            }
+                lock (QTable)
+                {
+                    QTable.Add(state, rewards);
+                }
+            });
         }
     }
 }

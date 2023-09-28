@@ -1,0 +1,11 @@
+WinState:(WIN, 100)
+LossState:(LOSS, -100)
+MatchState:(MATCH, 10)
+MatchesCount:2000000
+LearningRate:0,4
+DiscountFactor:0,9
+RandInit:False
+InitValue:0
+StepRewards:False
+firstBotNation:Confucius
+secondBotNation:AI

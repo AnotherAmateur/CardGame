@@ -187,26 +187,29 @@ public class BotLearning
         string secondBot_TablePath = $"{directory}/{secondBotNation}_QTable.txt";
         string paramsPath = $"{directory}/Params.txt";
 
-        using (var sw = new StreamWriter(firstBot_TablePath))
+        var task = Task.Factory.StartNew(() =>
         {
-            foreach (var row in firstBot.QTable)
+            using (var sw = new StreamWriter(firstBot_TablePath))
             {
-                if (row.Value.Where(x => x > 0).Count() == 0)
-                    continue;
+                foreach (var row in firstBot.QTable)
+                {
+                    if ((new HashSet<double>(row.Value).Count) == 1)
+                        continue;
 
-                var uniqueValues = row.Value.Distinct().OrderBy(x => x).ToList();
-                var valueToIntegerMapping = uniqueValues.Select((value, index) => new { dValue = value, Integer = index }).ToDictionary(x => x.dValue, x => x.Integer);
-                int[] transformedRews = row.Value.Select(value => valueToIntegerMapping[value]).ToArray();
+                    var uniqueValues = row.Value.Distinct().OrderBy(x => x).ToList();
+                    var valueToIntegerMapping = uniqueValues.Select((value, index) => new { dValue = value, Integer = index }).ToDictionary(x => x.dValue, x => x.Integer);
+                    int[] transformedRews = row.Value.Select(value => valueToIntegerMapping[value]).ToArray();
 
-                sw.Write($"{row.Key}:{string.Join('/', transformedRews.Select(x => (x != 0) ? x.ToString() : "")) + '\n'}");
+                    sw.Write($"{row.Key}:{string.Join('/', transformedRews.Select(x => (x != 0) ? x.ToString() : "")) + '\n'}");
+                }
             }
-        }
+        });
 
         using (var sw = new StreamWriter(secondBot_TablePath))
         {
             foreach (var row in secondBot.QTable)
             {
-                if (row.Value.Where(x => x > 0).Count() == 0)
+                if ((new HashSet<double>(row.Value).Count) == 1)
                     continue;
 
                 var uniqueValues = row.Value.Distinct().OrderBy(x => x).ToList();

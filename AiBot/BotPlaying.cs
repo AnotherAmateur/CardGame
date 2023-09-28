@@ -29,7 +29,6 @@ public class BotPlaying
         this.qTablePath2 = qTablePath2;
     }
 
-
     public void Start()
     {
         n1_QtoGTranslator.Add(0, (int)ActionTypes.Pass);
@@ -69,12 +68,17 @@ public class BotPlaying
                 { { bot1, gameController.FirstPl },
                   { bot2, gameController.SecondPl } };
 
+            int iters = 0;
             do
             {
+                if (iters > 100)
+                    Console.WriteLine(iters);
+
                 var curState = GetStateHash(gameController.GetCurStateString());
                 var currentBot = botPlayerRel.Where(x => x.Value == gameController.CurrentPlayer).Select(x => x.Key).First();
-                var action = currentBot.ChooseAction(curState, Eps, gameController.GetValidActions());
+                var action = currentBot.GetBestAction(curState, Eps, gameController.GetValidActions());
                 gameController.MakeMove(action);
+                ++iters;
 
             } while (gameController.CurrentPlayer != null);
 
@@ -93,7 +97,8 @@ public class BotPlaying
     {
         Dictionary<int, double[]> qTable = new();
 
-        using (var sr = new StreamReader(path))
+        using (FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+        using (var sr = new StreamReader(fileStream))
         {
             foreach (string line in sr.ReadToEnd().Split('\n', StringSplitOptions.RemoveEmptyEntries))
             {

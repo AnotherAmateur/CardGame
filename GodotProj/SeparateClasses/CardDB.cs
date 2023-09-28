@@ -53,23 +53,10 @@ public static class CardDB
             string jsonData = Godot.FileAccess.Open(cardDataPath, Godot.FileAccess.ModeFlags.Read).GetAsText();
 
             if (jsonData is null)
-            {
                 throw new Exception("Data reading failed");
-            }
 
             cards = JsonConvert.DeserializeObject<ReadOnlyDictionary<int, CardData>>(jsonData);
-
             Nations = Enum.GetValues(typeof(CardNations)).Cast<CardNations>().ToList();
-
-            //Dictionary<int, CardData> CARDS = new();
-            //foreach (var card in cards)
-            //{
-            //    CARDS.Add(card.Key, new(card.Key, card.Value.Type, card.Value.Strength, card.Value.Nation, card.Value.Text));
-            //}
-
-            //string fileName = "D:\\Uni\\Курсовая 3 курс\\CardGameGitHub\\CardGame\\GodotProj\\Data\\CardData\\CardsNew.json";
-            //string json = JsonConvert.SerializeObject(CARDS, Formatting.Indented);
-            //File.WriteAllText(fileName, json);
         }
     }
 }

@@ -77,6 +77,41 @@
             }
         }
 
+        public int GetBestAction(int state, double eps, List<int> validActions)
+        {
+            validActions = validActions.Select(x => GtoQTranslator[x]).ToList();
+
+            if (QTable.ContainsKey(state) is false)
+            {
+                int randAction = validActions[random.Next(validActions.Count)];
+                return QtoGTranslator[randAction];
+            }
+            else
+            {
+                double maxQValue = double.MinValue;
+                int bestAction;
+                List<int> maxValIndxs = new();
+
+                foreach (int action in validActions)
+                {
+                    if (QTable[state][action] > maxQValue)
+                    {
+                        maxQValue = QTable[state][action];
+                        bestAction = action;
+                        maxValIndxs.Clear();
+                        maxValIndxs.Add(bestAction);
+                    }
+                    else if (QTable[state][action] == maxQValue)
+                    {
+                        maxValIndxs.Add(action);
+                    }
+                }
+
+                bestAction = maxValIndxs[random.Next(maxValIndxs.Count)];
+                return QtoGTranslator[bestAction];
+            }
+        }
+
         public void UpdateQValue(int currentState, int action, int nextState, double reward)
         {
             action = GtoQTranslator[action];

@@ -1,6 +1,7 @@
 ﻿using CardGameProj.Scripts;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.Reflection;
 
@@ -19,11 +20,13 @@ namespace AiBot
                 switch (input)
                 {
                     case "play":
+                        Console.WriteLine("Tables Matches Processors");
                         int[] tablesMatches = Console.ReadLine().Split(' ', StringSplitOptions.RemoveEmptyEntries)
                             .Select(x => int.Parse(x)).ToArray();
-                        DoPlaying(tablesMatches[0], tablesMatches[1]);
+                        DoPlaying(tablesMatches[0], tablesMatches[1], tablesMatches[2]);
                         break;
                     case "learn":
+                        Console.WriteLine("Processors");
                         int procCount = int.Parse(Console.ReadLine());
                         DoLearning(procCount);
                         break;
@@ -74,14 +77,14 @@ namespace AiBot
             Console.Beep(5000, 2000);
         }
 
-        private static void DoPlaying(int tablesCount, int mathesCount)
+        private static void DoPlaying(int tablesCount, int mathesCount, int processors)
         {
-            for (int i = 0; i < tablesCount; i++)
+            Dictionary<string, int[]> gamesResults = new();
+
+            Parallel.For(0, tablesCount, new ParallelOptions { MaxDegreeOfParallelism = processors }, (i) =>
             {
                 for (int j = 0; j < tablesCount; j++)
-                {
-                    Console.WriteLine($"i: {i}, j: {j}");
-
+                {               
                     string qTableBot1 = $"{i}/{CardNations.Confucius}_QTable.txt";
                     string qTableBot2 = $"{j}/{CardNations.AI}_QTable.txt";
 
@@ -92,13 +95,37 @@ namespace AiBot
 
                     botPlaying.Start();
 
+                    Console.WriteLine($"i: {i}, j: {j}");
                     Console.WriteLine($"Bot {botPlaying.Nation1} wins: {botPlaying.Bot1Wins}");
                     Console.WriteLine($"Bot {botPlaying.Nation2} wins: {botPlaying.Bot2Wins}");
+
+                    string confKey = CardNations.Confucius.ToString();
+                    string aiKey = CardNations.AI.ToString();
+
+                    lock (botPlaying) {
+                        if (gamesResults.ContainsKey(confKey) is false)
+                            gamesResults.Add(confKey, new int[tablesCount]);
+
+                        if (gamesResults.ContainsKey(aiKey) is false)
+                            gamesResults.Add(aiKey, new int[tablesCount]);
+
+                        gamesResults[confKey][i] += botPlaying.Bot1Wins;
+                        gamesResults[aiKey][j] += botPlaying.Bot2Wins;
+                    }
+                }
+            });
+
+            string outputPath = "GamesResults.txt";
+            using (var sw = new StreamWriter(outputPath))
+            {
+                foreach (var item in gamesResults)
+                {
+                    sw.WriteLine($"{item.Key}: {string.Join(' ', item.Value.Select((value, index) => $"{index}:{value}"))}");
                 }
             }
 
             Console.WriteLine("Done");
-            Console.Beep(5000, 2000);
+            Console.Beep(10000, 1500);
         }
 
         private class ConfStruct

@@ -42,7 +42,7 @@ color = Color(0.803922, 0.705882, 0.509804, 0.67451)
 metadata/_edit_lock_ = true
 
 [node name="Texture" type="Sprite2D" parent="."]
-self_modulate = Color(1, 1, 1, 0.592157)
+self_modulate = Color(0.627451, 0.627451, 0.627451, 0.705882)
 texture = ExtResource("2_4j3j2")
 centered = false
 metadata/_edit_lock_ = true
@@ -669,7 +669,7 @@ centered = false
 
 [node name="BlackBirdBot" type="Sprite2D" parent="RowIcons"]
 modulate = Color(1, 1, 1, 0.490196)
-position = Vector2(22, 434)
+position = Vector2(23, 574)
 scale = Vector2(0.158046, 0.076324)
 texture = ExtResource("6_pd3ia")
 centered = false
@@ -683,21 +683,21 @@ centered = false
 
 [node name="BlackBirdTop" type="Sprite2D" parent="RowIcons"]
 modulate = Color(1, 1, 1, 0.490196)
-position = Vector2(22, 298)
+position = Vector2(22, 171)
 scale = Vector2(0.158046, 0.076324)
 texture = ExtResource("6_pd3ia")
 centered = false
 
 [node name="WhiteBirdTop" type="Sprite2D" parent="RowIcons"]
 modulate = Color(1, 1, 1, 0.490196)
-position = Vector2(15, 164)
+position = Vector2(17, 297)
 scale = Vector2(0.128906, 0.0729167)
 texture = ExtResource("7_ino47")
 centered = false
 
 [node name="WhiteBirdTop2" type="Sprite2D" parent="RowIcons"]
 modulate = Color(1, 1, 1, 0.490196)
-position = Vector2(18, 566)
+position = Vector2(12, 427)
 scale = Vector2(0.128906, 0.0729167)
 texture = ExtResource("7_ino47")
 centered = false
