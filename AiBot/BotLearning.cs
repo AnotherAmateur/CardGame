@@ -1,19 +1,20 @@
 ﻿using AiBot;
 using CardGameProj.Scripts;
 using System.Runtime.ConstrainedExecution;
+using System.Text;
 
 public class BotLearning
 {
-    private const double InitMaxEps = 1;
-    public (string, double) WinState { get; set; }
-    public (string, double) LossState { get; set; }
-    public (string, double) MatchState { get; set; }
+    private const float InitMaxEps = 1;
+    public (string, float) WinState { get; set; }
+    public (string, float) LossState { get; set; }
+    public (string, float) MatchState { get; set; }
 
     public int MatchesCount { get; set; }
-    public double LearningRate { get; set; }
-    public double DiscountFactor { get; set; }
+    public float LearningRate { get; set; }
+    public float DiscountFactor { get; set; }
     public bool RandInit { get; set; }
-    public double InitValue { get; set; }
+    public float InitValue { get; set; }
     public bool StepRewards { get; set; }
     public CardNations firstBotNation { get; set; }
     public CardNations secondBotNation { get; set; }
@@ -111,8 +112,8 @@ public class BotLearning
         int nextStateBot1;
         int nextStateBot2;
 
-        double bot1FinalRew;
-        double bot2FinalRew;
+        float bot1FinalRew;
+        float bot2FinalRew;
 
         switch (winner)
         {
@@ -158,7 +159,7 @@ public class BotLearning
         }
     }
 
-    double GetStepReward(StatesLog stateBefore, StatesLog stateAfter, int action)
+    float GetStepReward(StatesLog stateBefore, StatesLog stateAfter, int action)
     {
         if (StepRewards)
         {
@@ -172,10 +173,10 @@ public class BotLearning
                 }
             }
 
-            double totalDifRew = (stateAfter.SelfTotal - stateAfter.EnemyTotal) >
+            float totalDifRew = (stateAfter.SelfTotal - stateAfter.EnemyTotal) >
                         (stateBefore.SelfTotal - stateBefore.EnemyTotal) ? 10 : -10;
-            double roundRew = stateAfter.Round * 10;
-            double winsRew = stateAfter.SelfGamesRslt * 10;
+            float roundRew = stateAfter.Round * 10;
+            float winsRew = stateAfter.SelfGamesRslt * 10;
 
             if (stateAfter.SelfGamesRslt - stateBefore.SelfGamesRslt > 0)
                 return totalDifRew * roundRew * winsRew + 50;
@@ -190,6 +191,7 @@ public class BotLearning
     {
         string directory = $"logs_{DateTime.Now.Ticks}";
         System.IO.Directory.CreateDirectory(directory);
+        const int charMargin = 48;
 
         Console.WriteLine($"Writing to directory {directory}...");
 
@@ -203,30 +205,30 @@ public class BotLearning
             {
                 foreach (var row in firstBot.QTable)
                 {
-                    if ((new HashSet<double>(row.Value).Count) == 1)
+                    if ((new HashSet<float>(row.Value).Count) == 1)
                         continue;
 
                     var uniqueValues = row.Value.Distinct().OrderBy(x => x).ToList();
                     var valueToIntegerMapping = uniqueValues.Select((value, index) => new { dValue = value, Integer = index }).ToDictionary(x => x.dValue, x => x.Integer);
                     int[] transformedRews = row.Value.Select(value => valueToIntegerMapping[value]).ToArray();
 
-                    sw.Write($"{row.Key}:{string.Join('/', transformedRews.Select(x => (x != 0) ? x.ToString() : "")) + '\n'}");
+                    sw.Write($"{row.Key}#{string.Join(string.Empty, transformedRews.Select(x => ((char)(x + charMargin)).ToString())) + '\n'}");
                 }
             }
         });
 
-        using (var sw = new StreamWriter(secondBot_TablePath))
+        using (var sw = new StreamWriter(secondBot_TablePath, false, Encoding.ASCII))
         {
             foreach (var row in secondBot.QTable)
             {
-                if ((new HashSet<double>(row.Value).Count) == 1)
+                if ((new HashSet<float>(row.Value).Count) == 1)
                     continue;
 
                 var uniqueValues = row.Value.Distinct().OrderBy(x => x).ToList();
                 var valueToIntegerMapping = uniqueValues.Select((value, index) => new { dValue = value, Integer = index }).ToDictionary(x => x.dValue, x => x.Integer);
                 int[] transformedRews = row.Value.Select(value => valueToIntegerMapping[value]).ToArray();
 
-                sw.Write($"{row.Key}:{string.Join('/', transformedRews.Select(x => (x != 0) ? x.ToString() : "")) + '\n'}");
+                sw.Write($"{row.Key}#{string.Join(string.Empty, transformedRews.Select(x => ((char)(x + charMargin)).ToString())) + '\n'}");
             }
         }
 
@@ -243,6 +245,7 @@ public class BotLearning
             }
         }
 
+        task.Wait();
         Console.WriteLine($"Writing to directory {directory} done");
     }
 
@@ -262,9 +265,9 @@ public class BotLearning
         public int State { get; set; }
         public int Action { get; set; }
         public QLearning Bot { get; set; }
-        public double StepReward { get; set; }
+        public float StepReward { get; set; }
 
-        public MovesLog(int state, int action, QLearning bot, double stepReward)
+        public MovesLog(int state, int action, QLearning bot, float stepReward)
         {
             State = state;
             Action = action;

@@ -22,7 +22,6 @@ namespace AiBot
         }
     }
 
-
     public class GameController
     {
         public const int MaxHandSize = 10;
@@ -175,32 +174,32 @@ namespace AiBot
 
             List<string> curState = new();
 
-            string pl1DeckSize = (enemyPl.Deck.Count / 3).ToString();
+            string pl1DeckSize = (enemyPl.Deck.Count / 2).ToString();
             curState.Add(pl1DeckSize);
 
-            string targetPlayerDeckSize = (CurrentPlayer.Deck.Count / 3).ToString();
+            string targetPlayerDeckSize = (CurrentPlayer.Deck.Count / 2).ToString();
             curState.Add(targetPlayerDeckSize);
 
             string gamesEnemyResults = enemyPl.PlGamesMargin.ToString();
             curState.Add(gamesEnemyResults);
 
-            string rowsTotalsPl1 = string.Join("", (enemyPl.TotalsByRows.Values).Select(x => x / 5));
+            string rowsTotalsPl1 = string.Join("-", (enemyPl.TotalsByRows.Values).Select(x => x / 2));
             curState.Add(rowsTotalsPl1);
 
-            string rowsTotalsTargetPl = string.Join("", (CurrentPlayer.TotalsByRows.Values).Select(x => x / 5));
+            string rowsTotalsTargetPl = string.Join("-", (CurrentPlayer.TotalsByRows.Values).Select(x => x / 2));
             curState.Add(rowsTotalsTargetPl);
 
-            string spCardsOnBoard = string.Join("", SpOnBoard.OrderBy(x => x.Id).Select(x => x.Id));
+            string spCardsOnBoard = string.Join("-", SpOnBoard.OrderBy(x => x.Id).Select(x => x.Id));
             curState.Add(spCardsOnBoard);
 
             string handSize = CurrentPlayer.Hand.Count.ToString();
             curState.Add(handSize);
 
-            string handWeight = (CurrentPlayer.Hand.Select(x => x.Strength).Sum() / 5).ToString();
+            string handWeight = (CurrentPlayer.Hand.Select(x => x.Strength).Sum() / 2).ToString();
             curState.Add(handWeight);
 
-            string plPassed = enemyPl.IsPass.ToString();
-            curState.Add(plPassed);
+            string enemyPassed = enemyPl.IsPass.ToString();
+            curState.Add(enemyPassed);
 
             return string.Join('_', curState);
         }

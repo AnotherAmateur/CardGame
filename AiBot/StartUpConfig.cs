@@ -122,15 +122,15 @@ namespace AiBot
 
         private class ConfStruct
         {
-            public (string, double) WinState;
-            public (string, double) LossState;
-            public (string, double) MatchState;
+            public (string, float) WinState;
+            public (string, float) LossState;
+            public (string, float) MatchState;
 
             public int MatchesCount;
-            public double LearningRate;
-            public double DiscountFactor;
+            public float LearningRate;
+            public float DiscountFactor;
             public bool RandInit;
-            public double InitValue;
+            public float InitValue;
             public CardNations Nation1;
             public CardNations Nation2;
             public bool StepRewards;

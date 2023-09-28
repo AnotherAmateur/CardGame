@@ -16,7 +16,7 @@ namespace CardGameProj.SeparateClasses
         public List<int> Deck { get; private set; }
         public List<CardDB.CardData> Hand { get; private set; }
         public CardNations Nation { get; private set; }
-        public Dictionary<int, int[]> QTable { get; private set; }
+        public Dictionary<int, short[]> QTable { get; private set; }
 
         public AiPlayer(CardNations nation)
         {
@@ -39,7 +39,8 @@ namespace CardGameProj.SeparateClasses
             GtoQTranslator.Add((int)ActionTypes.Pass, 0);
 
             int index = 1;
-            foreach (var card in CardDB.GetAllCards.Where(x => x.Value.Nation == Nation).ToArray())
+            foreach (var card in CardDB.GetAllCards.Where(x => 
+                x.Value.Nation == Nation && x.Value.Type != CardTypes.Leader))
             {
                 QtoGTranslator.Add(index, card.Key);
                 GtoQTranslator.Add(card.Key, index);
@@ -146,7 +147,7 @@ namespace CardGameProj.SeparateClasses
                 return QtoGTranslator[randAction];
             }
 
-            double maxQValue = double.MinValue;
+            float maxQValue = float.MinValue;
             int bestAction;
             List<int> maxValIndxs = new();
 
@@ -201,16 +202,22 @@ namespace CardGameProj.SeparateClasses
 
         private void ReadQTableFromFile()
         {
+            const int charMargin = 48;
             QTable = new();
             string path = $"res://Data/QTableData/{Nation.ToString()}_QTable.txt";
             string data = Godot.FileAccess.Open(path, Godot.FileAccess.ModeFlags.Read).GetAsText();
 
             Parallel.ForEach(data.Split('\n', StringSplitOptions.RemoveEmptyEntries), (line) =>
             {
-                string[] temp = line.Split(':', StringSplitOptions.RemoveEmptyEntries);
+                string[] temp = line.Split('#', StringSplitOptions.RemoveEmptyEntries);
                 int state = int.Parse(temp[0]);
-                int[] rewards = (temp.Length == 1) ? new int[] { 0 } :
-                    rewards = temp[1].Split('/').Select(x => (x != "") ? int.Parse(x) : 0).ToArray();
+                string rewardsString = temp[1];
+
+                short[] rewards = new short[rewardsString.Length];
+                for (int i = 0; i < rewards.Length; i++)
+                {
+                    rewards[i] = (short)((char)rewardsString[i] - charMargin);
+                }
                 lock (QTable)
                 {
                     QTable.Add(state, rewards);

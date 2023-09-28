@@ -21,6 +21,22 @@
           }
         }
       },
+      "GodotSharpEditor/4.1.1": {
+        "type": "package",
+        "dependencies": {
+          "GodotSharp": "4.1.1"
+        },
+        "compile": {
+          "lib/net6.0/GodotSharpEditor.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/GodotSharpEditor.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Microsoft.AspNetCore.Connections.Abstractions/6.0.16": {
         "type": "package",
         "dependencies": {
@@ -370,6 +386,19 @@
         "godotsharp.nuspec",
         "lib/net6.0/GodotSharp.dll",
         "lib/net6.0/GodotSharp.xml"
+      ]
+    },
+    "GodotSharpEditor/4.1.1": {
+      "sha512": "t29ltWPBHhWDKncK2XFXmHx29jGOqtsR9PFdkjIcRWG5+PdcCJNrCng5cls/H+zGtluGF5L6rNBFbFlBBvTgkA==",
+      "type": "package",
+      "path": "godotsharpeditor/4.1.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "godotsharpeditor.4.1.1.nupkg.sha512",
+        "godotsharpeditor.nuspec",
+        "lib/net6.0/GodotSharpEditor.dll",
+        "lib/net6.0/GodotSharpEditor.xml"
       ]
     },
     "Microsoft.AspNetCore.Connections.Abstractions/6.0.16": {
@@ -836,24 +865,30 @@
     "net6.0": [
       "Godot.SourceGenerators >= 4.1.1",
       "GodotSharp >= 4.1.1",
+      "GodotSharpEditor >= 4.1.1",
       "Microsoft.AspNetCore.SignalR.Client >= 6.0.16",
       "Newtonsoft.Json >= 13.0.3"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ros_n\\.nuget\\packages\\": {}
+    "C:\\Users\\dmitr\\.nuget\\packages\\": {},
+    "C:\\Users\\dmitr\\AppData\\Roaming\\Godot\\mono\\GodotNuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ros_n\\OneDrive\\Рабочий стол\\ddn\\GitHub\\GodotProj\\CardGameProj.csproj",
+      "projectUniqueName": "D:\\Uni\\Курсовая 3 курс\\CardGameGitHub\\CardGame\\GodotProj\\CardGameProj.csproj",
       "projectName": "CardGameProj",
-      "projectPath": "C:\\Users\\ros_n\\OneDrive\\Рабочий стол\\ddn\\GitHub\\GodotProj\\CardGameProj.csproj",
-      "packagesPath": "C:\\Users\\ros_n\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ros_n\\OneDrive\\Рабочий стол\\ddn\\GitHub\\GodotProj\\.godot\\mono\\temp\\obj\\",
+      "projectPath": "D:\\Uni\\Курсовая 3 курс\\CardGameGitHub\\CardGame\\GodotProj\\CardGameProj.csproj",
+      "packagesPath": "C:\\Users\\dmitr\\.nuget\\packages\\",
+      "outputPath": "D:\\Uni\\Курсовая 3 курс\\CardGameGitHub\\CardGame\\GodotProj\\.godot\\mono\\temp\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Users\\dmitr\\AppData\\Roaming\\Godot\\mono\\GodotNuGetFallbackFolder"
+      ],
       "configFilePaths": [
-        "C:\\Users\\ros_n\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\dmitr\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\dmitr\\AppData\\Roaming\\NuGet\\config\\Godot.Offline.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -887,6 +922,10 @@
             "target": "Package",
             "version": "[4.1.1, )"
           },
+          "GodotSharpEditor": {
+            "target": "Package",
+            "version": "[4.1.1, )"
+          },
           "Microsoft.AspNetCore.SignalR.Client": {
             "target": "Package",
             "version": "[6.0.16, )"
@@ -912,7 +951,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
       }
     }
   }

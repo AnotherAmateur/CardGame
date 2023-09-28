@@ -1,10 +1,10 @@
 ﻿using AiBot;
 using CardGameProj.Scripts;
-using System.Reflection.Metadata;
+using System.Text;
 
 public class BotPlaying
 {
-    private const double Eps = -1;
+    private const float Eps = -1;
     public int MatchesCount { get; set; }
     public CardNations Nation1 { get; set; }
     public CardNations Nation2 { get; set; }
@@ -55,7 +55,7 @@ public class BotPlaying
             index++;
         }
 
-        var task = Task.Factory.StartNew(() => 
+        var task = Task.Factory.StartNew(() =>
         bot1 = new(ReadQTableFromFile(qTablePath1), n1_QtoGTranslator.Count, n1_QtoGTranslator, n1_GtoQTranslator));
         bot2 = new(ReadQTableFromFile(qTablePath2), n2_QtoGTranslator.Count, n2_QtoGTranslator, n2_GtoQTranslator);
         task.Wait();
@@ -68,17 +68,12 @@ public class BotPlaying
                 { { bot1, gameController.FirstPl },
                   { bot2, gameController.SecondPl } };
 
-            int iters = 0;
             do
             {
-                if (iters > 100)
-                    Console.WriteLine(iters);
-
                 var curState = GetStateHash(gameController.GetCurStateString());
                 var currentBot = botPlayerRel.Where(x => x.Value == gameController.CurrentPlayer).Select(x => x.Key).First();
                 var action = currentBot.GetBestAction(curState, Eps, gameController.GetValidActions());
                 gameController.MakeMove(action);
-                ++iters;
 
             } while (gameController.CurrentPlayer != null);
 
@@ -93,19 +88,26 @@ public class BotPlaying
         }
     }
 
-    Dictionary<int, double[]> ReadQTableFromFile(string path)
+    Dictionary<int, float[]> ReadQTableFromFile(string path)
     {
-        Dictionary<int, double[]> qTable = new();
+        const int charMargin = 48;
+        Dictionary<int, float[]> qTable = new();
 
         using (FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
-        using (var sr = new StreamReader(fileStream))
+        using (var sr = new StreamReader(fileStream, Encoding.ASCII))
         {
             foreach (string line in sr.ReadToEnd().Split('\n', StringSplitOptions.RemoveEmptyEntries))
             {
-                string[] temp = line.Split(':', StringSplitOptions.RemoveEmptyEntries);
+                string[] temp = line.Split('#', StringSplitOptions.RemoveEmptyEntries);
                 int state = int.Parse(temp[0]);
-                double[] rewards = (temp.Length == 1) ? new double[] { 0 } :
-                    rewards = temp[1].Split('/').Select(x => (x != "") ? double.Parse(x) : 0).ToArray();
+                string rewardsString = temp[1];
+
+                float[] rewards = new float[rewardsString.Length];
+                for (int i = 0; i < rewards.Length; i++)
+                {
+                    rewards[i] = (char)rewardsString[i] - charMargin;
+                }
+
                 qTable.Add(state, rewards);
             }
         }

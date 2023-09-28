@@ -2,19 +2,19 @@
 {
     public class QLearning
     {
-        public Dictionary<int, double[]> QTable { get; private set; }
-        private double learningRate;
-        private double discountFactor;
+        public Dictionary<int, float[]> QTable { get; private set; }
+        private float learningRate;
+        private float discountFactor;
         private Random random;
         private int actionsCount;
         private bool randInit;
-        private double initValue;
+        private float initValue;
         public Dictionary<int, int> QtoGTranslator { get; private set; }
         public Dictionary<int, int> GtoQTranslator { get; private set; }
 
 
-        public QLearning(int actionsCount, double learningRate, double discountFactor,
-            Dictionary<int, int> QtoGTranslator, Dictionary<int, int> GtoQTranslator, bool randInit, double initValue)
+        public QLearning(int actionsCount, float learningRate, float discountFactor,
+            Dictionary<int, int> QtoGTranslator, Dictionary<int, int> GtoQTranslator, bool randInit, float initValue)
         {
             this.learningRate = learningRate;
             this.discountFactor = discountFactor;
@@ -28,7 +28,7 @@
             random = new Random();
         }
 
-        public QLearning(Dictionary<int, double[]> qTable, int actionsCount, Dictionary<int, int> qtoGTranslator, Dictionary<int, int> gtoQTranslator)
+        public QLearning(Dictionary<int, float[]> qTable, int actionsCount, Dictionary<int, int> qtoGTranslator, Dictionary<int, int> gtoQTranslator)
         {
             QTable = qTable;
             this.actionsCount = actionsCount;
@@ -53,7 +53,7 @@
             }
             else
             {
-                double maxQValue = double.MinValue;
+                float maxQValue = float.MinValue;
                 int bestAction;
                 List<int> maxValIndxs = new();
 
@@ -88,7 +88,7 @@
             }
             else
             {
-                double maxQValue = double.MinValue;
+                float maxQValue = float.MinValue;
                 int bestAction;
                 List<int> maxValIndxs = new();
 
@@ -112,22 +112,22 @@
             }
         }
 
-        public void UpdateQValue(int currentState, int action, int nextState, double reward)
+        public void UpdateQValue(int currentState, int action, int nextState, float reward)
         {
             action = GtoQTranslator[action];
 
             if (QTable.ContainsKey(nextState) is false)
             {
-                QTable.Add(nextState, new double[1]);
+                QTable.Add(nextState, new float[1]);
             }
 
             QTable[currentState][action] = QTable[currentState][action] + learningRate *
                 (reward + discountFactor * MaxQValue(nextState) - QTable[currentState][action]);
         }
 
-        private double MaxQValue(int state)
+        private float MaxQValue(int state)
         {
-            double maxQValue = double.MinValue;
+            float maxQValue = float.MinValue;
 
             for (int action = 0; action < QTable[state].Length; action++)
             {
@@ -140,15 +140,15 @@
             return maxQValue;
         }
 
-        private double[] InitActRewards()
+        private float[] InitActRewards()
         {
-            double[] actRewArray = new double[actionsCount];
+            float[] actRewArray = new float[actionsCount];
 
             if (randInit)
             {
                 for (int i = 0; i < actRewArray.Length; i++)
                 {
-                    actRewArray[i] = random.NextDouble();
+                    actRewArray[i] = random.NextSingle();
                 }
             }
             else

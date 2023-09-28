@@ -55,19 +55,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ros_n\\.nuget\\packages\\": {}
+    "C:\\Users\\dmitr\\.nuget\\packages\\": {},
+    "C:\\Users\\dmitr\\AppData\\Roaming\\Godot\\mono\\GodotNuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ros_n\\OneDrive\\Рабочий стол\\ddn\\GitHub\\AiBot\\AiBot.csproj",
+      "projectUniqueName": "D:\\Uni\\Курсовая 3 курс\\CardGameGitHub\\CardGame\\AiBot\\AiBot.csproj",
       "projectName": "AiBot",
-      "projectPath": "C:\\Users\\ros_n\\OneDrive\\Рабочий стол\\ddn\\GitHub\\AiBot\\AiBot.csproj",
-      "packagesPath": "C:\\Users\\ros_n\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ros_n\\OneDrive\\Рабочий стол\\ddn\\GitHub\\AiBot\\obj\\",
+      "projectPath": "D:\\Uni\\Курсовая 3 курс\\CardGameGitHub\\CardGame\\AiBot\\AiBot.csproj",
+      "packagesPath": "C:\\Users\\dmitr\\.nuget\\packages\\",
+      "outputPath": "D:\\Uni\\Курсовая 3 курс\\CardGameGitHub\\CardGame\\AiBot\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Users\\dmitr\\AppData\\Roaming\\Godot\\mono\\GodotNuGetFallbackFolder"
+      ],
       "configFilePaths": [
-        "C:\\Users\\ros_n\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\dmitr\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\dmitr\\AppData\\Roaming\\NuGet\\config\\Godot.Offline.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -114,7 +119,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
       }
     }
   }
