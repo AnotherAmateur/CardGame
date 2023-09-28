@@ -391,19 +391,19 @@ public partial class GFieldController : Node2D, ISocketConn
 	{
 		List<string> curState = new();
 
-		string protagonistDeckSize = (protagonist.Deck.Count / 2).ToString();
+		string protagonistDeckSize = (protagonist.Deck.Count / 3).ToString();
 		curState.Add(protagonistDeckSize);
 
-		string botDeckSize = (aiPlayer.Deck.Count / 2).ToString();
+		string botDeckSize = (aiPlayer.Deck.Count / 3).ToString();
 		curState.Add(botDeckSize);
 
 		string gamesResults = Player.GameResult.ToString();
 		curState.Add(gamesResults);
 
-		string rowsTotalsPl1 = string.Join("-", (protagonist.TotalsByRows.Values).Select(x => x / 2));
+		string rowsTotalsPl1 = string.Join("-", (protagonist.TotalsByRows.Values).Select(x => x / 4));
 		curState.Add(rowsTotalsPl1);
 
-		string rowsTotalsBot = string.Join("-", (antagonist.TotalsByRows.Values).Select(x => x / 2));
+		string rowsTotalsBot = string.Join("-", (antagonist.TotalsByRows.Values).Select(x => x / 4));
 		curState.Add(rowsTotalsBot);
 
 		string spCardsOnBoard = string.Join("-", Player.SpOnBoard.OrderBy(x => x.Id).Select(x => x.Id));
@@ -412,7 +412,7 @@ public partial class GFieldController : Node2D, ISocketConn
 		string handSize = aiPlayer.Hand.Count.ToString();
 		curState.Add(handSize);
 
-		string handWeight = (aiPlayer.Hand.Select(x => x.Strength).Sum() / 2).ToString();
+		string handWeight = (aiPlayer.Hand.Select(x => x.Strength).Sum() / 3).ToString();
 		curState.Add(handWeight);
 
 		string plPassed = protagonist.IsPass.ToString();
@@ -423,7 +423,7 @@ public partial class GFieldController : Node2D, ISocketConn
 
 	private async void _on_tree_exiting()
 	{
-		int msecDelay = 3000;
+		int msecDelay = 3500;
 		await Task.Delay(msecDelay);
 		Instance = null;
 	}

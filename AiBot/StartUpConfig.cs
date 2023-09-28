@@ -49,6 +49,7 @@ namespace AiBot
             Parallel.ForEach(botConfigs, new ParallelOptions { MaxDegreeOfParallelism = procCount }, (config) =>
             {
                 var botLearning = new BotLearning();
+                botLearning.FixedEps = config.FixedEps;
                 botLearning.WinState = config.WinState;
                 botLearning.LossState = config.LossState;
                 botLearning.MatchState = config.MatchState;
@@ -122,6 +123,7 @@ namespace AiBot
 
         private class ConfStruct
         {
+            public float FixedEps;
             public (string, float) WinState;
             public (string, float) LossState;
             public (string, float) MatchState;

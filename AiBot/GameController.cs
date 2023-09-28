@@ -174,19 +174,19 @@ namespace AiBot
 
             List<string> curState = new();
 
-            string pl1DeckSize = (enemyPl.Deck.Count / 2).ToString();
+            string pl1DeckSize = (enemyPl.Deck.Count / 3).ToString();
             curState.Add(pl1DeckSize);
 
-            string targetPlayerDeckSize = (CurrentPlayer.Deck.Count / 2).ToString();
+            string targetPlayerDeckSize = (CurrentPlayer.Deck.Count / 3).ToString();
             curState.Add(targetPlayerDeckSize);
 
             string gamesEnemyResults = enemyPl.PlGamesMargin.ToString();
             curState.Add(gamesEnemyResults);
 
-            string rowsTotalsPl1 = string.Join("-", (enemyPl.TotalsByRows.Values).Select(x => x / 2));
+            string rowsTotalsPl1 = string.Join("-", (enemyPl.TotalsByRows.Values).Select(x => x / 4));
             curState.Add(rowsTotalsPl1);
 
-            string rowsTotalsTargetPl = string.Join("-", (CurrentPlayer.TotalsByRows.Values).Select(x => x / 2));
+            string rowsTotalsTargetPl = string.Join("-", (CurrentPlayer.TotalsByRows.Values).Select(x => x / 4));
             curState.Add(rowsTotalsTargetPl);
 
             string spCardsOnBoard = string.Join("-", SpOnBoard.OrderBy(x => x.Id).Select(x => x.Id));
@@ -195,7 +195,7 @@ namespace AiBot
             string handSize = CurrentPlayer.Hand.Count.ToString();
             curState.Add(handSize);
 
-            string handWeight = (CurrentPlayer.Hand.Select(x => x.Strength).Sum() / 2).ToString();
+            string handWeight = (CurrentPlayer.Hand.Select(x => x.Strength).Sum() / 3).ToString();
             curState.Add(handWeight);
 
             string enemyPassed = enemyPl.IsPass.ToString();

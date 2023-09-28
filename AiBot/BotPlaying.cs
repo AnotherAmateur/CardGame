@@ -18,8 +18,8 @@ public class BotPlaying
     public int Bot1Wins { get; private set; }
     public int Bot2Wins { get; private set; }
 
-    QLearning bot1;
-    QLearning bot2;
+    QLPlay bot1;
+    QLPlay bot2;
 
     public BotPlaying(string qTablePath1, string qTablePath2)
     {
@@ -64,7 +64,7 @@ public class BotPlaying
         {
             GameController gameController = new(Nation1, Nation2);
 
-            Dictionary<QLearning, AiPlayer> botPlayerRel = new()
+            Dictionary<QLPlay, AiPlayer> botPlayerRel = new()
                 { { bot1, gameController.FirstPl },
                   { bot2, gameController.SecondPl } };
 
@@ -88,10 +88,10 @@ public class BotPlaying
         }
     }
 
-    Dictionary<int, float[]> ReadQTableFromFile(string path)
+    Dictionary<int, short[]> ReadQTableFromFile(string path)
     {
         const int charMargin = 48;
-        Dictionary<int, float[]> qTable = new();
+        Dictionary<int, short[]> qTable = new();
 
         using (FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
         using (var sr = new StreamReader(fileStream, Encoding.ASCII))
@@ -102,10 +102,10 @@ public class BotPlaying
                 int state = int.Parse(temp[0]);
                 string rewardsString = temp[1];
 
-                float[] rewards = new float[rewardsString.Length];
+                short[] rewards = new short[rewardsString.Length];
                 for (int i = 0; i < rewards.Length; i++)
                 {
-                    rewards[i] = (char)rewardsString[i] - charMargin;
+                    rewards[i] = (short)((char)rewardsString[i] - charMargin);
                 }
 
                 qTable.Add(state, rewards);

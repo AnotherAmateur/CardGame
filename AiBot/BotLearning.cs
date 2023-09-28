@@ -1,11 +1,11 @@
 ﻿using AiBot;
 using CardGameProj.Scripts;
-using System.Runtime.ConstrainedExecution;
 using System.Text;
 
 public class BotLearning
 {
     private const float InitMaxEps = 1;
+    public float FixedEps { get; set; }
     public (string, float) WinState { get; set; }
     public (string, float) LossState { get; set; }
     public (string, float) MatchState { get; set; }
@@ -70,7 +70,7 @@ public class BotLearning
                 { { firstBot, gameController.FirstPl },
                   { secondBot, gameController.SecondPl } };
 
-            double curEps = Math.Max(InitMaxEps - (i / MatchesCount), 0.1);
+            double curEps = FixedEps > 0 ? FixedEps : Math.Max(InitMaxEps - (i / MatchesCount), 0.2);
 
             do
             {
@@ -163,7 +163,7 @@ public class BotLearning
     {
         if (StepRewards)
         {
-            if ((stateBefore.Round == 3 || stateBefore.SelfGamesRslt < 0) 
+            if ((stateBefore.Round == 3 || stateBefore.SelfGamesRslt < 0)
                 && stateAfter.SelfTotal < stateAfter.EnemyTotal
                 && stateBefore.EnemePassed is false)
             {
